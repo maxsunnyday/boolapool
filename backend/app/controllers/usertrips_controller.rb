@@ -1,0 +1,2 @@
+class UsertripsController < ApplicationController
+end
