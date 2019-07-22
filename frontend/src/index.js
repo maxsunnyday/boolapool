@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(){
-	const mainEl = document.querySelector('main')
+	const ulEl = document.querySelector('ul')
 
 	//Display Trips
 	fetch("http://localhost:3000/trips")
@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', function(){
 		
 
 		for (let trip of trips) {
-			mainEl.innerHTML += `<h1>${trip.destination}</h1>
-								<h2>${trip.address}</h2>
-								<h2>${trip.users.length}/${trip.capacity}</h2>`
+			ulEl.innerHTML += `<li class="contained">
+								<h2>${trip.destination} ${trip.address} ${trip.users.length}/${trip.capacity}</h2>
+								</li>`
 		}
 	})
 
@@ -33,9 +33,9 @@ document.addEventListener('DOMContentLoaded', function(){
 			})
 		}).then(response => response.json())
 		.then(trip => {
-			mainEl.innerHTML += `<h1>${trip.destination}</h1>
-								<h2>${trip.address}</h2>
-								<h2>1/${trip.capacity}</h2>` //Hardcoded 1
+			ulEl.innerHTML += `<li class="contained"><h2>${trip.destination}</h2>
+								<h3>${trip.address}</h3>
+								<h3>1/${trip.capacity}</h3></li>` //Hardcoded 1
 		})
 	})
 })

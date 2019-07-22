@@ -1,0 +1,18 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	list-style: none;
+}
+
+.contained {
+  background: tomato;
+  padding: 5px;
+  width: auto;
+  height: 100px;
+  margin-top: 10px;
+  
+  line-height: 70px;
+  color: white;
+/*  font-weight: bold;*/
+  font-size: 1em;
+}
