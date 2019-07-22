@@ -8,16 +8,24 @@
 <body>
   <main>
   	<form>
-  		<label>Destination</label>
-  		<input type="text" name="destination">
+		<label>Destination</label>
+		<select name="destination">
+			<option value="tweed">Tweed</option>
+			<option value="bdl">BDL</option>
+			<option value="lga">LGA</option>
+			<option value="jfk">JFK</option>
+			<option value="ewr">EWR</option>
+			<option value="other">Other</option>
+		</select>
+  		<!-- <input type="text" name="destination" required> -->
   		<label>Address</label>
-  		<input type="text" name="address">
+  		<input type="text" name="address" required>
   		<label>Capacity</label>
-  		<input type="number" name="capacity">
+  		<input type="number" name="capacity" required>
   		<label>Start</label>
-  		<input type="datetime-local" name="start_time">
+  		<input type="datetime-local" name="start_time" required>
   		<label>End</label>
-  		<input type="datetime-local" name="state_time">
+  		<input type="datetime-local" name="state_time" required>
   		<input type="submit">
   	</form>
   </main>
