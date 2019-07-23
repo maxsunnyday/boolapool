@@ -7,24 +7,34 @@ document.addEventListener('DOMContentLoaded', function(){
 	if (localStorage.getItem('user_id')) {
 		const userId = localStorage.getItem('user_id')
 
-		fetch(`${BASE_URL}/users/${userId}`)
-		.then(res => res.json())
-		.then(user => {
-			displayHomePage(user)
-		})
+		// fetch(`${BASE_URL}/users/${userId}`)
+		// .then(res => res.json())
+		// .then(user => {
+		// 	displayHomePage(user)
+		// })
 
-		const ulEl = document.querySelector('ul.container')
+		const ulEl = document.querySelector('ul')
 
 		//Display Trips
 		fetch("http://localhost:3000/trips")
 		.then(response => response.json())
 		.then(trips => {
+			mainContainer.innerHTML += `<h1>Welcome Back User</h1>
+			<button id="logout">Logout</button>`
+		
+			// Logout functionality
+			const logoutButton = document.getElementById('logout')
+			logoutButton.addEventListener('click', function(e){
+				localStorage.removeItem('user_id')
+				displayLogin()
+			})
+
 			for (let trip of trips) {
-				console.log(trip)
 				ulEl.innerHTML += `<li class="contained">
 									<h2>${trip.destination} ${trip.address} ${trip.users.length}/${trip.capacity}</h2>
 									</li>`
 			}
+			console.log(ulEl)
 		})
 
 		//Create new Trip
