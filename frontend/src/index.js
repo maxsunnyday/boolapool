@@ -4,7 +4,6 @@ const mainContainer = document.querySelector("main")
 
 document.addEventListener('DOMContentLoaded', function(){
 
-	const ulEl = document.querySelector('ul')
 	
 
 	//Login method
@@ -36,6 +35,10 @@ document.addEventListener('DOMContentLoaded', function(){
 				localStorage.removeItem('user_id')
 				displayLogin()
 			})
+
+			const tbody = document.querySelector('tbody')
+		
+			// Logout functionality
 
 			for (let trip of trips) {
 				let start = new Date(trip.start_time)
