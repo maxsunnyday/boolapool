@@ -4,7 +4,6 @@ const mainContainer = document.querySelector("main")
 
 document.addEventListener('DOMContentLoaded', function(){
 
-	const ulEl = document.querySelector('ul')
 	
 
 	//Login method
@@ -21,17 +20,26 @@ document.addEventListener('DOMContentLoaded', function(){
 		fetch("http://localhost:3000/trips")
 		.then(response => response.json())
 		.then(trips => {
-			mainContainer.innerHTML += `<h1>Welcome Back User</h1>
-			<button id="logout">Logout</button>`
-
-			const tbody = document.querySelector('tbody')
-		
+			const buttonDiv = document.querySelector('div.button')
+			
+			const button = document.createElement('button')
+			button.id ="logout"
+			button.innerText="Logout"
+			console.log(button)
+			buttonDiv.append(button)
+		  
 			// Logout functionality
-			const logoutButton = document.getElementById('logout')
+			const logoutButton = document.querySelector('button#logout')
+
+			console.log(logoutButton)
 			logoutButton.addEventListener('click', function(e){
 				localStorage.removeItem('user_id')
 				displayLogin()
 			})
+
+			const tbody = document.querySelector('tbody')
+		
+			// Logout functionality
 
 			for (let trip of trips) {
 				tbody.innerHTML += `<tr>
@@ -63,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function(){
 				})
 			}).then(response => response.json())
 			.then(trip => {
-				console.log(trip)
 				ulEl.innerHTML += `<li class="contained"><h2>${trip.destination} ${trip.address} 1/${trip.capacity}</h2>`
 			})
 		})
