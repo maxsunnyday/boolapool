@@ -1,4 +1,13 @@
 class UsersController < ApplicationController
+    def login
+        user = User.find_by(email: params[:email])
+        if user
+            render json: user
+        else
+            render json: {error: "YOU CAN'T LOG IN"}, status: 401
+        end
+    end
+
     def index
         users = User.all
         render json: users, include: :trips
