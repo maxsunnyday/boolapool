@@ -6,6 +6,7 @@ class TripsController < ApplicationController
 
     def create
         trip = Trip.create(trip_params)
+        Usertrip.create(user_id: params[:user_id], trip_id: trip.id)
         render json: trip, include: :users
     end
 
