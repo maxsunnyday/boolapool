@@ -1,6 +1,6 @@
-const buttonDiv = document.querySelector('div.button')
+// const buttonDiv = document.querySelector('div.button')
 function displayLogin() {
-	buttonDiv.innerHTML = ""
+	// buttonDiv.innerHTML = ""
 	loginDiv = document.querySelector('div')
 	loginDiv.innerHTML = `<div class="login-container">
 					    	<div class="login-box">
@@ -32,26 +32,26 @@ function displayLogin() {
 		.then(data => {
 			localStorage.setItem("user_id", data.id)
 			loginDiv.innerHTML = ""
-			displayHomePage(data)
+			// displayHomePage(data)
 		})
 	})
 }
 
-function displayHomePage(user) {
-	const button = document.createElement('button')
-	button.id ="logout"
-	button.innerText="Logout"
-	console.log(button)
-	buttonDiv.append(button)
+// function displayHomePage(user) {
+// 	const button = document.createElement('button')
+// 	button.id ="logout"
+// 	button.innerText="Logout"
+// 	console.log(button)
+// 	buttonDiv.append(button)
   
-	// Logout functionality
-	const logoutButton = document.querySelector('button#logout')
-	console.log(logoutButton)
-	logoutButton.addEventListener('click', function(e){
-		localStorage.removeItem('user_id')
-		displayLogin()
-	})
-}
+// 	// Logout functionality
+// 	const logoutButton = document.querySelector('button#logout')
+// 	console.log(logoutButton)
+// 	logoutButton.addEventListener('click', function(e){
+// 		localStorage.removeItem('user_id')
+// 		displayLogin()
+// 	})
+// }
 
 function appendLeadingZeroes(n){
     if(n <= 9){

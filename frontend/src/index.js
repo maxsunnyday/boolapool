@@ -36,10 +36,6 @@ document.addEventListener('DOMContentLoaded', function(){
 				displayLogin()
 			})
 
-			const tbody = document.querySelector('tbody')
-		
-			// Logout functionality
-
 			for (let trip of trips) {
 				let start = new Date(trip.start_time)
 				let end = new Date(trip.end_time)
