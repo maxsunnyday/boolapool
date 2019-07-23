@@ -5,7 +5,7 @@ const mainContainer = document.querySelector("main")
 document.addEventListener('DOMContentLoaded', function(){
 
 	const ulEl = document.querySelector('ul')
-	const tbody = document.querySelector('tbody')
+	
 
 	//Login method
 	if (localStorage.getItem('user_id')) {
@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function(){
 		.then(trips => {
 			mainContainer.innerHTML += `<h1>Welcome Back User</h1>
 			<button id="logout">Logout</button>`
+
+			const tbody = document.querySelector('tbody')
 		
 			// Logout functionality
 			const logoutButton = document.getElementById('logout')
