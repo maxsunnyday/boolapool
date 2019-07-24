@@ -104,3 +104,7 @@ div.login-container {
 	color: red;
 	font-size: 10px;
 }
+
+input[type=datetime-local]{
+	-webkit-appearance: none;
+}
