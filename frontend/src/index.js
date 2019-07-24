@@ -10,12 +10,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	if (localStorage.getItem('user_id')) {
 		const userId = localStorage.getItem('user_id')
 
-		// fetch(`${BASE_URL}/users/${userId}`)
-		// .then(res => res.json())
-		// .then(user => {
-		// 	displayHomePage(user)
-		// })
-
 		//Display Trips
 		document.querySelector("div#all").addEventListener("click", function (e) {
 			fetch("http://localhost:3000/trips")
