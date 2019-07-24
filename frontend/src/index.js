@@ -2,13 +2,28 @@ const BASE_URL = "http://localhost:3000"
 
 const mainContainer = document.querySelector("main")
 
-document.addEventListener('DOMContentLoaded', function(){
+const toolbar = document.querySelector("div.btn-toolbar")
 
-	
+document.addEventListener('DOMContentLoaded', function(){
 
 	//Login method
 	if (localStorage.getItem('user_id')) {
-		const userId = localStorage.getItem('user_id')
+		let userId = localStorage.getItem('user_id')
+		const profileBtn = document.createElement("div")
+		profileBtn.className = "btn btn-outline-primary"
+		profileBtn.innerText = "Profile"
+		toolbar.appendChild(profileBtn)
+		const logoutButton = document.createElement("div")
+		logoutButton.id = "logout"
+		logoutButton.className = "btn btn-outline-primary"
+		logoutButton.innerText = "Logout"
+		toolbar.appendChild(logoutButton)
+		// Logout functionality
+		logoutButton.addEventListener('click', function(e){
+			localStorage.removeItem('user_id')
+			displayLogin()
+		})
+		
 
 		// fetch(`${BASE_URL}/users/${userId}`)
 		// .then(res => res.json())
@@ -21,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			fetch("http://localhost:3000/trips")
 			.then(response => response.json())
 			.then(trips => {
+				mainContainer.innerHTML = ``
 				const newForm = document.createElement("form")
 				newForm.className = "new-trip"
 				newForm.innerHTML = `
@@ -58,24 +74,16 @@ document.addEventListener('DOMContentLoaded', function(){
 				<tbody>
 				</tbody>`
 
-				let h1Tag = document.createElement("h1")
-				h1Tag.innerText = "Welcome Back User"
-				const logoutButton = document.createElement("button")
-				logoutButton.id = "logout"
-				logoutButton.innerText = "Logout"
-				mainContainer.appendChild(h1Tag)
-				mainContainer.appendChild(logoutButton)
+				// let h1Tag = document.createElement("h1")
+				// h1Tag.innerText = "Welcome Back User"
+				// mainContainer.appendChild(h1Tag)
 				mainContainer.appendChild(newForm)
 				mainContainer.appendChild(listingsTable)
 
-				let tbody = document.querySelector('tbody')
-			
-				// Logout functionality
-				logoutButton.addEventListener('click', function(e){
-					localStorage.removeItem('user_id')
-					displayLogin()
-				})
+				listenForJoin()
 
+				let tbody = document.querySelector('tbody')
+		
 				for (let trip of trips) {
 					let start = new Date(trip.start_time)
 					let end = new Date(trip.end_time)
@@ -141,30 +149,12 @@ document.addEventListener('DOMContentLoaded', function(){
 			}
 		})
 
-		document.querySelector("tbody").addEventListener("click", function(e) {
-			if (e.target.className === "join") {
-				fetch(BASE_URL + "/usertrips", {
-					method: "POST",
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					},
-					body: JSON.stringify({
-						user_id: userId,
-						trip_id: e.target.dataset.id
-					})
-				}).then(response => response.json())
-				.then(usertrip => {
-					console.log(usertrip)
-					const tripCapacity = e.target.parentElement.previousElementSibling
-					let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
-					number += 1
-					tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
-				})	
-			}
-		})
-
 	} else {
+		const loginButton = document.createElement("div")
+		loginButton.id = "loginBtn"
+		loginButton.className = "btn btn-outline-primary"
+		loginButton.innerText = "Login/Signup"
+		toolbar.appendChild(loginButton)
 		displayLogin()
 	}
 })

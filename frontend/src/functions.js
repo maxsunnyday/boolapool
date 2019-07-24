@@ -13,8 +13,8 @@ function displayLogin() {
 					      		<h6>Don't have an account?</h6>
 					      		<button>Sign Up!</button>
 					    	</div>
-					      </div>`
-	console.log(document.querySelector('form.lg'))
+                          </div>`
+                          
 	document.querySelector("form.lg").addEventListener("submit", function(e) {
 		e.preventDefault()
 	
@@ -30,32 +30,45 @@ function displayLogin() {
 			})
 		}).then(res => res.json())
 		.then(data => {
-			localStorage.setItem("user_id", data.id)
-			loginDiv.innerHTML = ""
-			// displayHomePage(data)
+            if (data["error"]) {
+                displayLogin()
+            } else {
+                localStorage.setItem("user_id", data.id)
+			    loginDiv.innerHTML = ""
+            }
 		})
 	})
 }
-
-// function displayHomePage(user) {
-// 	const button = document.createElement('button')
-// 	button.id ="logout"
-// 	button.innerText="Logout"
-// 	console.log(button)
-// 	buttonDiv.append(button)
-  
-// 	// Logout functionality
-// 	const logoutButton = document.querySelector('button#logout')
-// 	console.log(logoutButton)
-// 	logoutButton.addEventListener('click', function(e){
-// 		localStorage.removeItem('user_id')
-// 		displayLogin()
-// 	})
-// }
 
 function appendLeadingZeroes(n){
     if(n <= 9){
       return "0" + n;
     }
     return n
+}
+
+function listenForJoin() {
+    document.querySelector("tbody").addEventListener("click", function(e) {
+        if (e.target.className === "join") {
+            let userId = localStorage.getItem('user_id')
+            fetch(BASE_URL + "/usertrips", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    trip_id: e.target.dataset.id
+                })
+            }).then(response => response.json())
+            .then(usertrip => {
+                console.log(usertrip)
+                const tripCapacity = e.target.parentElement.previousElementSibling
+                let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
+                number += 1
+                tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
+            })	
+        }
+    })
 }
