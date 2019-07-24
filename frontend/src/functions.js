@@ -1,7 +1,7 @@
 // const buttonDiv = document.querySelector('div.button')
 function displayLogin() {
 	// buttonDiv.innerHTML = ""
-	loginDiv = document.querySelector('div')
+	loginDiv = document.querySelector('div.login')
 	loginDiv.innerHTML = `<div class="login-container">
 					    	<div class="login-box">
 					      		<h2>Login</h2>

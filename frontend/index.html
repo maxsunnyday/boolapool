@@ -8,47 +8,26 @@
 </head>
 <body>
 
-  <div class="login">
-  </div>
+	<nav class="navbar navbar-light bg-light mb-5">
+		<div class="d-flex align-items-end btn-toolbar">
+			<div class="btn btn-outline-primary" id="all">
+					View All Trip Requests
+			</div>
+			<div class="btn btn-outline-primary">
+				Login
+			</div>
+			<div class="btn btn-outline-primary" style="padding-left: 10px;">
+				Signup
+			</div>
+		</div>
+	</nav>
 
-  <main>
-  	<form class="new-trip">
-		<label>Destination</label>
-		<select name="destination">
-			<option value="Tweed">Tweed</option>
-			<option value="BDL">BDL</option>
-			<option value="LGA">LGA</option>
-			<option value="JFK">JFK</option>
-			<option value="EWR">EWR</option>
-			<option value="Other">Other</option>
-		</select>
-  		<!-- <input type="text" name="destination" required> -->
-  		<label>Address</label>
-  		<input type="text" name="address" required>
-  		<label>Capacity</label>
-  		<input type="number" name="capacity" required>
-  		<label>Start</label>
-  		<input type="datetime-local" name="start_time" required>
-  		<label>End</label>
-  		<input type="datetime-local" name="state_time" required>
-  		<input type="submit">
-  	</form>
+	<div class="login">
+	</div>
 
-  	<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Destination</th>
-      <th scope="col">Address</th>
-      <th scope="col">Time</th>
-	  <th scope="col">Capacity</th>
-	  <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
+	<main>
 
-  </main>
+  	</main>
   <script src="./src/functions.js"></script>
   <script src="./src/index.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
