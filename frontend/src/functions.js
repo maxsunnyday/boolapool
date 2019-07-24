@@ -8,6 +8,8 @@ function displayLogin() {
 					      		<form class="lg">
 					        		<p>Email</p>
 					        		<input type="email" placeholder="handsome.dan@yale.edu">
+					        		<div class="error">
+					        		</div>
 					        		<input type="submit" value="Log In">
 					      		</form>
 					      		<div class="link">
@@ -20,7 +22,7 @@ function displayLogin() {
 		e.preventDefault()
 	
 		const email = e.target.children[1].value
-		console.log(email)
+	
 		fetch("http://localhost:3000/login", {
 			method: "POST",
 			headers: {
@@ -33,6 +35,8 @@ function displayLogin() {
 		.then(data => {
             if (data["error"]) {
                 displayLogin()
+                console.log(loginDiv.querySelector('div.error'))
+                loginDiv.querySelector('div.error').innerHTML = '<h6 class="error">Invalid Email</h6>'
             } else {
                 localStorage.setItem("user_id", data.id)
                 loginDiv.innerHTML = ""
@@ -42,16 +46,17 @@ function displayLogin() {
 	})
 	loginDiv.querySelector("a.sign-up").addEventListener('click', function(e) {
 		e.preventDefault()
+
 		loginDiv.innerHTML = `<div class="login-container">
 								<div class="login-box">
 									<h2>Sign Up</h2>
 									<form class="signup">
 										<p>First Name</p>
-										<input type="text" placeholder="Petey">
+										<input type="text" placeholder="Petey" required>
 										<p>Last Name</p>
-										<input type="text" placeholder="Salovey">
+										<input type="text" placeholder="Salovey" required>
 										<p>Email</p>
-										<input type="email" placeholder="handsome.dan@yale.edu">
+										<input type="email" placeholder="handsome.dan@yale.edu" required>
 										<input type="submit" value="Create Account">
 									</form>
 									<div class="link">
@@ -59,6 +64,42 @@ function displayLogin() {
 									</div>
 								</div>
 							</div>`
+
+		loginDiv.querySelector("form.signup").addEventListener('submit', function(e) {
+			e.preventDefault()
+
+			const first_name = e.target.children[1].value
+			const last_name = e.target.children[3].value
+			const email = e.target.children[5].value
+
+			fetch("http://localhost:3000/users", {
+				method: "POST",
+				headers: {
+				'Content-Type': "application/json",
+				},
+				body: JSON.stringify({
+					first_name,
+					last_name,
+					email
+				})
+			}).then(result => result.json())
+			.then(data => {
+				fetch("http://localhost:3000/login", {
+					method: "POST",
+					headers: {
+						'Content-Type': "application/json",
+					},
+					body: JSON.stringify({
+						email: data.email
+					})
+				}).then(res => res.json())
+				.then(data => {
+					localStorage.setItem("user_id", data.id)
+			    	loginDiv.innerHTML = ""
+			    })
+			})
+		})
+
 		loginDiv.querySelector("a.go-back").addEventListener('click', function(e) {
 			e.preventDefault()
 			displayLogin()
