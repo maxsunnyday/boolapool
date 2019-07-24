@@ -4,6 +4,17 @@ body, html {
 	padding: 0;
 }
 
+div.home-text{
+  text-align: center;
+  padding: 100px;
+}
+
+select{
+  align-content: center;
+  height: 40px;
+  width: 40%;
+  top: 200px;
+}
 div.login-container {
   width: 100%;
   height: 100%;
