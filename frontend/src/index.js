@@ -6,6 +6,7 @@ const toolbar = document.querySelector("div.btn-toolbar")
 
 document.addEventListener('DOMContentLoaded', function(){
 
+	displayHome()
 	//Login method
 	if (localStorage.getItem('user_id')) {
 		let userId = localStorage.getItem('user_id')
