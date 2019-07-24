@@ -35,7 +35,8 @@ function displayLogin() {
                 displayLogin()
             } else {
                 localStorage.setItem("user_id", data.id)
-			    loginDiv.innerHTML = ""
+                loginDiv.innerHTML = ""
+                displayProfile(data)
             }
 		})
 	})
@@ -94,7 +95,27 @@ function listenForJoin() {
                 let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
                 number += 1
                 tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
+                let td = e.target.parentElement
+                td.removeChild(e.target)
+                td.innerText = "Already Joined!"
             })	
+        }
+    })
+}
+
+function displayProfile(user) {
+    mainContainer.innerHTML = `<h2>Welcome back, ${user.first_name} ${user.last_name}</h2>`
+}
+
+function listenProfileBtn() {
+    document.querySelector("nav").addEventListener("click", function (e) {
+        if (e.target.id === "profile") {
+            let userId = localStorage.getItem('user_id')
+            fetch(`${BASE_URL}/users/${userId}`)
+            .then(res => res.json())
+            .then(user => {
+                displayProfile(user)
+            })
         }
     })
 }

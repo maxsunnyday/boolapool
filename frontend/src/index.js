@@ -10,9 +10,13 @@ document.addEventListener('DOMContentLoaded', function(){
 	if (localStorage.getItem('user_id')) {
 		let userId = localStorage.getItem('user_id')
 		const profileBtn = document.createElement("div")
+		profileBtn.id = "profile"
 		profileBtn.className = "btn btn-outline-primary"
 		profileBtn.innerText = "Profile"
 		toolbar.appendChild(profileBtn)
+
+		listenProfileBtn()
+
 		const logoutButton = document.createElement("div")
 		logoutButton.id = "logout"
 		logoutButton.className = "btn btn-outline-primary"
@@ -87,6 +91,12 @@ document.addEventListener('DOMContentLoaded', function(){
 					let end_formatted = end.getUTCFullYear() + "-" + appendLeadingZeroes(end.getUTCMonth() + 1) + "-" + appendLeadingZeroes(end.getUTCDate()) + " " + appendLeadingZeroes(end.getUTCHours()) + ":" + appendLeadingZeroes(end.getUTCMinutes())
 
 					let tr = document.createElement("tr")
+
+					for (const user of trip.users) {
+						if (user.id === userId) {
+							console.log("joined already")
+						}
+					}
 
 					tr.innerHTML = `<td>${trip.destination}</td>
 					<td>${trip.address}</td>
