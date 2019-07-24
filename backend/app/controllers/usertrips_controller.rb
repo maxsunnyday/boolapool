@@ -1,5 +1,6 @@
 class UsertripsController < ApplicationController
     def create
+        trip = Trip.find_by(params[:trip_id])
         if Usertrip.find_by(usertrip_params)
             render json: {error: "YOU CAN'T JOIN"}, status: 401
         else
