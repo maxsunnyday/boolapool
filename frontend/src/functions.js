@@ -257,3 +257,21 @@ function displayTrips() {
         // console.log(tbody)
     })
 }
+
+function displayHome() {
+	mainContainer.innerHTML = `<div class="home-text">
+			<h1>Welcome to BoolaPool!</h1>
+			<h3>Connect with students who, like you, have places to be!</h3>
+			<br>
+			<br>
+			<select>
+				<option value="" disabled selected>Where do you want to go?</option>
+				<option value="Tweed">Tweed</option>
+                <option value="BDL">BDL</option>
+                <option value="LGA">LGA</option>
+                <option value="JFK">JFK</option>
+                <option value="EWR">EWR</option>
+                <option value="Other">Other</option>
+			</select>
+		</div>`
+}
