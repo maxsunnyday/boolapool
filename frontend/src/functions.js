@@ -10,8 +10,9 @@ function displayLogin() {
 					        		<input type="email" placeholder="handsome.dan@yale.edu">
 					        		<input type="submit" value="Log In">
 					      		</form>
-					      		<h6>Don't have an account?</h6>
-					      		<button>Sign Up!</button>
+					      		<div class="link">
+					      			<a href="" class="sign-up">Don't have an account? Sign up here!</a>
+					      		</div>
 					    	</div>
                           </div>`
                           
@@ -37,6 +38,31 @@ function displayLogin() {
 			    loginDiv.innerHTML = ""
             }
 		})
+	})
+	loginDiv.querySelector("a.sign-up").addEventListener('click', function(e) {
+		e.preventDefault()
+		loginDiv.innerHTML = `<div class="login-container">
+								<div class="login-box">
+									<h2>Sign Up</h2>
+									<form class="signup">
+										<p>First Name</p>
+										<input type="text" placeholder="Petey">
+										<p>Last Name</p>
+										<input type="text" placeholder="Salovey">
+										<p>Email</p>
+										<input type="email" placeholder="handsome.dan@yale.edu">
+										<input type="submit" value="Create Account">
+									</form>
+									<div class="link">
+										<a href="" class="go-back">Go Back</a>
+									</div>
+								</div>
+							</div>`
+		loginDiv.querySelector("a.go-back").addEventListener('click', function(e) {
+			e.preventDefault()
+			displayLogin()
+		})
+
 	})
 }
 
