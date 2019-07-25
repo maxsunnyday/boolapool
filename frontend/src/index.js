@@ -14,6 +14,11 @@ document.addEventListener('DOMContentLoaded', function(){
 		createLogoutBtn()
 		
 		//Display Trips
+		document.querySelector("div#home").addEventListener("click", function (e) {
+			displayHome()
+		})
+
+		//Display Home
 		document.querySelector("div#all").addEventListener("click", function (e) {
 			displayTrips()
 		})
