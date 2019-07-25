@@ -1,6 +1,6 @@
-// const buttonDiv = document.querySelector('div.button')
 function displayLogin() {
-	// buttonDiv.innerHTML = ""
+
+	//Make Login Modal Appear
 	loginDiv = document.querySelector('div.login')
 	loginDiv.innerHTML = `<div class="login-container">
 					    	<div class="login-box">
@@ -17,7 +17,8 @@ function displayLogin() {
 					      		</div>
 					    	</div>
                           </div>`
-                          
+    
+    //Handles Login Functionality                
 	document.querySelector("form.lg").addEventListener("submit", function(e) {
 		e.preventDefault()
 	
@@ -33,6 +34,8 @@ function displayLogin() {
 			})
 		}).then(res => res.json())
 		.then(data => {
+
+			//Prompts user if email is invalid
             if (data["error"]) {
                 displayLogin()
                 console.log(loginDiv.querySelector('div.error'))
@@ -50,6 +53,8 @@ function displayLogin() {
             }
 		})
 	})
+
+	//Handles clicking on sign up link
 	loginDiv.querySelector("a.sign-up").addEventListener('click', function(e) {
 		e.preventDefault()
 
@@ -71,6 +76,7 @@ function displayLogin() {
 								</div>
 							</div>`
 
+		//Handles creating new user in database
 		loginDiv.querySelector("form.signup").addEventListener('submit', function(e) {
 			e.preventDefault()
 
@@ -90,6 +96,7 @@ function displayLogin() {
 				})
 			}).then(result => result.json())
 			.then(data => {
+				//Logs user in once created
 				fetch("http://localhost:3000/login", {
 					method: "POST",
 					headers: {
@@ -113,6 +120,7 @@ function displayLogin() {
 			})
 		})
 
+		//Handles clicking on go back link
 		loginDiv.querySelector("a.go-back").addEventListener('click', function(e) {
 			e.preventDefault()
 			displayLogin()
@@ -121,6 +129,7 @@ function displayLogin() {
 	})
 }
 
+//Time formatting
 function appendLeadingZeroes(n){
     if(n <= 9){
       return "0" + n;
@@ -128,6 +137,8 @@ function appendLeadingZeroes(n){
     return n
 }
 
+
+//Handles user joining trips
 function listenForJoin() {
     document.querySelector("tbody").addEventListener("click", function(e) {
         if (e.target.className === "join") {
@@ -157,10 +168,12 @@ function listenForJoin() {
     })
 }
 
+//Handles displaying user profile
 function displayProfile(user) {
     mainContainer.innerHTML = `<h2>Welcome back, ${user.first_name} ${user.last_name}</h2>`
 }
 
+//Handles listening to navbar button click
 function listenProfileBtn() {
     document.querySelector("nav").addEventListener("click", function (e) {
         if (e.target.id === "profile") {
@@ -174,12 +187,15 @@ function listenProfileBtn() {
     })
 }
 
+//Handles displaying all trips
 function displayTrips() {
     let userId = localStorage.getItem('user_id')
     fetch("http://localhost:3000/trips")
     .then(response => response.json())
     .then(trips => {
         mainContainer.innerHTML = ``
+
+        //Form for creating new trip
         const newForm = document.createElement("form")
         newForm.className = "new-trip"
         newForm.innerHTML = `
@@ -202,6 +218,7 @@ function displayTrips() {
             <input type="datetime-local" name="state_time" required>
             <input type="submit">`
         
+        //Table for existing trips
         const listingsTable = document.createElement("table")
         listingsTable.className = "table"
         listingsTable.innerHTML = `
@@ -217,9 +234,6 @@ function displayTrips() {
         <tbody>
         </tbody>`
 
-        // let h1Tag = document.createElement("h1")
-        // h1Tag.innerText = "Welcome Back User"
-        // mainContainer.appendChild(h1Tag)
         mainContainer.appendChild(newForm)
         mainContainer.appendChild(listingsTable)
 
@@ -227,16 +241,17 @@ function displayTrips() {
 
         let tbody = document.querySelector('tbody')
 
+        //Populate trips table
         for (let trip of trips) {
             let start = new Date(trip.start_time)
             let end = new Date(trip.end_time)
 
             let start_formatted = start.getUTCFullYear() + "-" + appendLeadingZeroes(start.getUTCMonth() + 1) + "-" + appendLeadingZeroes(start.getUTCDate()) + " " + appendLeadingZeroes(start.getUTCHours()) + ":" + appendLeadingZeroes(start.getUTCMinutes())
-
             let end_formatted = end.getUTCFullYear() + "-" + appendLeadingZeroes(end.getUTCMonth() + 1) + "-" + appendLeadingZeroes(end.getUTCDate()) + " " + appendLeadingZeroes(end.getUTCHours()) + ":" + appendLeadingZeroes(end.getUTCMinutes())
-
+            
             let tr = document.createElement("tr")
 
+            //Handles join logic
             let join = false
             for (const user of trip.users) {
                 if (user.id == userId) {
@@ -266,9 +281,7 @@ function displayTrips() {
 
             tbody.appendChild(tr)
         }
-        // console.log(tbody)
     })
-
     listenNewTrip()
 }
 
@@ -308,7 +321,6 @@ function listenNewTrip() {
                 let end = new Date(trip.end_time)
 
                 let start_formatted = start.getUTCFullYear() + "-" + appendLeadingZeroes(start.getUTCMonth() + 1) + "-" + appendLeadingZeroes(start.getUTCDate()) + " " + appendLeadingZeroes(start.getUTCHours()) + ":" + appendLeadingZeroes(start.getUTCMinutes())
-
                 let end_formatted = end.getUTCFullYear() + "-" + appendLeadingZeroes(end.getUTCMonth() + 1) + "-" + appendLeadingZeroes(end.getUTCDate()) + " " + appendLeadingZeroes(end.getUTCHours()) + ":" + appendLeadingZeroes(end.getUTCMinutes())
 
                 let tr = document.createElement("tr")
@@ -331,6 +343,7 @@ function createLogoutBtn() {
     logoutButton.className = "btn btn-outline-primary"
     logoutButton.innerText = "Logout"
     toolbar.appendChild(logoutButton)
+    
     // Logout functionality
     logoutButton.addEventListener('click', function(e){
         localStorage.removeItem('user_id')
