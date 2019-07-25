@@ -170,7 +170,24 @@ function listenForJoin() {
 
 //Handles displaying user profile
 function displayProfile(user) {
-    mainContainer.innerHTML = `<h2>Welcome back, ${user.first_name} ${user.last_name}</h2>`
+    mainContainer.innerHTML = `<h2>Welcome back, ${user.first_name} ${user.last_name}</h2>
+                                <h3>Current Trips</h3>
+                                <ul class="current"></ul>
+                                <h3>Past Trips</h3>
+                                <ul class="past"></ul>`
+
+    const current = document.querySelector('ul.current')
+    const past = document.querySelector('ul.past')
+
+    userId = localStorage.getItem('user_id')
+    fetch(`http://localhost:3000/users/${userId}`)
+    .then(response => response.json())
+    .then(user => {
+        const trips = user.trips
+        for (let trip of user.trips) {
+            current.innerHTML += `<li>${trip.destination}</li>`
+        }
+    })
 }
 
 //Handles listening to navbar button click
