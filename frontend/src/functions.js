@@ -179,13 +179,23 @@ function displayProfile(user) {
     const current = document.querySelector('ul.current')
     const past = document.querySelector('ul.past')
 
+    let today = new Date();
+    let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
+    let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes()) + ":" + appendLeadingZeroes(today.getSeconds());
+    let dateTime =  date+'T'+time;
+    console.log(dateTime)
+
     userId = localStorage.getItem('user_id')
     fetch(`http://localhost:3000/users/${userId}`)
     .then(response => response.json())
     .then(user => {
         const trips = user.trips
         for (let trip of user.trips) {
-            current.innerHTML += `<li>${trip.destination}</li>`
+            if (trip.end_time > dateTime) {
+                current.innerHTML += `<li>${trip.destination}</li>`
+            } else {
+                past.innerHTML += `<li>${trip.destination}</li>`
+            }
         }
     })
 }
