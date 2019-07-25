@@ -171,11 +171,17 @@ function displayHome() {
             <form class="search">
                 <select>
                     <option value="" disabled selected>Where do you want to go?</option>
-                    <option value="Tweed">Tweed</option>
-                    <option value="BDL">BDL</option>
-                    <option value="LGA">LGA</option>
-                    <option value="JFK">JFK</option>
-                    <option value="EWR">EWR</option>
+                    <option value="BDL">Bradley International Airport (BDL)</option>
+                    <option value="LGA">LaGuardia Airport (LGA)</option>
+                    <option value="JFK">John F. Kennedy International Airport (JFK)</option>
+                    <option value="EWR">Newark Liberty International Airport (EWR)</option>
+                    <option value="HVN">Tweed New Haven Airport (HVN)</option>
+                    <option value="Trader Joe's">Trader Joe's (Orange, CT)</option>
+                    <option value="Costco">Costco (Milford, CT)</option>
+                    <option value="Stop & Shop">Stop & Shop (New Haven, CT)</option>
+                    <option value="Yale Bowl">Yale Bowl</option>
+                    <option value="Lighthouse Point Park">Lighthouse Point Park</option>
+                    <option value="Connecticut Post Mall">Connecticut Post Mall (Milford, CT)</option>
                     <option value="Other">Other</option>
                 </select>
                 <input type="submit">
@@ -222,7 +228,8 @@ function displayProfile(user) {
                                       <p>${formatDate(trip.end_time)}</p>
                                     </div>
                                     <div class="flip-card-back">
-                                      <ul>Passengers</ul> 
+                                      <h1>Passengers</h1>
+                                      <ul>${displayPassengers(trip.users)}</ul>
                                     </div>
                                   </div>
                                 </div>`
@@ -236,7 +243,8 @@ function displayProfile(user) {
                                       <p>${formatDate(trip.end_time)}</p>
                                     </div>
                                     <div class="flip-card-back">
-                                      <ul>Passegers</ul>
+                                      <h1>Passengers</h1>
+                                      <ul>${displayPassengers(trip.users)}</ul>
                                     </div>
                                   </div>
                                 </div>`
@@ -245,6 +253,13 @@ function displayProfile(user) {
     })
 }
 
+function displayPassengers(users) {
+    let userList = ""
+    for (let user of users) {
+        userList += `<li>${user.first_name} ${user.last_name}</li>`
+    }
+    return userList
+}
 
 //Handles displaying all trips, making new ones, and join logic
 function displayTrips(search="") {

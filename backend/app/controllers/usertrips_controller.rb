@@ -8,7 +8,7 @@ class UsertripsController < ApplicationController
             render json: usertrip, include: {trip: {only: :users}}
         end
     end
-
+ 
     private
 
     def usertrip_params
