@@ -15,10 +15,10 @@ class UsersController < ApplicationController
 
     def create
         user = User.create(user_params)
-        if @user.valid?
+        if user.valid?
             render json: user
         else
-            render json: {error: "Please try again"}, status: 406
+            render json: {errors: user.errors.full_messages}, status: 406
         end
     end
 

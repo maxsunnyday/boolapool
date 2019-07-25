@@ -31,7 +31,8 @@ function displayLogin() {
 		fetch("http://localhost:3000/login", {
 			method: "POST",
 			headers: {
-				'Content-Type': "application/json",
+                'Content-Type': "application/json",
+                'Accept': "application/json"
 			},
 			body: JSON.stringify({
                 email,
@@ -81,10 +82,14 @@ function displayLogin() {
 										<input type="text" placeholder="Salovey" required>
 										<p>Email</p>
                                         <input type="email" placeholder="handsome.dan@yale.edu" required>
+                                        <p>Phone Number</p>
+                                        <input type="tel" placeholder="1234567890">
                                         <p>Password</p>
                                         <input type="password" placeholder="woofwoof123" required>
                                         <p>Password Confirmation</p>
                                         <input type="password" placeholder="woofwoof123" required>
+                                        <div class="error">
+					        		    </div>
 										<input type="submit" value="Create Account">
 									</form>
 									<div class="link">
@@ -100,51 +105,51 @@ function displayLogin() {
 			const first_name = e.target.children[1].value
 			const last_name = e.target.children[3].value
             const email = e.target.children[5].value
-            const password = e.target.children[7].value
-            const password_confirmation = e.target.children[7].value
+            const phone = e.target.children[7].value
+            const password = e.target.children[9].value
+            const password_confirmation = e.target.children[11].value
 
 			fetch("http://localhost:3000/users", {
 				method: "POST",
 				headers: {
-				'Content-Type': "application/json",
+                    'Content-Type': "application/json",
+                    'Accept': "application/json"
 				},
 				body: JSON.stringify({
 					first_name,
 					last_name,
                     email,
+                    phone,
                     password,
                     password_confirmation
 				})
 			}).then(result => result.json())
-			.then(data => {
-				//Logs user in once created
-				fetch("http://localhost:3000/login", {
-					method: "POST",
-					headers: {
-						'Content-Type': "application/json",
-					},
-					body: JSON.stringify({
-                        email: data.email,
-                        password: data.password
-					})
-				}).then(res => res.json())
-				.then(data => {
-					localStorage.setItem("user_id", data.id)
+			.then(user => {
+                if (user["errors"]) {
+                    // console.log(user)
+                    // console.log(loginDiv.querySelector('div.error'))
+                    loginDiv.querySelector('div.error').innerHTML = ``
+                    user["errors"].forEach(error => {
+                        loginDiv.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
+                    });
+                } else {
+                    localStorage.setItem("user_id", user.id)
                     loginDiv.innerHTML = ""
                     document.querySelector("div#loginBtn").remove()
                     createProfileBtn()
                     createLogoutBtn()
+    
                     //Display Home
                     document.querySelector("div#home").addEventListener("click", function (e) {
                         displayHome()
                     })
-
+    
                     //Display Trips
                     document.querySelector("div#all").addEventListener("click", function (e) {
                         displayTrips()
                     })
-                    displayProfile(data)
-			    })
+                    displayProfile(user)
+                }
 			})
 		})
 
