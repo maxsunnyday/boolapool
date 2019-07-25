@@ -228,7 +228,7 @@ function listenProfileBtn() {
 }
 
 //Handles displaying all trips
-function displayTrips() {
+function displayTrips(search="") {
     let userId = localStorage.getItem('user_id')
     fetch("http://localhost:3000/trips")
     .then(response => response.json())
@@ -280,6 +280,12 @@ function displayTrips() {
         listenForJoin()
 
         let tbody = document.querySelector('tbody')
+
+        if (search != "") {
+            trips = trips.filter(trip => {
+                return trip.destination === search
+            })
+        }
 
         //Populate trips table
         for (let trip of trips) {
@@ -411,14 +417,24 @@ function displayHome() {
 			<h3>Connect with students who, like you, have places to be!</h3>
 			<br>
 			<br>
-			<select>
-				<option value="" disabled selected>Where do you want to go?</option>
-				<option value="Tweed">Tweed</option>
-                <option value="BDL">BDL</option>
-                <option value="LGA">LGA</option>
-                <option value="JFK">JFK</option>
-                <option value="EWR">EWR</option>
-                <option value="Other">Other</option>
-			</select>
+            <form class="search">
+    			<select>
+    				<option value="" disabled selected>Where do you want to go?</option>
+    				<option value="Tweed">Tweed</option>
+                    <option value="BDL">BDL</option>
+                    <option value="LGA">LGA</option>
+                    <option value="JFK">JFK</option>
+                    <option value="EWR">EWR</option>
+                    <option value="Other">Other</option>
+    			</select>
+                <input type="submit">
+            </form>
 		</div>`
+
+    document.querySelector('form.search').addEventListener('submit', function(e){
+        e.preventDefault()
+
+        searchQuery = e.target.children[0].value 
+        displayTrips(searchQuery)
+    })
 }
