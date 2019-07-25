@@ -1,3 +1,4 @@
+//Handles displaying different 'pages'
 function displayLogin() {
 
 	//Make Login Modal Appear
@@ -142,61 +143,48 @@ function displayLogin() {
 	})
 }
 
-//Time formatting
-function appendLeadingZeroes(n){
-    if(n <= 9){
-      return "0" + n;
-    }
-    return n
-}
+function displayHome() {
+    mainContainer.innerHTML = `<div class="home-text">
+            <h1>Welcome to BoolaPool!</h1>
+            <h3>Connect with students who, like you, have places to be!</h3>
+            <br>
+            <br>
+            <form class="search">
+                <select>
+                    <option value="" disabled selected>Where do you want to go?</option>
+                    <option value="Tweed">Tweed</option>
+                    <option value="BDL">BDL</option>
+                    <option value="LGA">LGA</option>
+                    <option value="JFK">JFK</option>
+                    <option value="EWR">EWR</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input type="submit">
+            </form>
+        </div>`
 
+    document.querySelector('form.search').addEventListener('submit', function(e){
+        e.preventDefault()
 
-//Handles user joining trips
-function listenForJoin() {
-    document.querySelector("tbody").addEventListener("click", function(e) {
-        if (e.target.className === "join") {
-            let userId = localStorage.getItem('user_id')
-            fetch(BASE_URL + "/usertrips", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    user_id: userId,
-                    trip_id: e.target.dataset.id
-                })
-            }).then(response => response.json())
-            .then(usertrip => {
-                console.log(usertrip)
-                const tripCapacity = e.target.parentElement.previousElementSibling
-                let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
-                number += 1
-                tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
-                let td = e.target.parentElement
-                td.removeChild(e.target)
-                td.innerText = "Already Joined!"
-            })	
-        }
+        searchQuery = e.target.children[0].value 
+        displayTrips(searchQuery)
     })
 }
 
-//Handles displaying user profile
 function displayProfile(user) {
     mainContainer.innerHTML = `<h2>Welcome back, ${user.first_name} ${user.last_name}</h2>
                                 <h3>Current Trips</h3>
-                                <ul class="current"></ul>
+                                <div class="current"></div>
                                 <h3>Past Trips</h3>
-                                <ul class="past"></ul>`
+                                <div class="past"></div>`
 
-    const current = document.querySelector('ul.current')
-    const past = document.querySelector('ul.past')
+    const current = document.querySelector('div.current')
+    const past = document.querySelector('div.past')
 
     let today = new Date();
     let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
     let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes()) + ":" + appendLeadingZeroes(today.getSeconds());
     let dateTime =  date+'T'+time;
-    console.log(dateTime)
 
     userId = localStorage.getItem('user_id')
     fetch(`http://localhost:3000/users/${userId}`)
@@ -204,30 +192,42 @@ function displayProfile(user) {
     .then(user => {
         const trips = user.trips
         for (let trip of user.trips) {
+         
             if (trip.end_time > dateTime) {
-                current.innerHTML += `<li>${trip.destination}</li>`
+                current.innerHTML += `<div class="flip-card">
+                                  <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                      <h1>${trip.destination}</h1>
+                                      <p>${trip.address}</p>
+                                      <p>${formatDate(trip.start_time)}</p>
+                                      <p>${formatDate(trip.end_time)}</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                      <ul>Passengers</ul> 
+                                    </div>
+                                  </div>
+                                </div>`
             } else {
-                past.innerHTML += `<li>${trip.destination}</li>`
+                past.innerHTML += `<div class="flip-card">
+                                  <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                      <h1>${trip.destination}</h1>
+                                      <p>${trip.address}</p>
+                                      <p>${formatDate(trip.start_time)}</p>
+                                      <p>${formatDate(trip.end_time)}</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                      <ul>Passegers</ul>
+                                    </div>
+                                  </div>
+                                </div>`
             }
         }
     })
 }
 
-//Handles listening to navbar button click
-function listenProfileBtn() {
-    document.querySelector("nav").addEventListener("click", function (e) {
-        if (e.target.id === "profile") {
-            let userId = localStorage.getItem('user_id')
-            fetch(`${BASE_URL}/users/${userId}`)
-            .then(res => res.json())
-            .then(user => {
-                displayProfile(user)
-            })
-        }
-    })
-}
 
-//Handles displaying all trips
+//Handles displaying all trips, making new ones, and join logic
 function displayTrips(search="") {
     let userId = localStorage.getItem('user_id')
     fetch("http://localhost:3000/trips")
@@ -289,11 +289,6 @@ function displayTrips(search="") {
 
         //Populate trips table
         for (let trip of trips) {
-            let start = new Date(trip.start_time)
-            let end = new Date(trip.end_time)
-
-            let start_formatted = start.getUTCFullYear() + "-" + appendLeadingZeroes(start.getUTCMonth() + 1) + "-" + appendLeadingZeroes(start.getUTCDate()) + " " + appendLeadingZeroes(start.getUTCHours()) + ":" + appendLeadingZeroes(start.getUTCMinutes())
-            let end_formatted = end.getUTCFullYear() + "-" + appendLeadingZeroes(end.getUTCMonth() + 1) + "-" + appendLeadingZeroes(end.getUTCDate()) + " " + appendLeadingZeroes(end.getUTCHours()) + ":" + appendLeadingZeroes(end.getUTCMinutes())
             
             let tr = document.createElement("tr")
 
@@ -308,19 +303,19 @@ function displayTrips(search="") {
             if (join) {
                 tr.innerHTML = `<td>${trip.destination}</td>
                 <td>${trip.address}</td>
-                <td>${start_formatted} - ${end_formatted}</td>
+                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
                 <td>${trip.users.length}/${trip.capacity}</td>
                 <td>Already Joined!</td>`
             } else if (trip.users.length === trip.capacity) {
                 tr.innerHTML = `<td>${trip.destination}</td>
                 <td>${trip.address}</td>
-                <td>${start_formatted} - ${end_formatted}</td>
+                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
                 <td>${trip.users.length}/${trip.capacity}</td>
                 <td>Full</td>`
             } else {
                 tr.innerHTML = `<td>${trip.destination}</td>
                 <td>${trip.address}</td>
-                <td>${start_formatted} - ${end_formatted}</td>
+                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
                 <td>${trip.users.length}/${trip.capacity}</td>
                 <td><button class="join" data-id=${trip.id}>Join!</button></td>`
             }
@@ -331,16 +326,9 @@ function displayTrips(search="") {
     listenNewTrip()
 }
 
-function createLoginBtn() {
-    const loginButton = document.createElement("div")
-    loginButton.id = "loginBtn"
-    loginButton.className = "btn btn-outline-primary"
-    loginButton.innerText = "Login/Signup"
-    toolbar.appendChild(loginButton)
-}
-
 function listenNewTrip() {
     //Create new Trip
+    let userId = localStorage.getItem('user_id')
     document.addEventListener('submit', function(e){
         if (e.target.className === "new-trip") {
             e.preventDefault()
@@ -363,17 +351,12 @@ function listenNewTrip() {
                 })
             }).then(response => response.json())
             .then(trip => {
-                let start = new Date(trip.start_time)
-                let end = new Date(trip.end_time)
-
-                let start_formatted = start.getUTCFullYear() + "-" + appendLeadingZeroes(start.getUTCMonth() + 1) + "-" + appendLeadingZeroes(start.getUTCDate()) + " " + appendLeadingZeroes(start.getUTCHours()) + ":" + appendLeadingZeroes(start.getUTCMinutes())
-                let end_formatted = end.getUTCFullYear() + "-" + appendLeadingZeroes(end.getUTCMonth() + 1) + "-" + appendLeadingZeroes(end.getUTCDate()) + " " + appendLeadingZeroes(end.getUTCHours()) + ":" + appendLeadingZeroes(end.getUTCMinutes())
 
                 let tr = document.createElement("tr")
 
                 tr.innerHTML = `<td>${trip.destination}</td>
                 <td>${trip.address}</td>
-                <td>${start_formatted} - ${end_formatted}</td>
+                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
                 <td>${trip.users.length}/${trip.capacity}</td>
                 <td>Already Joined!</td>`
 
@@ -381,6 +364,68 @@ function listenNewTrip() {
             })
         }
     })
+}
+
+function listenForJoin() {
+    document.querySelector("tbody").addEventListener("click", function(e) {
+        if (e.target.className === "join") {
+            let userId = localStorage.getItem('user_id')
+            fetch(BASE_URL + "/usertrips", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    trip_id: e.target.dataset.id
+                })
+            }).then(response => response.json())
+            .then(usertrip => {
+                console.log(usertrip)
+                const tripCapacity = e.target.parentElement.previousElementSibling
+                let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
+                number += 1
+                tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
+                let td = e.target.parentElement
+                td.removeChild(e.target)
+                td.innerText = "Already Joined!"
+            })	
+        }
+    })
+}
+
+
+//Handles adding buttons depending on login/logout status
+function createProfileBtn() {
+    const profileBtn = document.createElement("div")
+    profileBtn.id = "profile"
+    profileBtn.className = "btn btn-outline-primary"
+    profileBtn.innerText = "Profile"
+    toolbar.appendChild(profileBtn)
+
+    listenProfileBtn()
+}
+
+function listenProfileBtn() {
+    document.querySelector("nav").addEventListener("click", function (e) {
+        if (e.target.id === "profile") {
+            let userId = localStorage.getItem('user_id')
+            fetch(`${BASE_URL}/users/${userId}`)
+            .then(res => res.json())
+            .then(user => {
+                displayProfile(user)
+            })
+        }
+    })
+}
+
+function createLoginBtn() {
+    const loginButton = document.createElement("div")
+    loginButton.id = "loginBtn"
+    loginButton.className = "btn btn-outline-primary"
+    loginButton.innerText = "Login/Signup"
+    toolbar.appendChild(loginButton)
 }
 
 function createLogoutBtn() {
@@ -401,40 +446,23 @@ function createLogoutBtn() {
     })
 }
 
-function createProfileBtn() {
-    const profileBtn = document.createElement("div")
-    profileBtn.id = "profile"
-    profileBtn.className = "btn btn-outline-primary"
-    profileBtn.innerText = "Profile"
-    toolbar.appendChild(profileBtn)
 
-    listenProfileBtn()
+//Date and Time formatting
+function appendLeadingZeroes(n){
+    if(n <= 9){
+      return "0" + n;
+    }
+    return n
 }
 
-function displayHome() {
-	mainContainer.innerHTML = `<div class="home-text">
-			<h1>Welcome to BoolaPool!</h1>
-			<h3>Connect with students who, like you, have places to be!</h3>
-			<br>
-			<br>
-            <form class="search">
-    			<select>
-    				<option value="" disabled selected>Where do you want to go?</option>
-    				<option value="Tweed">Tweed</option>
-                    <option value="BDL">BDL</option>
-                    <option value="LGA">LGA</option>
-                    <option value="JFK">JFK</option>
-                    <option value="EWR">EWR</option>
-                    <option value="Other">Other</option>
-    			</select>
-                <input type="submit">
-            </form>
-		</div>`
+function formatDate(date) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    const split = date.split("T")
+    const [dateArr, time] = split
 
-    document.querySelector('form.search').addEventListener('submit', function(e){
-        e.preventDefault()
+    const splitdate = dateArr.split("-")
+    const [year, month, day] = splitdate
 
-        searchQuery = e.target.children[0].value 
-        displayTrips(searchQuery)
-    })
+    const result = months[+month - 1] + " " + day + ", " + year + ", " + time.slice(0,5)
+    return result
 }
