@@ -357,7 +357,7 @@ function listenNewTrip() {
 function createLogoutBtn() {
     const logoutButton = document.createElement("div")
     logoutButton.id = "logout"
-    logoutButton.className = "btn btn-outline-primary"
+    logoutButton.className = "btn btn-outline-danger"
     logoutButton.innerText = "Logout"
     toolbar.appendChild(logoutButton)
     
@@ -367,6 +367,7 @@ function createLogoutBtn() {
         document.querySelector("div#logout").remove()
         document.querySelector("div#profile").remove()
         createLoginBtn()
+        displayHome()
         displayLogin()
     })
 }
