@@ -7,7 +7,9 @@ function displayLogin() {
 					      		<h2>Login</h2>
 					      		<form class="lg">
 					        		<p>Email</p>
-					        		<input type="email" placeholder="handsome.dan@yale.edu">
+                                    <input type="email" placeholder="handsome.dan@yale.edu" required>
+                                    <p>Password</p>
+                                    <input type="password" placeholder="woofwoof123" required>
 					        		<div class="error">
 					        		</div>
 					        		<input type="submit" value="Log In">
@@ -22,7 +24,8 @@ function displayLogin() {
 	document.querySelector("form.lg").addEventListener("submit", function(e) {
 		e.preventDefault()
 	
-		const email = e.target.children[1].value
+        const email = e.target.children[1].value
+        const password = e.target.children[3].value
 	
 		fetch("http://localhost:3000/login", {
 			method: "POST",
@@ -30,7 +33,8 @@ function displayLogin() {
 				'Content-Type': "application/json",
 			},
 			body: JSON.stringify({
-				email
+                email,
+                password
 			})
 		}).then(res => res.json())
 		.then(data => {
@@ -38,8 +42,9 @@ function displayLogin() {
 			//Prompts user if email is invalid
             if (data["error"]) {
                 displayLogin()
-                console.log(loginDiv.querySelector('div.error'))
-                loginDiv.querySelector('div.error').innerHTML = '<h6 class="error">Invalid Email</h6>'
+                console.log(data)
+                // console.log(loginDiv.querySelector('div.error'))
+                loginDiv.querySelector('div.error').innerHTML = '<h6 class="error">Invalid Email and/or Password</h6>'
             } else {
                 localStorage.setItem("user_id", data.id)
                 loginDiv.innerHTML = ""
@@ -74,7 +79,11 @@ function displayLogin() {
 										<p>Last Name</p>
 										<input type="text" placeholder="Salovey" required>
 										<p>Email</p>
-										<input type="email" placeholder="handsome.dan@yale.edu" required>
+                                        <input type="email" placeholder="handsome.dan@yale.edu" required>
+                                        <p>Password</p>
+                                        <input type="password" placeholder="woofwoof123" required>
+                                        <p>Password Confirmation</p>
+                                        <input type="password" placeholder="woofwoof123" required>
 										<input type="submit" value="Create Account">
 									</form>
 									<div class="link">
@@ -89,7 +98,9 @@ function displayLogin() {
 
 			const first_name = e.target.children[1].value
 			const last_name = e.target.children[3].value
-			const email = e.target.children[5].value
+            const email = e.target.children[5].value
+            const password = e.target.children[7].value
+            const password_confirmation = e.target.children[7].value
 
 			fetch("http://localhost:3000/users", {
 				method: "POST",
@@ -99,7 +110,9 @@ function displayLogin() {
 				body: JSON.stringify({
 					first_name,
 					last_name,
-					email
+                    email,
+                    password,
+                    password_confirmation
 				})
 			}).then(result => result.json())
 			.then(data => {
@@ -110,7 +123,8 @@ function displayLogin() {
 						'Content-Type': "application/json",
 					},
 					body: JSON.stringify({
-						email: data.email
+                        email: data.email,
+                        password: data.password
 					})
 				}).then(res => res.json())
 				.then(data => {

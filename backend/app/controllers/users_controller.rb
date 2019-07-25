@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
     def login
         user = User.find_by(email: params[:email])
-        if user
+        if user && user.authenticate(params[:password])
             render json: user
         else
-            render json: {error: "YOU CAN'T LOG IN"}, status: 401
+            render json: {error: "INVALID EMAIL AND/OR PASSWORD"}, status: 401
         end
     end
 
@@ -15,7 +15,11 @@ class UsersController < ApplicationController
 
     def create
         user = User.create(user_params)
-        render json: user
+        if @user.valid?
+            render json: user
+        else
+            render json: {error: "Please try again"}, status: 406
+        end
     end
 
     def show
@@ -26,6 +30,6 @@ class UsersController < ApplicationController
     private
 
     def user_params
-        params.permit(:first_name, :last_name, :email, :phone)
+        params.permit(:first_name, :last_name, :email, :phone, :password, :password_confirmation)
     end
 end
