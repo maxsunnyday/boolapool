@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', function(){
 		createProfileBtn()
 		createLogoutBtn()
 		
-		//Display Trips
+		//Display Home
 		document.querySelector("div#home").addEventListener("click", function (e) {
 			displayHome()
 		})
 
-		//Display Home
+		//Display Trips
 		document.querySelector("div#all").addEventListener("click", function (e) {
 			displayTrips()
 		})

@@ -46,6 +46,13 @@ function displayLogin() {
                 document.querySelector("div#loginBtn").remove()
                 createProfileBtn()
                 createLogoutBtn()
+
+                //Display Home
+                document.querySelector("div#home").addEventListener("click", function (e) {
+                    displayHome()
+                })
+
+                //Display Trips
                 document.querySelector("div#all").addEventListener("click", function (e) {
                     displayTrips()
                 })
@@ -112,6 +119,12 @@ function displayLogin() {
                     document.querySelector("div#loginBtn").remove()
                     createProfileBtn()
                     createLogoutBtn()
+                    //Display Home
+                    document.querySelector("div#home").addEventListener("click", function (e) {
+                        displayHome()
+                    })
+
+                    //Display Trips
                     document.querySelector("div#all").addEventListener("click", function (e) {
                         displayTrips()
                     })
