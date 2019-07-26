@@ -224,13 +224,13 @@ function displayProfile(user) {
                 current.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
                                     <div class="flip-card-front">
-                                      <h1>${trip.destination}</h1>
+                                      <h4>${trip.destination}</h4>
                                       <p>${trip.address}</p>
                                       <p>${formatDate(trip.start_time)}</p>
                                       <p>${formatDate(trip.end_time)}</p>
                                     </div>
                                     <div class="flip-card-back">
-                                      <h1>Passengers</h1>
+                                      <h4>Passengers</h4>
                                       <ul>${displayPassengers(trip.users)}</ul>
                                     </div>
                                   </div>
@@ -239,13 +239,13 @@ function displayProfile(user) {
                 past.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
                                     <div class="flip-card-front">
-                                      <h1>${trip.destination}</h1>
+                                      <h4>${trip.destination}</h4>
                                       <p>${trip.address}</p>
                                       <p>${formatDate(trip.start_time)}</p>
                                       <p>${formatDate(trip.end_time)}</p>
                                     </div>
                                     <div class="flip-card-back">
-                                      <h1>Passengers</h1>
+                                      <h4>Passengers</h4>
                                       <ul>${displayPassengers(trip.users)}</ul>
                                     </div>
                                   </div>
@@ -568,3 +568,19 @@ function formatDate(date) {
     const result = months[+month - 1] + " " + day + ", " + year + ", " + time.slice(0,5)
     return result
 }
+
+// function convertDate(date) {
+//     //  7/26 12:00 AM
+//     const Arr = date.split(" ")
+//     const monthArr = Arr[0].split("/")
+//     const timeArr = Arr[1].split(":")
+//     const month = appendLeadingZeroes(monthArr[0])
+//     const day = appendLeadingZeroes(monthArr[1])
+//     let HH = timeArr[0]
+//     if (Arr[2] = "PM") {
+//         HH += 
+//     }
+
+
+//     const hh = appendLeadingZeroes(timeArr[1])
+// }
