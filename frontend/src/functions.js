@@ -256,7 +256,7 @@ function displayProfile(user) {
 function displayPassengers(users) {
     let userList = ""
     for (let user of users) {
-        userList += `<li>${user.first_name} ${user.last_name}</li>`
+        userList += `<li>${user.first_name} ${user.last_name} (${user.email})</li>`
     }
     return userList
 }
@@ -278,18 +278,25 @@ function displayTrips(search="") {
         newForm.className = "new-trip"
         newForm.innerHTML = `
             <label>Destination</label>
-            <select name="destination">
-                <option value="Tweed">Tweed</option>
-                <option value="BDL">BDL</option>
-                <option value="LGA">LGA</option>
-                <option value="JFK">JFK</option>
-                <option value="EWR">EWR</option>
-                <option value="Other">Other</option>
-            </select>
+                <select>
+                    <option value="" disabled selected>Where do you want to go?</option>
+                    <option value="BDL">Bradley International Airport (BDL)</option>
+                    <option value="LGA">LaGuardia Airport (LGA)</option>
+                    <option value="JFK">John F. Kennedy International Airport (JFK)</option>
+                    <option value="EWR">Newark Liberty International Airport (EWR)</option>
+                    <option value="HVN">Tweed New Haven Airport (HVN)</option>
+                    <option value="Trader Joe's">Trader Joe's (Orange, CT)</option>
+                    <option value="Costco">Costco (Milford, CT)</option>
+                    <option value="Stop & Shop">Stop & Shop (New Haven, CT)</option>
+                    <option value="Yale Bowl">Yale Bowl</option>
+                    <option value="Lighthouse Point Park">Lighthouse Point Park</option>
+                    <option value="Connecticut Post Mall">Connecticut Post Mall (Milford, CT)</option>
+                    <option value="Other">Other</option>
+                </select>
             <label>Address</label>
             <input type="text" name="address" required>
             <label>Capacity</label>
-            <input type="number" name="capacity" required>
+            <input type="number" name="capacity" min="2" max="6"required>
             <label>Start</label>
             <input type="datetime-local" name="start_time" min="${dateTime}" required>
             <label>End</label>
@@ -310,7 +317,26 @@ function displayTrips(search="") {
             </tr>
         </thead>
         <tbody>
-        </tbody>`
+        </tbody>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Trip Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Press 'Ok' to join this trip and notify other members by email.
+              </div>
+              <div class="modal-footer">
+                <button id="confirm-join" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+              </div>
+            </div>
+          </div>
+        </div>`
 
         mainContainer.appendChild(newForm)
         mainContainer.appendChild(listingsTable)
@@ -355,7 +381,7 @@ function displayTrips(search="") {
                 <td>${trip.address}</td>
                 <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
                 <td>${trip.users.length}/${trip.capacity}</td>
-                <td><button class="join" data-id=${trip.id}>Join!</button></td>`
+                <td><button class="join" data-id=${trip.id} data-toggle="modal" data-target="#exampleModal">Join!</button></td>`
             }
 
             tbody.appendChild(tr)
@@ -407,28 +433,35 @@ function listenNewTrip() {
 function listenForJoin() {
     document.querySelector("tbody").addEventListener("click", function(e) {
         if (e.target.className === "join") {
-            let userId = localStorage.getItem('user_id')
-            fetch(BASE_URL + "/usertrips", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    user_id: userId,
-                    trip_id: e.target.dataset.id
-                })
-            }).then(response => response.json())
-            .then(usertrip => {
-                console.log(usertrip)
-                const tripCapacity = e.target.parentElement.previousElementSibling
-                let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
-                number += 1
-                tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
-                let td = e.target.parentElement
-                td.removeChild(e.target)
-                td.innerText = "Already Joined!"
-            })	
+            const button = e.target
+            const td = e.target.parentElement
+            const tripId = e.target.dataset.id
+            const tripCapacity = e.target.parentElement.previousElementSibling
+
+            document.querySelector("div.modal-footer").addEventListener("click", function(e) {
+                if (e.target.id === "confirm-join") {
+                    let userId = localStorage.getItem('user_id')
+                    fetch(BASE_URL + "/usertrips", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user_id: userId,
+                            trip_id: tripId
+                        })
+                    }).then(response => response.json())
+                    .then(usertrip => {
+                        console.log(usertrip)
+                        let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
+                        number += 1
+                        tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
+                        td.removeChild(button)
+                        td.innerText = "Already Joined!"
+                    })
+                }
+            })
         }
     })
 }
