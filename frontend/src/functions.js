@@ -280,17 +280,16 @@ function displayTrips(search="") {
             <label>Destination</label>
                 <select>
                     <option value="" disabled selected>Where do you want to go?</option>
-                    <option value="BDL">Bradley International Airport (BDL)</option>
-                    <option value="LGA">LaGuardia Airport (LGA)</option>
-                    <option value="JFK">John F. Kennedy International Airport (JFK)</option>
-                    <option value="EWR">Newark Liberty International Airport (EWR)</option>
-                    <option value="HVN">Tweed New Haven Airport (HVN)</option>
-                    <option value="Trader Joe's">Trader Joe's (Orange, CT)</option>
-                    <option value="Costco">Costco (Milford, CT)</option>
-                    <option value="Stop & Shop">Stop & Shop (New Haven, CT)</option>
-                    <option value="Yale Bowl">Yale Bowl</option>
-                    <option value="Lighthouse Point Park">Lighthouse Point Park</option>
-                    <option value="Connecticut Post Mall">Connecticut Post Mall (Milford, CT)</option>
+                    <option value="BDL" data-address="Schoephoester Rd, Windsor Locks, CT 06096">Bradley International Airport (BDL)</option>
+                    <option value="JFK" data-address="Queens, NY 11430">John F. Kennedy International Airport (JFK)</option>
+                    <option value="LGA" data-address="Queens, NY 11371">LaGuardia Airport (LGA)</option>
+                    <option value="HVN" data-address="155 Burr St, New Haven, CT 06512">Tweed New Haven Airport (HVN)</option>
+                    <option value="Trader Joe's" data-address="560 Boston Post Rd, Orange, CT 06477">Trader Joe's (Orange, CT)</option>
+                    <option value="Costco" data-address="1718 Boston Post Rd, Orange, CT 06460">Costco (Milford, CT)</option>
+                    <option value="Stop & Shop" data-address="150 Whalley Ave, New Haven, CT 06515">Stop & Shop (New Haven, CT)</option>
+                    <option value="Yale Bowl" data-address="81 Central Ave, New Haven, CT 06515">Yale Bowl</option>
+                    <option value="Lighthouse Point Park" data-address="2 Lighthouse Rd, New Haven, CT 06512">Lighthouse Point Park</option>
+                    <option value="Connecticut Post Mall" data-address="1201 Boston Post Rd, Milford, CT 06460">Connecticut Post Mall (Milford, CT)</option>
                     <option value="Other">Other</option>
                 </select>
             <label>Address</label>
@@ -302,6 +301,15 @@ function displayTrips(search="") {
             <label>End</label>
             <input type="datetime-local" name="end_time" min="${dateTime}" required>
             <input type="submit">`
+
+        newForm.querySelector('select').addEventListener("change", function(e){
+            const select = e.target
+            const selectedInput = select.options[select.selectedIndex]
+            const selectedAddress = selectedInput.getAttribute('data-address')
+
+            const addressInput = e.target.nextElementSibling.nextElementSibling
+            addressInput.value = selectedAddress
+        })
         
         //Table for existing trips
         const listingsTable = document.createElement("table")
@@ -352,8 +360,7 @@ function displayTrips(search="") {
         }
 
         //Populate trips table
-        for (let trip of trips) {
-            
+        for (let trip of trips) {  
             let tr = document.createElement("tr")
 
             //Handles join logic
