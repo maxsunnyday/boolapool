@@ -211,6 +211,8 @@ function displayProfile(user) {
     let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes()) + ":" + appendLeadingZeroes(today.getSeconds());
     let dateTime =  date+'T'+time;
 
+    console.log(dateTime)
+
     userId = localStorage.getItem('user_id')
     fetch(`http://localhost:3000/users/${userId}`)
     .then(response => response.json())
@@ -426,6 +428,7 @@ function listenNewTrip() {
             e.preventDefault()
 
             let tbody = document.querySelector('tbody')
+            console.log(e.target.children[7].value)
 
             fetch("http://localhost:3000/trips", {
                 method: "POST",
