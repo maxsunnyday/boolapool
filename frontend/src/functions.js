@@ -266,7 +266,7 @@ function displayTrips(search="") {
     let userId = localStorage.getItem('user_id')
     let today = new Date();
     let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
-    let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes()) + ":" + appendLeadingZeroes(today.getSeconds());
+    let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes());
     let dateTime =  date+'T'+time;
     fetch("http://localhost:3000/trips")
     .then(response => response.json())
@@ -297,11 +297,32 @@ function displayTrips(search="") {
             <input type="text" name="address" required>
             <label>Capacity</label>
             <input type="number" name="capacity" min="2" max="6"required>
+            <label>Range</label>
+            <input type="text" name="datetimes" value="" required>
+            <!--
             <label>Start</label>
             <input type="datetime-local" name="start_time" min="${dateTime}" required>
             <label>End</label>
             <input type="datetime-local" name="end_time" min="${dateTime}" required>
+            -->
             <input type="submit">`
+        
+
+        $(function() {
+            $('input[name="datetimes"]').daterangepicker({
+            timePicker: true,
+            maxSpan: {
+                "days": 7
+            },
+            "opens": "center",
+            minDate: moment().startOf('date'),
+            // startDate: moment().startOf('hour'),
+            // endDate: moment().startOf('hour').add(32, 'hour'),
+            locale: {
+                format: 'M/DD hh:mm A'
+            }
+            });
+        });
         
         //Table for existing trips
         const listingsTable = document.createElement("table")
