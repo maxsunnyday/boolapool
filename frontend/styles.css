@@ -165,3 +165,30 @@ input[type=datetime-local]{
 .flip-card-back li {
   text-align: left;
 }
+
+.bg-nav {
+  background-color: #0E4D92;
+}
+
+.btn-outline {
+    color: white;
+    background-color: transparent;
+    background-image: none;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+.btn-outline:hover {
+  background-color: #e8f2fd;
+  color: black;
+}
+
+div.profile-container {
+  margin: auto;
+  margin-top: 20px;
+  background-color: white;
+  padding: 20px 20px;
+  border-radius: 25px;
+  width: 94%;
+  height: 80%;
+}
