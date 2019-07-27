@@ -197,11 +197,13 @@ function displayHome() {
 }
 
 function displayProfile(user) {
-    mainContainer.innerHTML = `<h2>Welcome back, ${user.first_name} ${user.last_name}</h2>
+    mainContainer.innerHTML = `<div class="profile-container">
+                                <h2>Welcome back, ${user.first_name} ${user.last_name}</h2>
                                 <h3>Current Trips</h3>
                                 <div class="current"></div>
                                 <h3>Past Trips</h3>
-                                <div class="past"></div>`
+                                <div class="past"></div>
+                               </div>`
 
     const current = document.querySelector('div.current')
     const past = document.querySelector('div.past')
@@ -478,7 +480,7 @@ function listenForJoin() {
 function createProfileBtn() {
     const profileBtn = document.createElement("div")
     profileBtn.id = "profile"
-    profileBtn.className = "btn btn-outline-primary"
+    profileBtn.className = "btn btn-outline"
     profileBtn.innerText = "Profile"
     toolbar.appendChild(profileBtn)
 
@@ -501,7 +503,7 @@ function listenProfileBtn() {
 function createLoginBtn() {
     const loginButton = document.createElement("div")
     loginButton.id = "loginBtn"
-    loginButton.className = "btn btn-outline-primary"
+    loginButton.className = "btn btn-outline"
     loginButton.innerText = "Login/Signup"
     toolbar.appendChild(loginButton)
 }
@@ -509,7 +511,7 @@ function createLoginBtn() {
 function createLogoutBtn() {
     const logoutButton = document.createElement("div")
     logoutButton.id = "logout"
-    logoutButton.className = "btn btn-outline-danger"
+    logoutButton.className = "btn btn-outline"
     logoutButton.innerText = "Logout"
     toolbar.appendChild(logoutButton)
     
