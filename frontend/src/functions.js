@@ -298,8 +298,8 @@ function displayTrips(search="") {
             <input type="text" name="address" required>
             <label>Capacity</label>
             <input type="number" name="capacity" min="2" max="6"required>
-            <label>Range</label>
-            <input type="text" name="datetimes" value="" required>
+            <label>Departure Time Range</label>
+            <input type="text" name="datetimes" placeholder="" required>
             <!--
             <label>Start</label>
             <input type="datetime-local" name="start_time" min="${dateTime}" required>
@@ -324,12 +324,12 @@ function displayTrips(search="") {
             maxSpan: {
                 "days": 7
             },
-            "opens": "center",
+            opens: "center",
             minDate: moment().startOf('date'),
             // startDate: moment().startOf('hour'),
             // endDate: moment().startOf('hour').add(32, 'hour'),
             locale: {
-                format: 'M/DD hh:mm A'
+                format: 'MM/DD/YYYY hh:mm A'
             }
             });
         });
@@ -428,7 +428,11 @@ function listenNewTrip() {
             e.preventDefault()
 
             let tbody = document.querySelector('tbody')
-            console.log(e.target.children[7].value)
+            // let start = moment(e.target.children[7].value.split(" - ")[0]).format()
+            // let end = moment(e.target.children[7].value.split(" - ")[1]).format()
+            // console.log(start)
+            // console.log(end)
+            // console.log(moment(start).isBefore(moment(end)))
 
             fetch("http://localhost:3000/trips", {
                 method: "POST",
@@ -440,8 +444,8 @@ function listenNewTrip() {
                     destination: e.target.children[1].value,
                     address: e.target.children[3].value,
                     capacity: e.target.children[5].value,
-                    start_time: e.target.children[7].value,
-                    end_time: e.target.children[9].value,
+                    start_time: moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
+                    end_time: moment.parseZone(e.target.children[7].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
                     user_id: userId
                 })
             }).then(response => response.json())
