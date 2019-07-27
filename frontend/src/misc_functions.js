@@ -234,6 +234,7 @@ function displayProfile(user) {
                                     <div class="flip-card-back">
                                       <h4>Passengers</h4>
                                       <ul>${displayPassengers(trip.users)}</ul>
+                                      <button class="unjoin">Unjoin Trip</button>
                                     </div>
                                   </div>
                                 </div>`
