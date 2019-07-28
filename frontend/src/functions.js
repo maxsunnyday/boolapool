@@ -198,11 +198,17 @@ function displayHome() {
 
 function displayProfile(user) {
     mainContainer.innerHTML = `<div class="profile-container">
-                                <h2>Welcome back, ${user.first_name} ${user.last_name}</h2>
-                                <h3>Current Trips</h3>
-                                <div class="current"></div>
-                                <h3>Past Trips</h3>
-                                <div class="past"></div>
+                                <div class="profile-greeting">
+                                    <h2>Welcome back, ${user.first_name}!</h2>
+                                </div>
+                                <div class="profile-current-trips">
+                                    <div class="profile-subhead-text">Current Trips</div>
+                                    <div class="current"></div>
+                                </div>
+                                <div class="profile-past-trips">
+                                    <div class="profile-subhead-text">Past Trips</div>
+                                    <div class="past"></div>
+                                </div>
                                </div>`
 
     const current = document.querySelector('div.current')
@@ -226,14 +232,27 @@ function displayProfile(user) {
                 current.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
                                     <div class="flip-card-front">
-                                      <h4>${trip.destination}</h4>
-                                      <p>${trip.address}</p>
-                                      <p>${formatDate(trip.start_time)}</p>
-                                      <p>${formatDate(trip.end_time)}</p>
+                                        <div class="flip-card-front-head">
+                                            ${trip.destination}
+                                        </div>
+                                        <div class="flip-card-front-subhead">
+                                            ${trip.address}
+                                        </div>
+                                        <div class="flip-card-front-details">
+                                            <p>From: ${formatDate(trip.start_time)}</p>
+                                            <p>To: ${formatDate(trip.end_time)}</p>
+                                        </div>
                                     </div>
                                     <div class="flip-card-back">
-                                      <h4>Passengers</h4>
-                                      <ul>${displayPassengers(trip.users)}</ul>
+                                        <div class="flip-card-back-head">
+                                            Passengers
+                                        </div>
+                                        <div class="flip-card-back-subhead">
+                                            ${trip.users.length}/${trip.capacity}
+                                        </div>
+                                        <div class="flip-card-back-details"
+                                            <ul>${displayPassengers(trip.users)}</ul>
+                                        </div>
                                     </div>
                                   </div>
                                 </div>`
@@ -241,14 +260,27 @@ function displayProfile(user) {
                 past.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
                                     <div class="flip-card-front">
-                                      <h4>${trip.destination}</h4>
-                                      <p>${trip.address}</p>
-                                      <p>${formatDate(trip.start_time)}</p>
-                                      <p>${formatDate(trip.end_time)}</p>
+                                        <div class="flip-card-front-head">
+                                            ${trip.destination}
+                                        </div>
+                                        <div class="flip-card-front-subhead">
+                                            ${trip.address}
+                                        </div>
+                                        <div class="flip-card-front-details">
+                                            <p>From: ${formatDate(trip.start_time)}</p>
+                                            <p>To: ${formatDate(trip.end_time)}</p>
+                                        </div>
                                     </div>
                                     <div class="flip-card-back">
-                                      <h4>Passengers</h4>
-                                      <ul>${displayPassengers(trip.users)}</ul>
+                                        <div class="flip-card-back-head">
+                                            Passengers
+                                        </div>
+                                        <div class="flip-card-back-subhead">
+                                            ${trip.users.length}/${trip.capacity}
+                                        </div>
+                                        <div class="flip-card-back-details"
+                                            <ul>${displayPassengers(trip.users)}</ul>
+                                        </div>
                                     </div>
                                   </div>
                                 </div>`
@@ -574,19 +606,3 @@ function formatDate(date) {
     const result = months[+month - 1] + " " + day + ", " + year + ", " + time.slice(0,5)
     return result
 }
-
-// function convertDate(date) {
-//     //  7/26 12:00 AM
-//     const Arr = date.split(" ")
-//     const monthArr = Arr[0].split("/")
-//     const timeArr = Arr[1].split(":")
-//     const month = appendLeadingZeroes(monthArr[0])
-//     const day = appendLeadingZeroes(monthArr[1])
-//     let HH = timeArr[0]
-//     if (Arr[2] = "PM") {
-//         HH += 
-//     }
-
-
-//     const hh = appendLeadingZeroes(timeArr[1])
-// }
