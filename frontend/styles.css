@@ -125,9 +125,10 @@ input[type=datetime-local]{
   background-color: transparent;
   width: 300px;
   height: 200px;
-  border: 1px solid #f1f1f1;
+  border: 1px solid hsl(0, 0%, 97%);
   perspective: 1000px;
   display: inline-block;
+
 }
 
 .flip-card-inner {
@@ -137,6 +138,11 @@ input[type=datetime-local]{
   text-align: center;
   transition: transform 0.8s;
   transform-style: preserve-3d;
+}
+
+.flip-card-inner p {
+  text-align: left;
+  margin-left: 20px;
 }
 
 .flip-card:hover .flip-card-inner {
@@ -149,21 +155,43 @@ input[type=datetime-local]{
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  border-radius: 10px;
 }
 
 .flip-card-front {
-  background-color: #bbb;
-  color: black;
+  background-color: #1263ba;
+  color: white;
+}
+
+.flip-card-front-head, .flip-card-back-head {
+  font-size: 20px;
+}
+
+.flip-card-front-subhead {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.flip-card-back-subhead {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.flip-card-front-details, .flip-card-back-details {
+  font-size: 15px;
+  margin-top: 20px;
 }
 
 .flip-card-back {
-  background-color: dodgerblue;
-  color: white;
+  background-color: #b9d8f8;
+  color: black;
   transform: rotateY(180deg);
 }
 
 .flip-card-back li {
   text-align: left;
+  list-style: none;
+  margin-left: 20px;
 }
 
 .bg-nav {
@@ -187,8 +215,25 @@ div.profile-container {
   margin: auto;
   margin-top: 20px;
   background-color: white;
-  padding: 20px 20px;
   border-radius: 25px;
   width: 94%;
   height: 80%;
+}
+
+div.profile-greeting {
+  padding: 10px 20px;
+}
+
+div.profile-current-trips {
+  padding: 20px 20px;
+  background-color: hsl(0, 0%, 97%);
+}
+
+div.profile-past-trips {
+  padding: 20px 20px;
+  background-color: hsl(0, 0%, 97%);
+}
+
+div.profile-subhead-text {
+  font-size: 23px
 }
