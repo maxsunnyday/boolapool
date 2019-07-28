@@ -8,6 +8,10 @@ class UsertripsController < ApplicationController
             render json: usertrip, include: {trip: {only: :users}}
         end
     end
+
+    def delete
+        
+    end
  
     private
 

@@ -219,9 +219,12 @@ function displayProfile(user) {
     fetch(`http://localhost:3000/users/${userId}`)
     .then(response => response.json())
     .then(user => {
-        const trips = user.trips
+        // const trips = user.trips
         for (let trip of user.trips) {
-         
+            console.log(trip.usertrips.find(function(ut) {
+                return ut["user_id"] === userId
+            }))
+
             if (trip.end_time > dateTime) {
                 current.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
@@ -234,10 +237,12 @@ function displayProfile(user) {
                                     <div class="flip-card-back">
                                       <h4>Passengers</h4>
                                       <ul>${displayPassengers(trip.users)}</ul>
-                                      <button class="unjoin">Unjoin Trip</button>
+                                      <button class="unjoin" data-id="${trip.id}">Unjoin Trip</button>
                                     </div>
                                   </div>
                                 </div>`
+
+                                listenUnjoin()
             } else {
                 past.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
@@ -503,6 +508,29 @@ function listenForJoin() {
         }
     })
 }
+
+// function listenUnjoin() {
+//     document.querySelector("button.unjoin").addEventListener("click", function(e) {
+//         if (e.target.className === "unjoin") {
+//             const button = e.target
+//             const tripId = e.target.dataset.id
+//             let userId = localStorage.getItem('user_id')
+//             fetch(BASE_URL + `/usertrips/${tripId}`, {
+//                 method: "DELETE",
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                     'Accept': 'application/json'
+//                 },
+//                 body: JSON.stringify({
+//                     user_id: userId
+//                 })
+//             }).then(response => response.json())
+//             .then(usertrip => {
+//                 console.log(usertrip)
+//             })
+//         }
+//     })
+// }
 
 
 //Handles adding buttons depending on login/logout status
