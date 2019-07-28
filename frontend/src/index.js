@@ -25,6 +25,5 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	} else {
 		createLoginBtn()
-		displayLogin()
 	}
 })
