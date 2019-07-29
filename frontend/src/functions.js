@@ -1,166 +1,27 @@
 //Handles displaying different 'pages'
-function displayLogin() {
+// function displayLogin() {
 
-	//Make Login Modal Appear
-	loginDiv = document.querySelector('div.login')
-	loginDiv.innerHTML = `<div class="login-container">
-					    	<div class="login-box">
-					      		<h2>Login</h2>
-					      		<form class="lg">
-					        		<p>Email</p>
-                                    <input type="email" placeholder="handsome.dan@yale.edu" required>
-                                    <p>Password</p>
-                                    <input type="password" placeholder="woofwoof123" required>
-					        		<div class="error">
-					        		</div>
-					        		<input type="submit" value="Log In">
-					      		</form>
-					      		<div class="link">
-					      			<a href="" class="sign-up">Don't have an account? Sign up here!</a>
-					      		</div>
-					    	</div>
-                          </div>`
+// 	//Make Login Modal Appear
+// 	loginDiv = document.querySelector('div.login')
+// 	// loginDiv.innerHTML = `<div class="login-container">
+// 	// 				    	<div class="login-box">
+// 	// 				      		<h2>Login</h2>
+// 	// 				      		<form class="lg">
+// 	// 				        		<p>Email</p>
+//  //                                    <input type="email" placeholder="handsome.dan@yale.edu" required>
+//  //                                    <p>Password</p>
+//  //                                    <input type="password" placeholder="woofwoof123" required>
+// 	// 				        		<div class="error">
+// 	// 				        		</div>
+// 	// 				        		<input type="submit" value="Log In">
+// 	// 				      		</form>
+// 	// 				      		<div class="link">
+// 	// 				      			<a href="" class="sign-up">Don't have an account? Sign up here!</a>
+// 	// 				      		</div>
+// 	// 				    	</div>
+//  //                          </div>`
     
-    //Handles Login Functionality                
-	document.querySelector("form.lg").addEventListener("submit", function(e) {
-		e.preventDefault()
-	
-        const email = e.target.children[1].value
-        const password = e.target.children[3].value
-	
-		fetch("http://localhost:3000/login", {
-			method: "POST",
-			headers: {
-                'Content-Type': "application/json",
-                'Accept': "application/json"
-			},
-			body: JSON.stringify({
-                email,
-                password
-			})
-		}).then(res => res.json())
-		.then(data => {
-
-			//Prompts user if email is invalid
-            if (data["error"]) {
-                displayLogin()
-                console.log(data)
-                // console.log(loginDiv.querySelector('div.error'))
-                loginDiv.querySelector('div.error').innerHTML = '<h6 class="error">Invalid Email and/or Password</h6>'
-            } else {
-                localStorage.setItem("user_id", data.id)
-                loginDiv.innerHTML = ""
-                document.querySelector("div#loginBtn").remove()
-                createProfileBtn()
-                createLogoutBtn()
-
-                //Display Home
-                document.querySelector("div#home").addEventListener("click", function (e) {
-                    displayHome()
-                })
-
-                //Display Trips
-                document.querySelector("div#all").addEventListener("click", function (e) {
-                    displayTrips()
-                })
-                displayProfile(data)
-            }
-		})
-	})
-
-	//Handles clicking on sign up link
-	loginDiv.querySelector("a.sign-up").addEventListener('click', function(e) {
-		e.preventDefault()
-
-		loginDiv.innerHTML = `<div class="login-container">
-								<div class="login-box">
-									<h2>Sign Up</h2>
-									<form class="signup">
-										<p>First Name</p>
-										<input type="text" placeholder="Petey" required>
-										<p>Last Name</p>
-										<input type="text" placeholder="Salovey" required>
-										<p>Email</p>
-                                        <input type="email" placeholder="handsome.dan@yale.edu" required>
-                                        <p>Phone Number</p>
-                                        <input type="tel" placeholder="1234567890">
-                                        <p>Password</p>
-                                        <input type="password" placeholder="woofwoof123" required>
-                                        <p>Password Confirmation</p>
-                                        <input type="password" placeholder="woofwoof123" required>
-                                        <div class="error">
-					        		    </div>
-										<input type="submit" value="Create Account">
-									</form>
-									<div class="link">
-										<a href="" class="go-back">Go Back</a>
-									</div>
-								</div>
-							</div>`
-
-		//Handles creating new user in database
-		loginDiv.querySelector("form.signup").addEventListener('submit', function(e) {
-			e.preventDefault()
-
-			const first_name = e.target.children[1].value
-			const last_name = e.target.children[3].value
-            const email = e.target.children[5].value
-            const phone = e.target.children[7].value
-            const password = e.target.children[9].value
-            const password_confirmation = e.target.children[11].value
-
-			fetch("http://localhost:3000/users", {
-				method: "POST",
-				headers: {
-                    'Content-Type': "application/json",
-                    'Accept': "application/json"
-				},
-				body: JSON.stringify({
-					first_name,
-					last_name,
-                    email,
-                    phone,
-                    password,
-                    password_confirmation
-				})
-			}).then(result => result.json())
-			.then(user => {
-                if (user["errors"]) {
-                    // console.log(user)
-                    // console.log(loginDiv.querySelector('div.error'))
-                    loginDiv.querySelector('div.error').innerHTML = ``
-                    user["errors"].forEach(error => {
-                        loginDiv.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
-                    });
-                } else {
-                    localStorage.setItem("user_id", user.id)
-                    loginDiv.innerHTML = ""
-                    document.querySelector("div#loginBtn").remove()
-                    createProfileBtn()
-                    createLogoutBtn()
-    
-                    //Display Home
-                    document.querySelector("div#home").addEventListener("click", function (e) {
-                        displayHome()
-                    })
-    
-                    //Display Trips
-                    document.querySelector("div#all").addEventListener("click", function (e) {
-                        displayTrips()
-                    })
-                    displayProfile(user)
-                }
-			})
-		})
-
-		//Handles clicking on go back link
-		loginDiv.querySelector("a.go-back").addEventListener('click', function(e) {
-			e.preventDefault()
-			displayLogin()
-		})
-
-	})
-}
+// }
 
 function displayHome() {
     mainContainer.innerHTML = `<div class="home-text">
@@ -194,6 +55,8 @@ function displayHome() {
         searchQuery = e.target.children[0].value 
         displayTrips(searchQuery)
     })
+
+    listenLogin()
 }
 
 function displayProfile(user) {
@@ -390,11 +253,11 @@ function displayTrips(search="") {
         </thead>
         <tbody>
         </tbody>
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="joinModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Trip Confirmation</h5>
+                <h5 class="modal-title" id="joinModalLabel">Trip Confirmation</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -436,23 +299,23 @@ function displayTrips(search="") {
             }
 
             if (join) {
-                tr.innerHTML = `<td>${trip.destination}</td>
-                <td>${trip.address}</td>
-                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                <td>${trip.users.length}/${trip.capacity}</td>
-                <td>Already Joined!</td>`
+                tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+                <td id="tdx">${trip.address}</td>
+                <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                <td id="tdx">Already Joined!</td>`
             } else if (trip.users.length === trip.capacity) {
-                tr.innerHTML = `<td>${trip.destination}</td>
-                <td>${trip.address}</td>
-                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                <td>${trip.users.length}/${trip.capacity}</td>
-                <td>Full</td>`
+                tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+                <td id="tdx">${trip.address}</td>
+                <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                <td id="tdx">Full</td>`
             } else {
-                tr.innerHTML = `<td>${trip.destination}</td>
-                <td>${trip.address}</td>
-                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                <td>${trip.users.length}/${trip.capacity}</td>
-                <td><button class="join" data-id=${trip.id} data-toggle="modal" data-target="#exampleModal">Join!</button></td>`
+                tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+                <td id="tdx">${trip.address}</td>
+                <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                <td id="tdx"><button class="join" data-id=${trip.id} data-toggle="modal" data-target="#joinModal">Join!</button></td>`
             }
 
             tbody.appendChild(tr)
@@ -584,7 +447,9 @@ function createLoginBtn() {
     const loginButton = document.createElement("div")
     loginButton.id = "loginBtn"
     loginButton.className = "btn btn-outline"
-    loginButton.innerText = "Login/Signup"
+    loginButton.innerText = "Login"
+    loginButton.dataset.toggle = "modal"
+    loginButton.dataset.target = "#loginModal"
     toolbar.appendChild(loginButton)
 }
 
@@ -602,7 +467,6 @@ function createLogoutBtn() {
         document.querySelector("div#profile").remove()
         createLoginBtn()
         displayHome()
-        displayLogin()
     })
 }
 
@@ -625,4 +489,171 @@ function formatDate(date) {
 
     const result = months[+month - 1] + " " + day + ", " + year + ", " + time.slice(0,5)
     return result
+}
+
+function listenLogin() {
+    const loginModal = document.querySelector("div#loginModal")
+    const loginForm = loginModal.querySelector("form.lg")
+    const signup = loginModal.querySelector("div.signup-link")
+    //Handles Login Functionality                
+    loginForm.addEventListener("submit", function(e) {
+        e.preventDefault()
+    
+        $(function() {
+            $('#loginModal').modal('toggle'); 
+        })
+
+        const email = e.target.children[1].value
+        const password = e.target.children[4].value
+    
+        fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json",
+                'Accept': "application/json"
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        }).then(res => res.json())
+        .then(data => {
+
+            //Prompts user if email is invalid
+            if (data["error"]) {
+                console.log(data)
+                loginForm.querySelector('div.error').innerHTML = '<h6 class="error">Invalid Email and/or Password</h6>'
+            } else {
+                loginForm.reset()
+                localStorage.setItem("user_id", data.id)
+                document.querySelector("div#loginBtn").remove()
+                createProfileBtn()
+                createLogoutBtn()
+
+                //Display Home
+                document.querySelector("div#home").addEventListener("click", function (e) {
+                    displayHome()
+                })
+
+                //Display Trips
+                document.querySelector("div#all").addEventListener("click", function (e) {
+                    displayTrips()
+                })
+                displayProfile(data)
+            }
+        })
+    })
+
+    //Handles clicking on sign up link
+    signup.querySelector("a.sign-up").addEventListener('click', function(e) {
+        e.preventDefault()
+
+        signup.parentElement.parentElement.innerHTML = `<div class="modal-header">
+                                                            <h5 class="modal-title" id="SignupModalLabel">Signup</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                              <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form class="su">
+                                                                First Name
+                                                                <br>
+                                                                <input type="text" placeholder="Petey" required>
+                                                                <br>
+                                                                Last Name
+                                                                <br>
+                                                                <input type="text" placeholder="Salovey" required>
+                                                                <br>
+                                                                Email
+                                                                <br>
+                                                                <input type="email" placeholder="handsome.dan@yale.edu" required>
+                                                                <br>
+                                                                Phone Number
+                                                                <br>
+                                                                <input type="tel" placeholder="1234567890">
+                                                                <br>
+                                                                Password
+                                                                <br>
+                                                                <input type="password" placeholder="woofwoof123" required>
+                                                                <br>
+                                                                Password Confirmation
+                                                                <br>
+                                                                <input type="password" placeholder="woofwoof123" required>
+                                                                <div class="error">
+                                                                </div>
+                                                                <input type="submit" value="Create Account">
+                                                            </form>
+                                                            <div class="login-link">
+                                                                <a href="" class="go-back">Go Back</a>
+                                                            </div>
+                                                        </div>`
+
+
+        //Handles creating new user in database
+        loginModal.querySelector("form.su").addEventListener('submit', function(e) {
+            e.preventDefault()
+
+            console.log(e.target.children)
+
+            const first_name = e.target.children[1].value
+            const last_name = e.target.children[4].value
+            const email = e.target.children[7].value
+            const phone = e.target.children[10].value
+            const password = e.target.children[13].value
+            const password_confirmation = e.target.children[16].value
+
+            fetch("http://localhost:3000/users", {
+                method: "POST",
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    first_name,
+                    last_name,
+                    email,
+                    phone,
+                    password,
+                    password_confirmation
+                })
+            }).then(result => result.json())
+            .then(user => {
+                if (user["errors"]) {
+                    // console.log(user)
+                    // console.log(loginDiv.querySelector('div.error'))
+                    loginModal.querySelector('div.error').innerHTML = ``
+                    user["errors"].forEach(error => {
+                        loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
+                    });
+                } else {
+                    localStorage.setItem("user_id", user.id)
+                    document.querySelector("div#loginBtn").remove()
+                    createProfileBtn()
+                    createLogoutBtn()
+                    
+                    //Display Home
+                    document.querySelector("div#home").addEventListener("click", function (e) {
+                        displayHome()
+                    })
+    
+                    //Display Trips
+                    document.querySelector("div#all").addEventListener("click", function (e) {
+                        displayTrips()
+                    })
+
+                    $(function() {
+                        $('#loginModal').modal('toggle'); 
+                    })
+
+                    displayProfile(user)
+                }
+            })
+        })
+
+        //Handles clicking on go back link
+        loginModal.querySelector("a.go-back").addEventListener('click', function(e) {
+            e.preventDefault()
+        })
+
+    })
 }

@@ -30,66 +30,32 @@ div.login-container {
   z-index: 10;
 }
 
-.login-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 500px;
-  padding: 40px 40px;
-  background: lightblue;
-  border-radius: 25px;
-  z-index: 11;
-}
-
-.login-box h2{
-	margin: 0;
-	padding: 0 0 20px;
-	color: #fff;
-	text-align: center;
-	text-transform: uppercase;
-}
-
-.login-box p{
-	margin: 0;
-	padding: 0;
-	font-weight: bold;
-	color: #fff;
-}
-
-.login-box input{
-	width: 100%;
-	margin-bottom: 20px;
-}
-
-.login-box input[type=email],
-.login-box input[type=password],
-.login-box input[type=text],
-.login-box input[type=tel] {
+form.lg input[type=email],
+form.lg input[type=password],
+form.su input[type=email],
+form.su input[type=password],
+form.su input[type=text],
+form.su input[type=tel] {
+  margin-bottom: 10px;
 	border: none;
-	border-bottom: 1px solid #fff;
+	border-bottom: 1px solid lightgray;
 	background: transparent;
 	outline: none;
 	height: 35px;
-	color: #fff;
+	color: gray;
 	font-size: 15px;
 }
 
-.login-box input[type=submit] {
+form.lg input[type=submit],
+form.su input[type=submit]{
 	height: 30px;
 	color: #fff;
 	font-size: 15px;
 	background: #6699ff;
 	cursor: pointer;
-	border-radius: 25px;
+	border-radius: 20px;
 	border: none;
 	outline: none;
-	margin-top: 15%;
 }
 
 .login-box button{
@@ -236,4 +202,10 @@ div.profile-past-trips {
 
 div.profile-subhead-text {
   font-size: 23px
+}
+
+#tdx{
+  padding: .75rem;
+  vertical-align: top;
+  border-top: 1px solid white;
 }
