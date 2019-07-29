@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'team@boolapool.herokuapp.com'
+  default from: 'max.sun@yale.edu'
   layout 'mailer'
 end
