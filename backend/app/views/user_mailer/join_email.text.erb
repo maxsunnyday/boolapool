@@ -1,0 +1,18 @@
+
+<%= @new_user.first_name %> just joined your carpool group!
+===============================================
+ 
+Trip Details:
+                                        
+Destination: <%= @trip.destination %> (<%= @trip.address %>)
+Capacity: <%= @trip.capacity %>
+Departure Time Range: <%= @trip.start_time %> - <%= @trip.end_time %>
+
+Trip Members:
+<% @trip.users.each do |user| %>
+    <%= "#{user.first_name} #{user.last_name} -- #{user.email} (Phone #: #{user.phone})" %>
+<% end %>
+ 
+To go to BoolaPool, just follow this link: <%= @url %>.
+ 
+Thanks for using BoolaPool and have a great day!
