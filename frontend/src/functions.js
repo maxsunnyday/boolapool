@@ -72,7 +72,26 @@ function displayProfile(user) {
                                     <div class="profile-subhead-text">Past Trips</div>
                                     <div class="past"></div>
                                 </div>
-                               </div>`
+                               </div>
+                               <div class="modal fade" id="unjoinModal" tabindex="-1" role="dialog" aria-labelledby="unjoinModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="joinModalLabel">Unjoin Confirmation</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure? Press 'Ok' to unjoin this trip and notify other members by email.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button id="confirm-unjoin" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
 
     const current = document.querySelector('div.current')
     const past = document.querySelector('div.past')
@@ -120,7 +139,7 @@ function displayProfile(user) {
                                         <div class="flip-card-back-details"
                                             <ul>${displayPassengers(trip.users)}</ul>
                                         </div>
-                                        <button class="unjoin" data-id="${usertrip.id}">Unjoin Trip</button>
+                                        <button class="unjoin" data-id="${usertrip.id}" data-toggle="modal" data-target="#unjoinModal">Unjoin Trip</button>
                                     </div>
                                   </div>
                                 </div>`
@@ -409,10 +428,15 @@ function listenUnjoin() {
     document.querySelector("button.unjoin").addEventListener("click", function(e) {
         if (e.target.className === "unjoin") {
             const usertripId = e.target.dataset.id
-            fetch(BASE_URL + `/usertrips/${usertripId}`, {
-                method: "DELETE"
-            }).then(data => {
-                e.target.parentElement.parentElement.parentElement.remove()
+            const flipcard = e.target.parentElement.parentElement.parentElement
+            document.querySelector("div.modal-footer").addEventListener("click", function(e) {
+                if (e.target.id === "confirm-unjoin") {
+                    fetch(BASE_URL + `/usertrips/${usertripId}`, {
+                        method: "DELETE"
+                    }).then(data => {
+                        flipcard.remove()
+                    })
+                }
             })
         }
     })
