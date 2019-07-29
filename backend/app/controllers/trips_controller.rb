@@ -15,6 +15,10 @@ class TripsController < ApplicationController
         render json: trip
     end
 
+    def destroy
+        Trip.destroy(params[:id])
+    end
+
     private
 
     def trip_params

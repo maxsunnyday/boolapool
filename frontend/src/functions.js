@@ -114,8 +114,38 @@ function displayProfile(user) {
                 let usertrip = trip.usertrips.find(function(ut) {
                     return ut.user_id == userId
                 })
-    
-                current.innerHTML += `<div class="flip-card">
+
+                if (trip.usertrips.length === 1) {
+                    current.innerHTML += `<div class="flip-card">
+                                  <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <div class="flip-card-front-head">
+                                            ${trip.destination}
+                                        </div>
+                                        <div class="flip-card-front-subhead">
+                                            ${trip.address}
+                                        </div>
+                                        <div class="flip-card-front-details">
+                                            <p>From: ${formatDate(trip.start_time)}</p>
+                                            <p>To: ${formatDate(trip.end_time)}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <div class="flip-card-back-head">
+                                            Passengers
+                                        </div>
+                                        <div class="flip-card-back-subhead">
+                                            ${trip.users.length}/${trip.capacity}
+                                        </div>
+                                        <div class="flip-card-back-details"
+                                            <ul>${displayPassengers(trip.users)}</ul>
+                                        </div>
+                                        <button class="unjoin" data-id="${usertrip.id}" data-toggle="modal" data-target="#unjoinModal" data-trip="${trip.id}">Unjoin Trip</button>
+                                    </div>
+                                  </div>
+                                </div>`
+                } else {
+                    current.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
                                     <div class="flip-card-front">
                                         <div class="flip-card-front-head">
@@ -143,8 +173,7 @@ function displayProfile(user) {
                                     </div>
                                   </div>
                                 </div>`
-
-                                listenUnjoin()
+                }
             } else {
                 past.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
@@ -175,6 +204,8 @@ function displayProfile(user) {
                                 </div>`
             }
         }
+
+        listenUnjoin()
     })
 }
 
@@ -425,8 +456,25 @@ function listenForJoin() {
 }
 
 function listenUnjoin() {
-    document.querySelector("button.unjoin").addEventListener("click", function(e) {
-        if (e.target.className === "unjoin") {
+    document.querySelector("div.current").addEventListener("click", function(e) {
+        if (e.target.className === "unjoin" && e.target.dataset.trip) {
+            const usertripId = e.target.dataset.id
+            const tripId = e.target.dataset.trip
+            const flipcard = e.target.parentElement.parentElement.parentElement
+            document.querySelector("div.modal-footer").addEventListener("click", function(e) {
+                if (e.target.id === "confirm-unjoin") {
+                    fetch(BASE_URL + `/usertrips/${usertripId}`, {
+                        method: "DELETE"
+                    }).then(data => {
+                        fetch(BASE_URL + `/trips/${tripId}`, {
+                            method: "DELETE"
+                        }).then(data => {
+                            flipcard.remove()
+                        })
+                    })
+                }
+            })
+        } else if (e.target.className === "unjoin") {
             const usertripId = e.target.dataset.id
             const flipcard = e.target.parentElement.parentElement.parentElement
             document.querySelector("div.modal-footer").addEventListener("click", function(e) {
