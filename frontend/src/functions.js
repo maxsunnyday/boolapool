@@ -227,11 +227,12 @@ function displayProfile(user) {
     .then(user => {
         // const trips = user.trips
         for (let trip of user.trips) {
-            console.log(trip.usertrips.find(function(ut) {
-                return ut["user_id"] === userId
-            }))
 
             if (trip.end_time > dateTime) {
+                let usertrip = trip.usertrips.find(function(ut) {
+                    return ut.user_id == userId
+                })
+    
                 current.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
                                     <div class="flip-card-front">
@@ -256,7 +257,7 @@ function displayProfile(user) {
                                         <div class="flip-card-back-details"
                                             <ul>${displayPassengers(trip.users)}</ul>
                                         </div>
-                                        <button class="unjoin" data-id="${trip.id}">Unjoin Trip</button>
+                                        <button class="unjoin" data-id="${usertrip.id}">Unjoin Trip</button>
                                     </div>
                                   </div>
                                 </div>`
@@ -541,28 +542,18 @@ function listenForJoin() {
     })
 }
 
-// function listenUnjoin() {
-//     document.querySelector("button.unjoin").addEventListener("click", function(e) {
-//         if (e.target.className === "unjoin") {
-//             const button = e.target
-//             const tripId = e.target.dataset.id
-//             let userId = localStorage.getItem('user_id')
-//             fetch(BASE_URL + `/usertrips/${tripId}`, {
-//                 method: "DELETE",
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                     'Accept': 'application/json'
-//                 },
-//                 body: JSON.stringify({
-//                     user_id: userId
-//                 })
-//             }).then(response => response.json())
-//             .then(usertrip => {
-//                 console.log(usertrip)
-//             })
-//         }
-//     })
-// }
+function listenUnjoin() {
+    document.querySelector("button.unjoin").addEventListener("click", function(e) {
+        if (e.target.className === "unjoin") {
+            const usertripId = e.target.dataset.id
+            fetch(BASE_URL + `/usertrips/${usertripId}`, {
+                method: "DELETE"
+            }).then(data => {
+                e.target.parentElement.parentElement.parentElement.remove()
+            })
+        }
+    })
+}
 
 
 //Handles adding buttons depending on login/logout status

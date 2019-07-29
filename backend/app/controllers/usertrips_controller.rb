@@ -9,8 +9,8 @@ class UsertripsController < ApplicationController
         end
     end
 
-    def delete
-        
+    def destroy
+        Usertrip.destroy(params[:id])
     end
  
     private
