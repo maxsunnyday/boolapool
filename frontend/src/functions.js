@@ -665,7 +665,7 @@ function listenLogin() {
         loginModal.querySelector("form.su").addEventListener('submit', function(e) {
             e.preventDefault()
 
-            console.log(e.target.children)
+            // console.log(e.target.children)
 
             const first_name = e.target.children[1].value
             const last_name = e.target.children[4].value
