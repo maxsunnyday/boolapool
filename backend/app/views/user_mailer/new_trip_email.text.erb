@@ -1,0 +1,13 @@
+
+You just created a new trip request, <%= @user.first_name %>!
+===============================================
+ 
+Trip Details:
+                                        
+Destination: <%= @trip.destination %> (<%= @trip.address %>)
+Capacity: <%= @trip.capacity %>
+Departure Time Range: <%= @trip.start_time %> - <%= @trip.end_time %>
+ 
+To go to BoolaPool, just follow this link: <%= @url %>.
+ 
+Thanks for using BoolaPool and have a great day!

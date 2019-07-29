@@ -7,7 +7,7 @@ class UserMailer < ApplicationMailer
         mail(to: @user.email, subject: 'Welcome to BoolaPool!')
     end
 
-    def create_new_trip
+    def new_trip_email
         @user = params[:user]
         @trip = params[:trip]
         @url  = 'http://boolapool.herokuapp.com/'

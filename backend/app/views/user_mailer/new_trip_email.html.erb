@@ -1,0 +1,10 @@
+<h1>You just created a new trip request, <%= @user.first_name %>!</h1>
+<h3>Trip Details:</h3>
+                                    
+<p>Destination: <%= @trip.destination %> (<%= @trip.address %>)</p>
+<p>Capacity: <%= @trip.capacity %></p>
+<p>Departure Time Range: <%= @trip.start_time %> - <%= @trip.end_time %> <br> </p>
+
+<p>To go to BoolaPool, just follow this link: <%= @url %>.</p>
+
+<p>Thanks for using BoolaPool and have a great day!</p>
