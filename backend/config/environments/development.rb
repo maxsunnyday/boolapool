@@ -32,8 +32,18 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
-  
+
   config.action_mailer.perform_deliveries = true
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              Rails.application.credentials.smtp_settings[:address],
+    port:                 Rails.application.credentials.smtp_settings[:port],
+    domain:               Rails.application.credentials.smtp_settings[:domain],
+    user_name:            Rails.application.credentials.smtp_settings[:username],
+    password:             Rails.application.credentials.smtp_settings[:password],
+    authentication:       Rails.application.credentials.smtp_settings[:authentication],
+    enable_starttls_auto: true }
 
   config.action_mailer.perform_caching = false
 
@@ -53,4 +63,6 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  config.middleware.use Rack::TwilioWebhookAuthentication, Rails.application.credentials.twilio_auth_token, '/voice'
 end
