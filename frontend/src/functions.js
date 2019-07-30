@@ -30,7 +30,6 @@ function displayHome() {
         searchQuery = e.target.children[0].value 
         displayTrips(searchQuery)
     })
-
     listenLogin()
 }
 
@@ -179,7 +178,6 @@ function displayProfile(user) {
                                 </div>`
             }
         }
-
         listenUnjoin()
     })
 }
@@ -255,8 +253,6 @@ function displayTrips(search="") {
             },
             opens: "center",
             minDate: moment().startOf('date'),
-            // startDate: moment().startOf('hour'),
-            // endDate: moment().startOf('hour').add(32, 'hour'),
             locale: {
                 format: 'MM/DD/YYYY hh:mm A'
             }
@@ -357,11 +353,6 @@ function listenNewTrip() {
             e.preventDefault()
 
             let tbody = document.querySelector('tbody')
-            // let start = moment(e.target.children[7].value.split(" - ")[0]).format()
-            // let end = moment(e.target.children[7].value.split(" - ")[1]).format()
-            // console.log(start)
-            // console.log(end)
-            // console.log(moment(start).isBefore(moment(end)))
 
             fetch("http://localhost:3000/trips", {
                 method: "POST",
@@ -627,8 +618,6 @@ function listenLogin() {
             }).then(result => result.json())
             .then(user => {
                 if (user["errors"]) {
-                    // console.log(user)
-                    // console.log(loginDiv.querySelector('div.error'))
                     loginModal.querySelector('div.error').innerHTML = ``
                     user["errors"].forEach(error => {
                         loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
