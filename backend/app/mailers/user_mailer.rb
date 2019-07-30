@@ -20,4 +20,18 @@ class UserMailer < ApplicationMailer
         @url = 'http://boolapool.herokuapp.com/'
         mail(to: @trip.user_emails, subject: "#{@new_user.first_name} just joined the trip to #{@trip.destination}!")
     end
+
+    def unjoin_user_email
+        @unjoined_user = params[:unjoined_user]
+        @trip = params[:trip]
+        @url = 'http://boolapool.herokuapp.com/'
+        mail(to: @unjoined_user.email, subject: "You just unjoined the trip to #{@trip.destination}")
+    end
+
+    def unjoin_notification_email
+        @unjoined_user = params[:unjoined_user]
+        @trip = params[:trip]
+        @url = 'http://boolapool.herokuapp.com/'
+        mail(to: @trip.user_emails, subject: "#{@unjoined_user.first_name} just unjoined the trip to #{@trip.destination}")
+    end
 end

@@ -1,0 +1,19 @@
+<h1>You unjoined the trip to <%= @trip.destination %></h1>
+<h3>Trip Details:</h3>
+                                    
+<p>Destination: <%= @trip.destination %> (<%= @trip.address %>)</p>
+<p>Capacity: <%= @trip.capacity %></p>
+<p>Departure Time Range: <%= @trip.start_time %> - <%= @trip.end_time %> <br> </p>
+
+<% if @trip.users %>
+  <h3>Trip Members:</h3>
+    <ul>
+        <% @trip.users.each do |user| %>
+            <li><%= "#{user.first_name} #{user.last_name} -- #{user.email} (Phone #: #{user.phone})" %></li>
+        <% end %>
+    </ul>
+<% end %>
+
+<p>To go to BoolaPool, just follow this link: <%= @url %>.</p>
+
+<p>Thanks for using BoolaPool and have a great day!</p>

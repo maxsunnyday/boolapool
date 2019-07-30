@@ -12,7 +12,12 @@ class UsertripsController < ApplicationController
     end
 
     def destroy
-        Usertrip.destroy(params[:id])
+        usertrip = Usertrip.find(params[:id])
+        trip = usertrip.trip
+        user = usertrip.user
+        usertrip.destroy
+        UserMailer.with(unjoined_user: user, trip: trip).unjoin_user_email.deliver_later
+        UserMailer.with(unjoined_user: user, trip: trip).unjoin_notification_email.deliver_later
     end
  
     private
