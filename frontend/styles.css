@@ -4,6 +4,8 @@ body, html {
 	padding: 0;
 }
 
+
+/*Home*/
 div.home-text{
   text-align: center;
   padding: 100px;
@@ -15,76 +17,263 @@ select{
   width: 40%;
   top: 200px;
 }
-div.login-container {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+
+div.modal-content {
+  background-color: #1263ba;
+  color: white;
 }
 
-.login-container {
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0, 0.8);
-  z-index: 10;
+.transform {
+
+}
+
+
+/*Login*/
+div.modal-dialog {
+  width: 400px;  
+/*  height: 500px;*/
+  position: relative;
+  top: 20%;
+}
+
+div.modal-header {
+  border: none;
+  padding: 10px 16px;
+}
+
+div.modal-body {
+  background-color: #74b0f1;
+}
+
+
+div.signup-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+div.signup-link a{
+  color: white;
 }
 
 form.lg input[type=email],
-form.lg input[type=password],
+form.lg input[type=password]{
+  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid #e6f2ff;
+  background: transparent;
+  outline: none;
+  height: 35px;
+  color: white;
+  font-size: 15px;
+  width: 90%;
+}
+
+div.name-field {
+  width: 45%;
+  display: inline-block;
+  margin: auto;
+}
+
 form.su input[type=email],
 form.su input[type=password],
 form.su input[type=text],
 form.su input[type=tel] {
   margin-bottom: 10px;
-	border: none;
-	border-bottom: 1px solid lightgray;
-	background: transparent;
-	outline: none;
-	height: 35px;
-	color: gray;
-	font-size: 15px;
+  border: none;
+  border-bottom: 1px solid #e6f2ff;
+  background: transparent;
+  outline: none;
+  height: 35px;
+  color: black;
+  font-size: 15px;
+  width: 90%;
 }
 
-form.lg input[type=submit],
-form.su input[type=submit]{
-	height: 30px;
-	color: #fff;
-	font-size: 15px;
-	background: #6699ff;
-	cursor: pointer;
-	border-radius: 20px;
-	border: none;
-	outline: none;
+div.subtext{
+  font-size: 13px;
+  color: rgba(0,0,0,0.4);
+
 }
 
-.login-box button{
-	height: 30px;
-	width: 100%;
-	color: #fff;
-	font-size: 15px;
-	background: blue;
-	cursor: pointer;
-	border-radius: 25px;
-	border: none;
-	outline: none;
-	margin-top: 2%;
+div.check {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-.login-box div.link{
-	margin: 0;
-	padding: 0;
-	color: #fff;
-	text-align: center;
+::placeholder {
+  color: rgba(0,0,0,0.3)
 }
 
-.login-box h6.error{
-	color: red;
-	font-size: 10px;
+form.lg input[type=submit] {
+  height: 30px;
+  color: #fff;
+  font-size: 18px;
+  background: #1263ba;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  margin-left: 20%;
+  width: 60%;
 }
 
-input[type=datetime-local]{
-	-webkit-appearance: none;
+form.su input[type=submit] {
+  height: 30px;
+  color: #fff;
+  font-size: 18px;
+  background: #74b0f1;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  margin-left: 20%;
+  width: 60%;
+}
+
+div.back-link, div.next-link {
+  display: inline-block;
+  padding-top: 10px;
+}
+
+div.back-link {
+  margin-left: 0%;
+}
+
+div.next-link {
+  margin-left: 77%;
+}
+
+div.filler {
+  height: 11px;
+}
+
+div.filler2 {
+  height: 41px;
+}
+
+div.filler3 {
+  height: 23px;
+}
+
+div.cbtext {
+  font-size: 15px;
+  color: black;
+  display: inline-block;
+  vertical-align: bottom;
+}
+.anim {
+  animation-name: grow;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes grow {
+  0% {width: 400px;}
+  20% {color: transparent;}
+  100% {width: 600px;}
+}
+
+.appear {
+  animation-name: appear;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes appear {
+  0% {opacity: 0;}
+  50% {opacity: 0;}
+  100% {opacity: 1;
+        color: black;}
+}
+
+.disappear {
+  animation-name: disappear;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes disappear {
+  0% {opacity: 1;}
+  20% {opacity: 0;}
+  100% {opacity: 0;}
+}
+
+.lighten {
+  animation-name: lighten;
+  animation-duration: 0.9s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+div.lightened {
+  background-color: #74b0f1;
+}
+
+@keyframes lighten {
+  0% {background-color: #1263ba;}
+  100% {background-color: #74b0f1;
+        color: transparent;}
+}
+
+.whiten {
+  animation-name: whiten;
+  animation-duration: 0.9s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes whiten {
+  0% {background-color: #74b0f1;}
+  100% {background-color: white;}
+}
+
+div.whitened {
+  background-color: white;
+}
+
+.appear-head {
+  animation-name: appearhead;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes appearhead {
+  0% {opacity: 0;}
+  50% {opacity: 0;}
+  100% {opacity: 1;
+        color: white;}
+}
+
+
+/*Profile and Flipcard*/
+div.profile-container {
+  margin: auto;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 25px;
+  width: 94%;
+  height: 80%;
+}
+
+div.profile-greeting {
+  padding: 10px 20px;
+}
+
+div.profile-current-trips {
+  padding: 20px 20px;
+  background-color: hsl(0, 0%, 97%);
+}
+
+div.profile-past-trips {
+  padding: 20px 20px;
+  background-color: hsl(0, 0%, 97%);
+}
+
+div.profile-subhead-text {
+  font-size: 23px
 }
 
 .flip-card {
@@ -160,6 +349,8 @@ input[type=datetime-local]{
   margin-left: 20px;
 }
 
+
+/*Navbar*/
 .bg-nav {
   background-color: #0E4D92;
 }
@@ -177,33 +368,8 @@ input[type=datetime-local]{
   color: black;
 }
 
-div.profile-container {
-  margin: auto;
-  margin-top: 20px;
-  background-color: white;
-  border-radius: 25px;
-  width: 94%;
-  height: 80%;
-}
 
-div.profile-greeting {
-  padding: 10px 20px;
-}
-
-div.profile-current-trips {
-  padding: 20px 20px;
-  background-color: hsl(0, 0%, 97%);
-}
-
-div.profile-past-trips {
-  padding: 20px 20px;
-  background-color: hsl(0, 0%, 97%);
-}
-
-div.profile-subhead-text {
-  font-size: 23px
-}
-
+/*Display Trips*/
 #tdx{
   padding: .75rem;
   vertical-align: top;
