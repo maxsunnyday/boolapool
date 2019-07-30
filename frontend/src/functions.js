@@ -1,28 +1,3 @@
-//Handles displaying different 'pages'
-// function displayLogin() {
-
-// 	//Make Login Modal Appear
-// 	loginDiv = document.querySelector('div.login')
-// 	// loginDiv.innerHTML = `<div class="login-container">
-// 	// 				    	<div class="login-box">
-// 	// 				      		<h2>Login</h2>
-// 	// 				      		<form class="lg">
-// 	// 				        		<p>Email</p>
-//  //                                    <input type="email" placeholder="handsome.dan@yale.edu" required>
-//  //                                    <p>Password</p>
-//  //                                    <input type="password" placeholder="woofwoof123" required>
-// 	// 				        		<div class="error">
-// 	// 				        		</div>
-// 	// 				        		<input type="submit" value="Log In">
-// 	// 				      		</form>
-// 	// 				      		<div class="link">
-// 	// 				      			<a href="" class="sign-up">Don't have an account? Sign up here!</a>
-// 	// 				      		</div>
-// 	// 				    	</div>
-//  //                          </div>`
-    
-// }
-
 function displayHome() {
     mainContainer.innerHTML = `<div class="home-text">
             <h1>Welcome to BoolaPool!</h1>
@@ -515,6 +490,8 @@ function formatDate(date) {
     return result
 }
 
+
+
 function listenLogin() {
     const loginModal = document.querySelector("div#loginModal")
     const loginForm = loginModal.querySelector("form.lg")
@@ -571,53 +548,12 @@ function listenLogin() {
     //Handles clicking on sign up link
     signup.querySelector("a.sign-up").addEventListener('click', function(e) {
         e.preventDefault()
-
-        signup.parentElement.parentElement.innerHTML = `<div class="modal-header">
-                                                            <h5 class="modal-title" id="SignupModalLabel">Signup</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                              <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form class="su">
-                                                                First Name
-                                                                <br>
-                                                                <input type="text" placeholder="Petey" required>
-                                                                <br>
-                                                                Last Name
-                                                                <br>
-                                                                <input type="text" placeholder="Salovey" required>
-                                                                <br>
-                                                                Email
-                                                                <br>
-                                                                <input type="email" placeholder="handsome.dan@yale.edu" required>
-                                                                <br>
-                                                                Phone Number
-                                                                <br>
-                                                                <input type="tel" placeholder="1234567890">
-                                                                <br>
-                                                                Password
-                                                                <br>
-                                                                <input type="password" placeholder="woofwoof123" required>
-                                                                <br>
-                                                                Password Confirmation
-                                                                <br>
-                                                                <input type="password" placeholder="woofwoof123" required>
-                                                                <div class="error">
-                                                                </div>
-                                                                <input type="submit" value="Create Account">
-                                                            </form>
-                                                            <div class="login-link">
-                                                                <a href="" class="go-back">Go Back</a>
-                                                            </div>
-                                                        </div>`
+        signup.parentElement.parentElement.innerHTML = 
 
 
         //Handles creating new user in database
         loginModal.querySelector("form.su").addEventListener('submit', function(e) {
             e.preventDefault()
-
-            console.log(e.target.children)
 
             const first_name = e.target.children[1].value
             const last_name = e.target.children[4].value
@@ -677,7 +613,204 @@ function listenLogin() {
         //Handles clicking on go back link
         loginModal.querySelector("a.go-back").addEventListener('click', function(e) {
             e.preventDefault()
+            resetLogin()
         })
 
+    })
+}
+
+function resetLogin() {
+    const loginModal = document.querySelector('div#loginModal')
+    loginModal.innerHTML = `      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="lg">
+                Email
+                <br>
+                <input type="email" placeholder="handsome.dan@yale.edu" required>
+                <br>
+                Password
+                <br>
+                <input type="password" placeholder="woofwoof123" required>
+                <div class="error">
+                </div>
+                <input type="submit" value="Log In">
+            </form>
+            <div class="signup-link">
+                <a href="" class="sign-up">Don't have an account? Sign up here!</a>
+            </div>
+          </div>
+        </div>
+      </div>`
+}
+
+function ani() {
+    const content = document.querySelector("div.modal-content")
+    document.querySelector("div.modal-dialog").classList.add("anim")
+    document.querySelector("div.modal-body").classList.add("whiten")
+    content.classList.add("lighten")
+    document.querySelector("form.lg").classList.add("disappear")
+    document.querySelector("div.signup-link").classList.add("disappear")
+
+    setTimeout(function() {
+        content.innerHTML =  `<div class="modal-header">
+                                <h5 class="modal-title" id="SignupModalLabel">Signup</h5>
+                                <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body whitened">
+                                <form class="su">
+                                    <div class="name-field">
+                                        First Name
+                                        <br>
+                                        <input type="text" placeholder="Petey" required>
+                                    </div>
+                                    <div class="name-field">
+                                        Last Name
+                                        <br>
+                                        <input type="text" placeholder="Salovey" required>
+                                    </div>
+                                    <br>
+                                    Email
+                                    <br>
+                                    <input type="email" placeholder="handsome.dan@yale.edu" required>
+                                    <div class="subtext">NOTE: You will receive trip updates at this email address</div>
+                                    <div class="error"
+                                    </div>
+                                </form>
+                                <div class="filler"></div>
+                                <div class="back-link">
+                                    <a href="" class="go-back">Go Back</a>
+                                </div>
+                                <div class="next-link">
+                                    <a href="" class="next">Next</a>
+                                </div>
+                            </div>`
+        content.classList.add("lightened")
+        document.querySelector('form.su').classList.add("appear")
+        document.querySelector('div.modal-header').classList.add("appear-head")
+
+        listenClose()
+
+        document.querySelector('div.next-link').addEventListener("click", function(e) {
+            e.preventDefault()
+            form = document.querySelector('form.su')
+            first_name = form.children[0].children[1].value
+            last_name = form.children[1].children[1].value
+            email = form.children[4].value
+
+            form.classList.replace("appear", "disappear")
+            setTimeout(function() {
+                form.innerHTML = `<div class="subtext">BoolaPool can provide fast text updates whenever members create, join, or unjoin trips. Would you like to receive text notifications?</div>
+                                  <div class="check">
+                                    <input type="checkbox" name="yes" value="yes">
+                                    <div class="cbtext"> Yes, please send me text notifications</div>
+                                  </div>
+                                  <input type="tel" name="tel" placeholder="1234567890" disabled>
+                                  <div class="error">
+                                    <div class="filler2"></div>
+                                    <div class="back-link">
+                                        <a href="" class="go-back">Go Back</a>
+                                    </div>
+                                    <div class="next-link">
+                                        <a href="" class="next">Next</a>
+                                    </div>
+                                  </div>`
+                form.classList.replace("disappear", "appear")
+
+                form.querySelector('input[name="yes"]').addEventListener("change", function(e) {
+                    form.querySelector('input[name="tel"]').disabled = !form.querySelector('input[name="tel"]').disabled
+                })
+
+                listenClose()
+
+                form.querySelector('div.next-link').addEventListener("click", function(e) {
+                    e.preventDefault()
+                    phone = form.children[2].value
+                    
+                    form.classList.replace("appear", "disappear")
+                    setTimeout(function() {
+                        form.innerHTML = `<div class="filler"></div>
+                                        Password
+                                        <br>
+                                        <input type="password" placeholder="woofwoof123" required>
+                                        <br>
+                                        Password Confirmation
+                                        <br>
+                                        <input type="password" placeholder="woofwoof123" required>
+                                        <div class="filler3"></div>
+                                        <input type="submit" value="Create Account">`
+                        form.classList.replace("disappear", "appear")
+
+                        listenClose()
+
+                        form.addEventListener("submit", function(e) {
+                            e.preventDefault()
+                            password = form.children[2].value
+                            password_confirmation = form.children[5].value
+
+                            fetch("http://localhost:3000/users", {
+                                method: "POST",
+                                headers: {
+                                    'Content-Type': "application/json",
+                                    'Accept': "application/json"
+                                },
+                                body: JSON.stringify({
+                                    first_name,
+                                    last_name,
+                                    email,
+                                    phone,
+                                    password,
+                                    password_confirmation
+                                })
+                            }).then(result => result.json())
+                            .then(user => {
+                                if (user["errors"]) {
+                                    loginModal.querySelector('div.error').innerHTML = ``
+                                    user["errors"].forEach(error => {
+                                        loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
+                                    });
+                                } else {
+                                    localStorage.setItem("user_id", user.id)
+                                    document.querySelector("div#loginBtn").remove()
+                                    createProfileBtn()
+                                    createLogoutBtn()
+                                    
+                                    //Display Home
+                                    document.querySelector("div#home").addEventListener("click", function (e) {
+                                        displayHome()
+                                    })
+                    
+                                    //Display Trips
+                                    document.querySelector("div#all").addEventListener("click", function (e) {
+                                        displayTrips()
+                                    })
+
+                                    $(function() {
+                                        $('#loginModal').modal('toggle'); 
+                                    })
+
+                                    displayProfile(user)
+                                }
+                            })
+                        })
+                    })
+                })
+            }, 1000)
+        })
+    }, 1000)
+}
+
+function listenClose() {
+    document.querySelector("button#close").addEventListener('click', function(e) {
+        console.log("reset")
+        resetLogin()
     })
 }
