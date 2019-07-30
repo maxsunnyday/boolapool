@@ -75,8 +75,6 @@ function displayProfile(user) {
     let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes()) + ":" + appendLeadingZeroes(today.getSeconds());
     let dateTime =  date+'T'+time;
 
-    console.log(dateTime)
-
     userId = localStorage.getItem('user_id')
     fetch(`http://localhost:3000/users/${userId}`)
     .then(response => response.json())
@@ -719,26 +717,24 @@ function ani() {
                                     <br>
                                     <input type="email" placeholder="handsome.dan@yale.edu" required>
                                     <div class="subtext">NOTE: You will receive trip updates at this email address</div>
-                                    <div class="error"
+                                    <div class="error">
+                                        <div class="filler"></div>
+                                        <div class="next-link">
+                                            <input type="submit" value="Next">
+                                        </div>
                                     </div>
                                 </form>
-                                <div class="filler"></div>
-                                <div class="back-link">
-                                    <a href="" class="go-back">Go Back</a>
-                                </div>
-                                <div class="next-link">
-                                    <a href="" class="next">Next</a>
-                                </div>
                             </div>`
         content.classList.add("lightened")
-        document.querySelector('form.su').classList.add("appear")
+        form = document.querySelector('form.su')
+
+        form.classList.add("appear")
         document.querySelector('div.modal-header').classList.add("appear-head")
 
         listenClose()
 
-        document.querySelector('div.next-link').addEventListener("click", function(e) {
+        form.addEventListener("submit", function(e) {
             e.preventDefault()
-            form = document.querySelector('form.su')
             first_name = form.children[0].children[1].value
             last_name = form.children[1].children[1].value
             email = form.children[4].value
@@ -753,11 +749,8 @@ function ani() {
                                   <input type="tel" name="tel" placeholder="1234567890" disabled>
                                   <div class="error">
                                     <div class="filler2"></div>
-                                    <div class="back-link">
-                                        <a href="" class="go-back">Go Back</a>
-                                    </div>
                                     <div class="next-link">
-                                        <a href="" class="next">Next</a>
+                                        <input type="submit" value="Next">
                                     </div>
                                   </div>`
                 form.classList.replace("disappear", "appear")
@@ -768,7 +761,7 @@ function ani() {
 
                 listenClose()
 
-                form.querySelector('div.next-link').addEventListener("click", function(e) {
+                form.addEventListener("submit", function(e) {
                     e.preventDefault()
                     phone = form.children[2].value
                     
