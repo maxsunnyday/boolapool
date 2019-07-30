@@ -30,7 +30,6 @@ function displayHome() {
         searchQuery = e.target.children[0].value 
         displayTrips(searchQuery)
     })
-
     listenLogin()
 }
 
@@ -75,8 +74,6 @@ function displayProfile(user) {
     let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
     let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes()) + ":" + appendLeadingZeroes(today.getSeconds());
     let dateTime =  date+'T'+time;
-
-    console.log(dateTime)
 
     userId = localStorage.getItem('user_id')
     fetch(`http://localhost:3000/users/${userId}`)
@@ -179,7 +176,6 @@ function displayProfile(user) {
                                 </div>`
             }
         }
-
         listenUnjoin()
     })
 }
@@ -255,8 +251,6 @@ function displayTrips(search="") {
             },
             opens: "center",
             minDate: moment().startOf('date'),
-            // startDate: moment().startOf('hour'),
-            // endDate: moment().startOf('hour').add(32, 'hour'),
             locale: {
                 format: 'MM/DD/YYYY hh:mm A'
             }
@@ -357,11 +351,6 @@ function listenNewTrip() {
             e.preventDefault()
 
             let tbody = document.querySelector('tbody')
-            // let start = moment(e.target.children[7].value.split(" - ")[0]).format()
-            // let end = moment(e.target.children[7].value.split(" - ")[1]).format()
-            // console.log(start)
-            // console.log(end)
-            // console.log(moment(start).isBefore(moment(end)))
 
             fetch("http://localhost:3000/trips", {
                 method: "POST",
@@ -627,8 +616,6 @@ function listenLogin() {
             }).then(result => result.json())
             .then(user => {
                 if (user["errors"]) {
-                    // console.log(user)
-                    // console.log(loginDiv.querySelector('div.error'))
                     loginModal.querySelector('div.error').innerHTML = ``
                     user["errors"].forEach(error => {
                         loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
@@ -699,161 +686,171 @@ function resetLogin() {
 }
 
 function ani() {
-    const content = document.querySelector("div.modal-content")
-    document.querySelector("div.modal-dialog").classList.add("anim")
-    document.querySelector("div.modal-body").classList.add("whiten")
-    content.classList.add("lighten")
-    document.querySelector("form.lg").classList.add("disappear")
-    document.querySelector("div.signup-link").classList.add("disappear")
+    fetch("http://localhost:3000/users").then(result => result.json()).then(users => {
+        const emails = users.map(user => user.email)
+        console.log(emails)
+        const content = document.querySelector("div.modal-content")
+        document.querySelector("div.modal-dialog").classList.add("anim")
+        document.querySelector("div.modal-body").classList.add("whiten")
+        content.classList.add("lighten")
+        document.querySelector("form.lg").classList.add("disappear")
+        document.querySelector("div.signup-link").classList.add("disappear")
 
-    setTimeout(function() {
-        content.innerHTML =  `<div class="modal-header">
-                                <h5 class="modal-title" id="SignupModalLabel">Signup</h5>
-                                <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body whitened">
-                                <form class="su">
-                                    <div class="name-field">
-                                        First Name
-                                        <br>
-                                        <input type="text" placeholder="Petey" required>
-                                    </div>
-                                    <div class="name-field">
-                                        Last Name
-                                        <br>
-                                        <input type="text" placeholder="Salovey" required>
-                                    </div>
-                                    <br>
-                                    Email
-                                    <br>
-                                    <input type="email" placeholder="handsome.dan@yale.edu" required>
-                                    <div class="subtext">NOTE: You will receive trip updates at this email address</div>
-                                    <div class="error"
-                                    </div>
-                                </form>
-                                <div class="filler"></div>
-                                <div class="back-link">
-                                    <a href="" class="go-back">Go Back</a>
+        setTimeout(function() {
+            content.innerHTML =  `<div class="modal-header">
+                                    <h5 class="modal-title" id="SignupModalLabel">Signup</h5>
+                                    <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                                <div class="next-link">
-                                    <a href="" class="next">Next</a>
-                                </div>
-                            </div>`
-        content.classList.add("lightened")
-        document.querySelector('form.su').classList.add("appear")
-        document.querySelector('div.modal-header').classList.add("appear-head")
-
-        listenClose()
-
-        document.querySelector('div.next-link').addEventListener("click", function(e) {
-            e.preventDefault()
+                                <div class="modal-body whitened">
+                                    <form class="su">
+                                        <div class="name-field">
+                                            First Name
+                                            <br>
+                                            <input type="text" placeholder="Petey" required>
+                                        </div>
+                                        <div class="name-field">
+                                            Last Name
+                                            <br>
+                                            <input type="text" placeholder="Salovey" required>
+                                        </div>
+                                        <br>
+                                        Email
+                                        <br>
+                                        <input type="email" placeholder="handsome.dan@yale.edu" required>
+                                        <div class="subtext">NOTE: You will receive trip updates at this email address</div>
+                                        <div class="error">
+                                            <div class="filler"></div>
+                                            <div class="next-link">
+                                                <input type="submit" value="Next">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>`
+            content.classList.add("lightened")
             form = document.querySelector('form.su')
-            first_name = form.children[0].children[1].value
-            last_name = form.children[1].children[1].value
-            email = form.children[4].value
 
-            form.classList.replace("appear", "disappear")
-            setTimeout(function() {
-                form.innerHTML = `<div class="subtext">BoolaPool can provide fast text updates whenever members create, join, or unjoin trips. Would you like to receive text notifications?</div>
-                                  <div class="check">
-                                    <input type="checkbox" name="yes" value="yes">
-                                    <div class="cbtext"> Yes, please send me text notifications</div>
-                                  </div>
-                                  <input type="tel" name="tel" placeholder="1234567890" disabled>
-                                  <div class="error">
-                                    <div class="filler2"></div>
-                                    <div class="back-link">
-                                        <a href="" class="go-back">Go Back</a>
-                                    </div>
-                                    <div class="next-link">
-                                        <a href="" class="next">Next</a>
-                                    </div>
-                                  </div>`
-                form.classList.replace("disappear", "appear")
+            form.classList.add("appear")
+            document.querySelector('div.modal-header').classList.add("appear-head")
 
-                form.querySelector('input[name="yes"]').addEventListener("change", function(e) {
-                    form.querySelector('input[name="tel"]').disabled = !form.querySelector('input[name="tel"]').disabled
-                })
+            listenClose()
 
-                listenClose()
+            form.addEventListener("submit", function(e) {
+                e.preventDefault()
+                first_name = form.children[0].children[1].value
+                last_name = form.children[1].children[1].value
+                email = form.children[4].value
 
-                form.querySelector('div.next-link').addEventListener("click", function(e) {
-                    e.preventDefault()
-                    phone = form.children[2].value
-                    
+                if (emails.includes(email)) {
+                    form.querySelector("div.filler").innerText = "That email is already taken!"
+                } else {
                     form.classList.replace("appear", "disappear")
                     setTimeout(function() {
-                        form.innerHTML = `<div class="filler"></div>
-                                        Password
-                                        <br>
-                                        <input type="password" placeholder="woofwoof123" required>
-                                        <br>
-                                        Password Confirmation
-                                        <br>
-                                        <input type="password" placeholder="woofwoof123" required>
-                                        <div class="filler3"></div>
-                                        <input type="submit" value="Create Account">`
+                        form.innerHTML = `<div class="subtext">BoolaPool can provide fast text updates whenever members create, join, or unjoin trips. Would you like to receive text notifications?</div>
+                                          <div class="check">
+                                            <input type="checkbox" name="yes" value="yes">
+                                            <div class="cbtext"> Yes, please send me text notifications</div>
+                                          </div>
+                                          <input type="tel" name="tel" placeholder="1234567890" disabled>
+                                          <div class="error">
+                                            <div class="filler2"></div>
+                                            <div class="next-link">
+                                                <input type="submit" value="Next">
+                                            </div>
+                                          </div>`
                         form.classList.replace("disappear", "appear")
+
+                        form.querySelector('input[name="yes"]').addEventListener("change", function(e) {
+                            form.querySelector('input[name="tel"]').disabled = !form.querySelector('input[name="tel"]').disabled
+                        })
 
                         listenClose()
 
                         form.addEventListener("submit", function(e) {
                             e.preventDefault()
-                            password = form.children[2].value
-                            password_confirmation = form.children[5].value
+                            phone = form.children[2].value
+                            console.log(phone)
+                            if ((phone != "") && (isNaN(phone) || phone.length != 10)) {
+                                form.querySelector("div.filler2").innerText = "Invalid phone number (ex: 2915042210)"
+                            } else {
+                                form.classList.replace("appear", "disappear")
+                                setTimeout(function() {
+                                    form.innerHTML = `<div class="filler"></div>
+                                                    Password
+                                                    <br>
+                                                    <input type="password" placeholder="woofwoof123" required>
+                                                    <br>
+                                                    Password Confirmation
+                                                    <br>
+                                                    <input type="password" placeholder="woofwoof123" required>
+                                                    <div class="filler3"></div>
+                                                    <input type="submit" value="Create Account">`
+                                    form.classList.replace("disappear", "appear")
 
-                            fetch("http://localhost:3000/users", {
-                                method: "POST",
-                                headers: {
-                                    'Content-Type': "application/json",
-                                    'Accept': "application/json"
-                                },
-                                body: JSON.stringify({
-                                    first_name,
-                                    last_name,
-                                    email,
-                                    phone,
-                                    password,
-                                    password_confirmation
+                                    listenClose()
+
+                                    form.addEventListener("submit", function(e) {
+                                        e.preventDefault()
+                                        password = form.children[2].value
+                                        password_confirmation = form.children[5].value
+
+                                        if (password !== password_confirmation) {
+                                            form.querySelector('div.filler3').innerText = "Passwords do not match!"
+                                        }
+                                        fetch("http://localhost:3000/users", {
+                                            method: "POST",
+                                            headers: {
+                                                'Content-Type': "application/json",
+                                                'Accept': "application/json"
+                                            },
+                                            body: JSON.stringify({
+                                                first_name,
+                                                last_name,
+                                                email,
+                                                phone,
+                                                password,
+                                                password_confirmation
+                                            })
+                                        }).then(result => result.json())
+                                        .then(user => {
+                                            if (user["errors"]) {
+                                                loginModal.querySelector('div.error').innerHTML = ``
+                                                user["errors"].forEach(error => {
+                                                    loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
+                                                });
+                                            } else {
+                                                localStorage.setItem("user_id", user.id)
+                                                document.querySelector("div#loginBtn").remove()
+                                                createProfileBtn()
+                                                createLogoutBtn()
+                                                
+                                                //Display Home
+                                                document.querySelector("div#home").addEventListener("click", function (e) {
+                                                    displayHome()
+                                                })
+                                
+                                                //Display Trips
+                                                document.querySelector("div#all").addEventListener("click", function (e) {
+                                                    displayTrips()
+                                                })
+
+                                                $(function() {
+                                                    $('#loginModal').modal('toggle'); 
+                                                })
+
+                                                displayProfile(user)
+                                            }
+                                        })
+                                    })
                                 })
-                            }).then(result => result.json())
-                            .then(user => {
-                                if (user["errors"]) {
-                                    loginModal.querySelector('div.error').innerHTML = ``
-                                    user["errors"].forEach(error => {
-                                        loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
-                                    });
-                                } else {
-                                    localStorage.setItem("user_id", user.id)
-                                    document.querySelector("div#loginBtn").remove()
-                                    createProfileBtn()
-                                    createLogoutBtn()
-                                    
-                                    //Display Home
-                                    document.querySelector("div#home").addEventListener("click", function (e) {
-                                        displayHome()
-                                    })
-                    
-                                    //Display Trips
-                                    document.querySelector("div#all").addEventListener("click", function (e) {
-                                        displayTrips()
-                                    })
-
-                                    $(function() {
-                                        $('#loginModal').modal('toggle'); 
-                                    })
-
-                                    displayProfile(user)
-                                }
-                            })
+                            }
                         })
-                    })
-                })
-            }, 1000)
-        })
-    }, 1000)
+                    }, 1000)
+                }
+            })
+        }, 1000)
+    })
 }
 
 function listenClose() {
