@@ -5,6 +5,14 @@ class UsertripsController < ApplicationController
         if Usertrip.find_by(usertrip_params)
             render json: {error: "YOU CAN'T JOIN"}, status: 401
         else
+            client = Twilio::REST::Client.new Rails.application.credentials.twilio_account_sid, Rails.application.credentials.twilio_auth_token
+
+            client.messages.create from: '+14752243879', to: "+1#{new_user.phone}", body: "You just joined a trip to #{trip.destination}!"
+
+            trip.users.each do |user|
+                client.messages.create from: '+14752243879', to: "+1#{user.phone}", body: "#{new_user.full_name} just joined your trip to #{trip.destination}!"
+            end
+
             usertrip = Usertrip.create(usertrip_params)
             render json: usertrip, include: {trip: {only: :users}}
             UserMailer.with(new_user: new_user, trip: trip).join_email.deliver_later
