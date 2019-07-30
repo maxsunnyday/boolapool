@@ -130,14 +130,24 @@ form.su input[type=submit] {
 div.back-link, div.next-link {
   display: inline-block;
   padding-top: 10px;
+  width: 100%;
 }
 
 div.back-link {
   margin-left: 0%;
 }
 
-div.next-link {
-  margin-left: 77%;
+div.next-link input[type=submit]{
+  height: 30px;
+  color: #fff;
+  font-size: 18px;
+  background: #74b0f1;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  margin-left: 87%;
+  width: 12%;
 }
 
 div.filler {
