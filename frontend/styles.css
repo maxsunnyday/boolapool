@@ -152,14 +152,17 @@ div.next-link input[type=submit]{
 
 div.filler {
   height: 11px;
+  color: red;
 }
 
 div.filler2 {
   height: 41px;
+  color: red;
 }
 
 div.filler3 {
   height: 23px;
+  color: red;
 }
 
 div.cbtext {
