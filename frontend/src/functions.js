@@ -503,10 +503,11 @@ function displayTripsToYale(search="") {
 
 function listenNewTripFromYale() {
     //Create new Trip
-    let userId = localStorage.getItem('user_id')
     document.addEventListener('submit', function(e){
         if (e.target.className === "new-trip-from-yale") {
             e.preventDefault()
+
+            let userId = localStorage.getItem('user_id')
 
             let tbody = document.querySelector('tbody')
 
@@ -552,10 +553,11 @@ function listenNewTripFromYale() {
 
 function listenNewTripToYale() {
     //Create new Trip
-    let userId = localStorage.getItem('user_id')
     document.addEventListener('submit', function(e){
         if (e.target.className === "new-trip-to-yale") {
             e.preventDefault()
+
+            let userId = localStorage.getItem('user_id')
 
             let tbody = document.querySelector('tbody')
 
