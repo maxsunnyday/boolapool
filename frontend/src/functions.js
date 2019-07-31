@@ -1,3 +1,4 @@
+//Handles displaying Home and Profile
 function displayHome() {
     mainContainer.innerHTML = `<div class="home-text">
             <h1>Welcome to BoolaPool!</h1>
@@ -30,7 +31,12 @@ function displayHome() {
         searchQuery = e.target.children[0].value 
         displayTrips(searchQuery)
     })
+
     listenLogin()
+
+    document.querySelector("div#all").addEventListener("click", function (e) {
+        displayTrips()
+    })
 }
 
 function displayProfile(user) {
@@ -188,6 +194,279 @@ function displayPassengers(users) {
     return userList
 }
 
+//Handles login sequence
+function listenLogin() {
+    const loginModal = document.querySelector("div#loginModal")
+    const loginForm = loginModal.querySelector("form.lg")
+    const signup = loginModal.querySelector("div.signup-link")
+    //Handles Login Functionality                
+    loginForm.addEventListener("submit", function(e) {
+        e.preventDefault()
+    
+        $(function() {
+            $('#loginModal').modal('toggle'); 
+        })
+
+        const email = e.target.children[1].value
+        const password = e.target.children[4].value
+    
+        fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json",
+                'Accept': "application/json"
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        }).then(res => res.json())
+        .then(data => {
+
+            //Prompts user if email is invalid
+            if (data["error"]) {
+                console.log(data)
+                loginForm.querySelector('div.error').innerHTML = '<h6 class="error">Invalid Email and/or Password</h6>'
+            } else {
+                loginForm.reset()
+                localStorage.setItem("user_id", data.id)
+                document.querySelector("div#loginBtn").remove()
+                createProfileBtn()
+                createLogoutBtn()
+
+                //Display Home
+                document.querySelector("div#home").addEventListener("click", function (e) {
+                    displayHome()
+                })
+
+                //Display Trips
+                document.querySelector("div#all").addEventListener("click", function (e) {
+                    displayTrips()
+                })
+                displayProfile(data)
+            }
+        })
+    })
+
+    //Handles clicking on sign up link
+    signup.querySelector("a.sign-up").addEventListener('click', function(e) {
+        e.preventDefault()
+        listenSignup()
+    })
+}
+
+function listenSignup() {
+    fetch("http://localhost:3000/users").then(result => result.json()).then(users => {
+        const emails = users.map(user => user.email)
+        console.log(emails)
+        const content = document.querySelector("div.modal-content")
+        document.querySelector("div.modal-dialog").classList.add("anim")
+        document.querySelector("div.modal-body").classList.add("whiten")
+        content.classList.add("lighten")
+        document.querySelector("form.lg").classList.add("disappear")
+        document.querySelector("div.signup-link").classList.add("disappear")
+
+        setTimeout(function() {
+            content.innerHTML =  `<div class="modal-header">
+                                    <h5 class="modal-title" id="SignupModalLabel">Signup</h5>
+                                    <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body whitened">
+                                    <form class="su">
+                                        <div class="name-field">
+                                            First Name
+                                            <br>
+                                            <input type="text" placeholder="Petey" required>
+                                        </div>
+                                        <div class="name-field">
+                                            Last Name
+                                            <br>
+                                            <input type="text" placeholder="Salovey" required>
+                                        </div>
+                                        <br>
+                                        Email
+                                        <br>
+                                        <input type="email" placeholder="handsome.dan@yale.edu" required>
+                                        <div class="subtext">NOTE: You will receive trip updates at this email address</div>
+                                        <div class="error">
+                                            <div class="filler"></div>
+                                            <div class="next-link">
+                                                <input type="submit" value="Next">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>`
+            content.classList.add("lightened")
+            form = document.querySelector('form.su')
+
+            form.classList.add("appear")
+            document.querySelector('div.modal-header').classList.add("appear-head")
+
+            listenClose()
+
+            form.addEventListener("submit", function(e) {
+                e.preventDefault()
+                first_name = form.children[0].children[1].value
+                last_name = form.children[1].children[1].value
+                email = form.children[4].value
+
+                if (emails.includes(email)) {
+                    form.querySelector("div.filler").innerText = "That email is already taken!"
+                } else {
+                    form.classList.replace("appear", "disappear")
+                    setTimeout(function() {
+                        form.innerHTML = `<div class="subtext">BoolaPool can provide fast text updates whenever members create, join, or unjoin trips. Would you like to receive text notifications?</div>
+                                          <div class="check">
+                                            <input type="checkbox" name="yes" value="yes">
+                                            <div class="cbtext"> Yes, please send me text notifications</div>
+                                          </div>
+                                          <input type="tel" name="tel" placeholder="1234567890" disabled>
+                                          <div class="error">
+                                            <div class="filler2"></div>
+                                            <div class="next-link">
+                                                <input type="submit" value="Next">
+                                            </div>
+                                          </div>`
+                        form.classList.replace("disappear", "appear")
+
+                        form.querySelector('input[name="yes"]').addEventListener("change", function(e) {
+                            form.querySelector('input[name="tel"]').disabled = !form.querySelector('input[name="tel"]').disabled
+                        })
+
+                        listenClose()
+
+                        form.addEventListener("submit", function(e) {
+                            e.preventDefault()
+                            phone = form.children[2].value
+    
+                            if ((phone != "") && (isNaN(phone) || phone.length != 10)) {
+                                form.querySelector("div.filler2").innerText = "Invalid phone number (ex: 2915042210)"
+                            } else {
+                                form.classList.replace("appear", "disappear")
+                                setTimeout(function() {
+                                    form.innerHTML = `<div class="filler"></div>
+                                                    Password
+                                                    <br>
+                                                    <input type="password" placeholder="woofwoof123" required>
+                                                    <br>
+                                                    Password Confirmation
+                                                    <br>
+                                                    <input type="password" placeholder="woofwoof123" required>
+                                                    <div class="filler3"></div>
+                                                    <input type="submit" value="Create Account">`
+                                    form.classList.replace("disappear", "appear")
+
+                                    listenClose()
+
+                                    form.addEventListener("submit", function(e) {
+                                        e.preventDefault()
+                                        password = form.children[2].value
+                                        password_confirmation = form.children[5].value
+
+                                        if (password !== password_confirmation) {
+                                            form.querySelector('div.filler3').innerText = "Passwords do not match!"
+                                        }
+                                        fetch("http://localhost:3000/users", {
+                                            method: "POST",
+                                            headers: {
+                                                'Content-Type': "application/json",
+                                                'Accept': "application/json"
+                                            },
+                                            body: JSON.stringify({
+                                                first_name,
+                                                last_name,
+                                                email,
+                                                phone,
+                                                password,
+                                                password_confirmation
+                                            })
+                                        }).then(result => result.json())
+                                        .then(user => {
+                                            if (user["errors"]) {
+                                                loginModal.querySelector('div.error').innerHTML = ``
+                                                user["errors"].forEach(error => {
+                                                    loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
+                                                });
+                                            } else {
+                                                localStorage.setItem("user_id", user.id)
+                                                document.querySelector("div#loginBtn").remove()
+                                                createProfileBtn()
+                                                createLogoutBtn()
+                                                
+                                                //Display Home
+                                                document.querySelector("div#home").addEventListener("click", function (e) {
+                                                    displayHome()
+                                                })
+                                
+                                                //Display Trips
+                                                document.querySelector("div#all").addEventListener("click", function (e) {
+                                                    displayTrips()
+                                                })
+
+                                                $(function() {
+                                                    $('#loginModal').modal('toggle'); 
+                                                })
+
+                                                displayProfile(user)
+                                            }
+                                        })
+                                    })
+                                })
+                            }
+                        })
+                    }, 1000)
+                }
+            })
+        }, 1000)
+    })
+}
+
+function resetLogin() {
+    const loginModal = document.querySelector('div#loginModal')
+    loginModal.innerHTML = `      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="lg">
+                Email
+                <br>
+                <input type="email" placeholder="handsome.dan@yale.edu" required>
+                <br>
+                Password
+                <br>
+                <input type="password" placeholder="woofwoof123" required>
+                <div class="error">
+                </div>
+                <input type="submit" value="Log In">
+            </form>
+            <div class="signup-link">
+                <a href="" class="sign-up">Don't have an account? Sign up here!</a>
+            </div>
+          </div>
+        </div>
+      </div>`
+    listenLogin()
+}
+
+function listenClose() {
+    document.querySelector("button#close").addEventListener('click', function(e) {
+        console.log("reset")
+        $(function() {
+            $('#loginModal').modal('toggle'); 
+        })
+        setTimeout(function() {
+            resetLogin()
+        }, 1000)
+    })
+}
+
 //Handles displaying all trips, making new ones, and join logic
 function displayTrips(search="") {
     let userId = localStorage.getItem('user_id')
@@ -334,7 +613,7 @@ function displayTrips(search="") {
                 <td id="tdx">${trip.address}</td>
                 <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
                 <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                <td id="tdx"><button class="join" data-id=${trip.id} data-toggle="modal" data-target="#joinModal">Join!</button></td>`
+                <td id="tdx"><button class="join" data-id=${trip.id}>Join!</button></td>`
             }
 
             tbody.appendChild(tr)
@@ -386,35 +665,46 @@ function listenNewTrip() {
 function listenForJoin() {
     document.querySelector("tbody").addEventListener("click", function(e) {
         if (e.target.className === "join") {
-            const button = e.target
-            const td = e.target.parentElement
-            const tripId = e.target.dataset.id
-            const tripCapacity = e.target.parentElement.previousElementSibling
+            console.log(localStorage.getItem('user_id'))
+            if (localStorage.getItem('user_id')) {
+                $(function() {
+                    $('#joinModal').modal('toggle'); 
+                })
 
-            document.querySelector("div.modal-footer").addEventListener("click", function(e) {
-                if (e.target.id === "confirm-join") {
-                    let userId = localStorage.getItem('user_id')
-                    fetch(BASE_URL + "/usertrips", {
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            user_id: userId,
-                            trip_id: tripId
+                const button = e.target
+                const td = e.target.parentElement
+                const tripId = e.target.dataset.id
+                const tripCapacity = e.target.parentElement.previousElementSibling
+
+                document.querySelector("div.modal-footer").addEventListener("click", function(e) {
+                    if (e.target.id === "confirm-join") {
+                        let userId = localStorage.getItem('user_id')
+                        fetch(BASE_URL + "/usertrips", {
+                            method: "POST",
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                user_id: userId,
+                                trip_id: tripId
+                            })
+                        }).then(response => response.json())
+                        .then(usertrip => {
+                            console.log(usertrip)
+                            let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
+                            number += 1
+                            tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
+                            td.removeChild(button)
+                            td.innerText = "Already Joined!"
                         })
-                    }).then(response => response.json())
-                    .then(usertrip => {
-                        console.log(usertrip)
-                        let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
-                        number += 1
-                        tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
-                        td.removeChild(button)
-                        td.innerText = "Already Joined!"
-                    })
-                }
-            })
+                    }
+                })
+            } else {
+                $(function() {
+                    $('#loginModal').modal('toggle'); 
+                })
+            }
         }
     })
 }
@@ -525,337 +815,4 @@ function formatDate(date) {
 
     const result = months[+month - 1] + " " + day + ", " + year + ", " + time.slice(0,5)
     return result
-}
-
-
-
-function listenLogin() {
-    const loginModal = document.querySelector("div#loginModal")
-    const loginForm = loginModal.querySelector("form.lg")
-    const signup = loginModal.querySelector("div.signup-link")
-    //Handles Login Functionality                
-    loginForm.addEventListener("submit", function(e) {
-        e.preventDefault()
-    
-        $(function() {
-            $('#loginModal').modal('toggle'); 
-        })
-
-        const email = e.target.children[1].value
-        const password = e.target.children[4].value
-    
-        fetch("http://localhost:3000/login", {
-            method: "POST",
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': "application/json"
-            },
-            body: JSON.stringify({
-                email,
-                password
-            })
-        }).then(res => res.json())
-        .then(data => {
-
-            //Prompts user if email is invalid
-            if (data["error"]) {
-                console.log(data)
-                loginForm.querySelector('div.error').innerHTML = '<h6 class="error">Invalid Email and/or Password</h6>'
-            } else {
-                loginForm.reset()
-                localStorage.setItem("user_id", data.id)
-                document.querySelector("div#loginBtn").remove()
-                createProfileBtn()
-                createLogoutBtn()
-
-                //Display Home
-                document.querySelector("div#home").addEventListener("click", function (e) {
-                    displayHome()
-                })
-
-                //Display Trips
-                document.querySelector("div#all").addEventListener("click", function (e) {
-                    displayTrips()
-                })
-                displayProfile(data)
-            }
-        })
-    })
-
-    //Handles clicking on sign up link
-    signup.querySelector("a.sign-up").addEventListener('click', function(e) {
-        e.preventDefault()
-        signup.parentElement.parentElement.innerHTML = 
-
-
-        //Handles creating new user in database
-        loginModal.querySelector("form.su").addEventListener('submit', function(e) {
-            e.preventDefault()
-
-            const first_name = e.target.children[1].value
-            const last_name = e.target.children[4].value
-            const email = e.target.children[7].value
-            const phone = e.target.children[10].value
-            const password = e.target.children[13].value
-            const password_confirmation = e.target.children[16].value
-
-            fetch("http://localhost:3000/users", {
-                method: "POST",
-                headers: {
-                    'Content-Type': "application/json",
-                    'Accept': "application/json"
-                },
-                body: JSON.stringify({
-                    first_name,
-                    last_name,
-                    email,
-                    phone,
-                    password,
-                    password_confirmation
-                })
-            }).then(result => result.json())
-            .then(user => {
-                if (user["errors"]) {
-                    loginModal.querySelector('div.error').innerHTML = ``
-                    user["errors"].forEach(error => {
-                        loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
-                    });
-                } else {
-                    localStorage.setItem("user_id", user.id)
-                    document.querySelector("div#loginBtn").remove()
-                    createProfileBtn()
-                    createLogoutBtn()
-                    
-                    //Display Home
-                    document.querySelector("div#home").addEventListener("click", function (e) {
-                        displayHome()
-                    })
-    
-                    //Display Trips
-                    document.querySelector("div#all").addEventListener("click", function (e) {
-                        displayTrips()
-                    })
-
-                    $(function() {
-                        $('#loginModal').modal('toggle'); 
-                    })
-
-                    displayProfile(user)
-                }
-            })
-        })
-
-        //Handles clicking on go back link
-        loginModal.querySelector("a.go-back").addEventListener('click', function(e) {
-            e.preventDefault()
-            resetLogin()
-        })
-
-    })
-}
-
-function resetLogin() {
-    const loginModal = document.querySelector('div#loginModal')
-    loginModal.innerHTML = `      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="loginModalLabel">Login</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form class="lg">
-                Email
-                <br>
-                <input type="email" placeholder="handsome.dan@yale.edu" required>
-                <br>
-                Password
-                <br>
-                <input type="password" placeholder="woofwoof123" required>
-                <div class="error">
-                </div>
-                <input type="submit" value="Log In">
-            </form>
-            <div class="signup-link">
-                <a href="" class="sign-up">Don't have an account? Sign up here!</a>
-            </div>
-          </div>
-        </div>
-      </div>`
-}
-
-function ani() {
-    fetch("http://localhost:3000/users").then(result => result.json()).then(users => {
-        const emails = users.map(user => user.email)
-        console.log(emails)
-        const content = document.querySelector("div.modal-content")
-        document.querySelector("div.modal-dialog").classList.add("anim")
-        document.querySelector("div.modal-body").classList.add("whiten")
-        content.classList.add("lighten")
-        document.querySelector("form.lg").classList.add("disappear")
-        document.querySelector("div.signup-link").classList.add("disappear")
-
-        setTimeout(function() {
-            content.innerHTML =  `<div class="modal-header">
-                                    <h5 class="modal-title" id="SignupModalLabel">Signup</h5>
-                                    <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body whitened">
-                                    <form class="su">
-                                        <div class="name-field">
-                                            First Name
-                                            <br>
-                                            <input type="text" placeholder="Petey" required>
-                                        </div>
-                                        <div class="name-field">
-                                            Last Name
-                                            <br>
-                                            <input type="text" placeholder="Salovey" required>
-                                        </div>
-                                        <br>
-                                        Email
-                                        <br>
-                                        <input type="email" placeholder="handsome.dan@yale.edu" required>
-                                        <div class="subtext">NOTE: You will receive trip updates at this email address</div>
-                                        <div class="error">
-                                            <div class="filler"></div>
-                                            <div class="next-link">
-                                                <input type="submit" value="Next">
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>`
-            content.classList.add("lightened")
-            form = document.querySelector('form.su')
-
-            form.classList.add("appear")
-            document.querySelector('div.modal-header').classList.add("appear-head")
-
-            listenClose()
-
-            form.addEventListener("submit", function(e) {
-                e.preventDefault()
-                first_name = form.children[0].children[1].value
-                last_name = form.children[1].children[1].value
-                email = form.children[4].value
-
-                if (emails.includes(email)) {
-                    form.querySelector("div.filler").innerText = "That email is already taken!"
-                } else {
-                    form.classList.replace("appear", "disappear")
-                    setTimeout(function() {
-                        form.innerHTML = `<div class="subtext">BoolaPool can provide fast text updates whenever members create, join, or unjoin trips. Would you like to receive text notifications?</div>
-                                          <div class="check">
-                                            <input type="checkbox" name="yes" value="yes">
-                                            <div class="cbtext"> Yes, please send me text notifications</div>
-                                          </div>
-                                          <input type="tel" name="tel" placeholder="1234567890" disabled>
-                                          <div class="error">
-                                            <div class="filler2"></div>
-                                            <div class="next-link">
-                                                <input type="submit" value="Next">
-                                            </div>
-                                          </div>`
-                        form.classList.replace("disappear", "appear")
-
-                        form.querySelector('input[name="yes"]').addEventListener("change", function(e) {
-                            form.querySelector('input[name="tel"]').disabled = !form.querySelector('input[name="tel"]').disabled
-                        })
-
-                        listenClose()
-
-                        form.addEventListener("submit", function(e) {
-                            e.preventDefault()
-                            phone = form.children[2].value
-                            console.log(phone)
-                            if ((phone != "") && (isNaN(phone) || phone.length != 10)) {
-                                form.querySelector("div.filler2").innerText = "Invalid phone number (ex: 2915042210)"
-                            } else {
-                                form.classList.replace("appear", "disappear")
-                                setTimeout(function() {
-                                    form.innerHTML = `<div class="filler"></div>
-                                                    Password
-                                                    <br>
-                                                    <input type="password" placeholder="woofwoof123" required>
-                                                    <br>
-                                                    Password Confirmation
-                                                    <br>
-                                                    <input type="password" placeholder="woofwoof123" required>
-                                                    <div class="filler3"></div>
-                                                    <input type="submit" value="Create Account">`
-                                    form.classList.replace("disappear", "appear")
-
-                                    listenClose()
-
-                                    form.addEventListener("submit", function(e) {
-                                        e.preventDefault()
-                                        password = form.children[2].value
-                                        password_confirmation = form.children[5].value
-
-                                        if (password !== password_confirmation) {
-                                            form.querySelector('div.filler3').innerText = "Passwords do not match!"
-                                        }
-                                        fetch("http://localhost:3000/users", {
-                                            method: "POST",
-                                            headers: {
-                                                'Content-Type': "application/json",
-                                                'Accept': "application/json"
-                                            },
-                                            body: JSON.stringify({
-                                                first_name,
-                                                last_name,
-                                                email,
-                                                phone,
-                                                password,
-                                                password_confirmation
-                                            })
-                                        }).then(result => result.json())
-                                        .then(user => {
-                                            if (user["errors"]) {
-                                                loginModal.querySelector('div.error').innerHTML = ``
-                                                user["errors"].forEach(error => {
-                                                    loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
-                                                });
-                                            } else {
-                                                localStorage.setItem("user_id", user.id)
-                                                document.querySelector("div#loginBtn").remove()
-                                                createProfileBtn()
-                                                createLogoutBtn()
-                                                
-                                                //Display Home
-                                                document.querySelector("div#home").addEventListener("click", function (e) {
-                                                    displayHome()
-                                                })
-                                
-                                                //Display Trips
-                                                document.querySelector("div#all").addEventListener("click", function (e) {
-                                                    displayTrips()
-                                                })
-
-                                                $(function() {
-                                                    $('#loginModal').modal('toggle'); 
-                                                })
-
-                                                displayProfile(user)
-                                            }
-                                        })
-                                    })
-                                })
-                            }
-                        })
-                    }, 1000)
-                }
-            })
-        }, 1000)
-    })
-}
-
-function listenClose() {
-    document.querySelector("button#close").addEventListener('click', function(e) {
-        console.log("reset")
-        resetLogin()
-    })
 }
