@@ -33,10 +33,6 @@ function displayHome() {
     })
 
     listenLogin()
-
-    document.querySelector("div#all").addEventListener("click", function (e) {
-        displayTrips()
-    })
 }
 
 function displayProfile(user) {
@@ -182,7 +178,7 @@ function displayProfile(user) {
                                 </div>`
             }
         }
-        listenUnjoin()
+        // listenUnjoin()
     })
 }
 
@@ -238,6 +234,70 @@ function displayTripsFromYale(search="") {
             addressInput.value = selectedAddress
         })
 
+        $(function() {
+            $('input[name="datetimes"]').daterangepicker({
+            timePicker: true,
+            maxSpan: {
+                "days": 14
+            },
+            opens: "center",
+            startDate: moment().startOf('min').add(2, 'hour'),
+            endDate: moment().startOf('min').add(4, 'hour'),
+            minDate: moment().startOf('min'),
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
+            });
+        });
+        
+        //Table for existing trips
+        const listingsTable = document.createElement("table")
+        listingsTable.className = "table"
+        listingsTable.innerHTML = `
+        <thead>
+            <tr>
+            <th scope="col">Origin</th>
+            <th scope="col">Address</th>
+            <th scope="col">Time</th>
+            <th scope="col">Capacity</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="joinModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="joinModalLabel">Trip Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Press 'Ok' to join this trip and notify other members by email.
+              </div>
+              <div class="modal-footer">
+                <button id="confirm-join" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+              </div>
+            </div>
+          </div>
+        </div>`
+
+        mainContainer.appendChild(newForm)
+        mainContainer.appendChild(listingsTable)
+
+        // listenForJoin()
+
+        let tbody = document.querySelector('tbody')
+
+        if (search != "") {
+            trips = trips.filter(trip => {
+                return trip.destination === search
+            })
+        }
+
         //Populate trips table
         for (let trip of trips) {  
             if (trip.origin === "Yale" || trip.origin == "") {
@@ -268,7 +328,7 @@ function displayTripsFromYale(search="") {
                     <td id="tdx">${trip.address}</td>
                     <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
                     <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                    <td id="tdx"><button class="join" data-id=${trip.id} data-toggle="modal" data-target="#joinModal">Join!</button></td>`
+                    <td id="tdx"><button class="join" data-id=${trip.id}>Join!</button></td>`
                 }
 
                 tbody.appendChild(tr)
@@ -325,10 +385,12 @@ function displayTripsToYale(search="") {
             $('input[name="datetimes"]').daterangepicker({
             timePicker: true,
             maxSpan: {
-                "days": 7
+                "days": 14
             },
             opens: "center",
-            minDate: moment().startOf('date'),
+            startDate: moment().startOf('min').add(2, 'hour'),
+            endDate: moment().startOf('min').add(4, 'hour'),
+            minDate: moment().startOf('min'),
             locale: {
                 format: 'MM/DD/YYYY hh:mm A'
             }
@@ -373,7 +435,7 @@ function displayTripsToYale(search="") {
         mainContainer.appendChild(newForm)
         mainContainer.appendChild(listingsTable)
 
-        listenForJoin()
+        // listenForJoin()
 
         let tbody = document.querySelector('tbody')
 
@@ -413,7 +475,7 @@ function displayTripsToYale(search="") {
                     <td id="tdx">${trip.address}</td>
                     <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
                     <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                    <td id="tdx"><button class="join" data-id=${trip.id} data-toggle="modal" data-target="#joinModal">Join!</button></td>`
+                    <td id="tdx"><button class="join" data-id=${trip.id}>Join!</button></td>`
                 }
 
                 tbody.appendChild(tr)
@@ -522,86 +584,82 @@ function listenNewTripToYale(e) {
     }
 }
 
-function listenForJoin() {
-    document.querySelector("tbody").addEventListener("click", function(e) {
-        if (e.target.className === "join") {
-            console.log(localStorage.getItem('user_id'))
-            if (localStorage.getItem('user_id')) {
-                $(function() {
-                    $('#joinModal').modal('toggle'); 
-                })
+function listenForJoin(e) {
+    if (e.target.className === "join" && e.target.tagName === "BUTTON") {
+        console.log(localStorage.getItem('user_id'))
+        if (localStorage.getItem('user_id')) {
+            $(function() {
+                $('#joinModal').modal('toggle'); 
+            })
 
-                const button = e.target
-                const td = e.target.parentElement
-                const tripId = e.target.dataset.id
-                const tripCapacity = e.target.parentElement.previousElementSibling
+            const button = e.target
+            const td = e.target.parentElement
+            const tripId = e.target.dataset.id
+            const tripCapacity = e.target.parentElement.previousElementSibling
 
-                document.querySelector("div.modal-footer").addEventListener("click", function(e) {
-                    if (e.target.id === "confirm-join") {
-                        let userId = localStorage.getItem('user_id')
-                        fetch(BASE_URL + "/usertrips", {
-                            method: "POST",
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                user_id: userId,
-                                trip_id: tripId
-                            })
-                        }).then(response => response.json())
-                        .then(usertrip => {
-                            console.log(usertrip)
-                            let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
-                            number += 1
-                            tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
-                            td.removeChild(button)
-                            td.innerText = "Already Joined!"
-                        })
-                    }
-                })
-            } else {
-                $(function() {
-                    $('#loginModal').modal('toggle'); 
-                })
-            }
-        }
-    })
-}
-
-function listenUnjoin() {
-    document.querySelector("div.current").addEventListener("click", function(e) {
-        if (e.target.className === "unjoin" && e.target.dataset.trip) {
-            const usertripId = e.target.dataset.id
-            const tripId = e.target.dataset.trip
-            const flipcard = e.target.parentElement.parentElement.parentElement
             document.querySelector("div.modal-footer").addEventListener("click", function(e) {
-                if (e.target.id === "confirm-unjoin") {
-                    fetch(BASE_URL + `/usertrips/${usertripId}`, {
-                        method: "DELETE"
-                    }).then(data => {
-                        fetch(BASE_URL + `/trips/${tripId}`, {
-                            method: "DELETE"
-                        }).then(data => {
-                            flipcard.remove()
+                if (e.target.id === "confirm-join") {
+                    let userId = localStorage.getItem('user_id')
+                    fetch(BASE_URL + "/usertrips", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user_id: userId,
+                            trip_id: tripId
                         })
+                    }).then(response => response.json())
+                    .then(usertrip => {
+                        console.log(usertrip)
+                        let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
+                        number += 1
+                        tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
+                        td.removeChild(button)
+                        td.innerText = "Already Joined!"
                     })
                 }
             })
-        } else if (e.target.className === "unjoin") {
-            const usertripId = e.target.dataset.id
-            const flipcard = e.target.parentElement.parentElement.parentElement
-            document.querySelector("div.modal-footer").addEventListener("click", function(e) {
-                if (e.target.id === "confirm-unjoin") {
-                    fetch(BASE_URL + `/usertrips/${usertripId}`, {
+        } else {
+            $(function() {
+                $('#loginModal').modal('toggle'); 
+            })
+        }
+    }
+}
+
+function listenUnjoin(e) {
+    if (e.target.className === "unjoin" && e.target.tagName === "BUTTON" && e.target.dataset.trip) {
+        const usertripId = e.target.dataset.id
+        const tripId = e.target.dataset.trip
+        const flipcard = e.target.parentElement.parentElement.parentElement
+        document.querySelector("div.modal-footer").addEventListener("click", function(e) {
+            if (e.target.id === "confirm-unjoin") {
+                fetch(BASE_URL + `/usertrips/${usertripId}`, {
+                    method: "DELETE"
+                }).then(data => {
+                    fetch(BASE_URL + `/trips/${tripId}`, {
                         method: "DELETE"
                     }).then(data => {
                         flipcard.remove()
                     })
-                }
-            })
-        }
-    })
+                })
+            }
+        })
+    } else if (e.target.className === "unjoin" && e.target.tagName === "BUTTON") {
+        const usertripId = e.target.dataset.id
+        const flipcard = e.target.parentElement.parentElement.parentElement
+        document.querySelector("div.modal-footer").addEventListener("click", function(e) {
+            if (e.target.id === "confirm-unjoin") {
+                fetch(BASE_URL + `/usertrips/${usertripId}`, {
+                    method: "DELETE"
+                }).then(data => {
+                    flipcard.remove()
+                })
+            }
+        })
+    }
 }
 
 //Handles login sequence
@@ -644,15 +702,6 @@ function listenLogin() {
                 createProfileBtn()
                 createLogoutBtn()
 
-                //Display Home
-                document.querySelector("div#home").addEventListener("click", function (e) {
-                    displayHome()
-                })
-
-                //Display Trips
-                document.querySelector("div#all").addEventListener("click", function (e) {
-                    displayTrips()
-                })
                 displayProfile(data)
             }
         })
@@ -805,20 +854,20 @@ function listenSignup() {
                                                 createProfileBtn()
                                                 createLogoutBtn()
                                                 
-                                                //Display Home
-                                                document.querySelector("div#home").addEventListener("click", function (e) {
-                                                    displayHome()
-                                                })
+                                                // //Display Home
+                                                // document.querySelector("div#home").addEventListener("click", function (e) {
+                                                //     displayHome()
+                                                // })
                                 
-                                                //Display Trips From Yale
-                                                document.querySelector("div#all_destination").addEventListener("click", function (e) {
-                                                    displayTripsFromYale()
-                                                })
+                                                // //Display Trips From Yale
+                                                // document.querySelector("div#all_destination").addEventListener("click", function (e) {
+                                                //     displayTripsFromYale()
+                                                // })
 
-                                                //Display Trips To Yale
-                                                document.querySelector("div#all_origin").addEventListener("click", function (e) {
-                                                    displayTripsToYale()
-                                                })
+                                                // //Display Trips To Yale
+                                                // document.querySelector("div#all_origin").addEventListener("click", function (e) {
+                                                //     displayTripsToYale()
+                                                // })
 
                                                 $(function() {
                                                     $('#loginModal').modal('toggle'); 
