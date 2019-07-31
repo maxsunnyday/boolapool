@@ -24,6 +24,6 @@ class TripsController < ApplicationController
     private
 
     def trip_params
-        params.permit(:destination, :address, :capacity, :start_time, :end_time)
+        params.permit(:destination, :origin, :address, :capacity, :start_time, :end_time)
     end
 end

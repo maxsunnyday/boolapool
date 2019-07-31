@@ -18,9 +18,14 @@ document.addEventListener('DOMContentLoaded', function(){
 			displayHome()
 		})
 
-		//Display Trips
-		document.querySelector("div#all").addEventListener("click", function (e) {
-			displayTrips()
+		//Display Trips From Yale
+		document.querySelector("div#all_destination").addEventListener("click", function (e) {
+			displayTripsFromYale()
+		})
+
+		//Display Trips From Yale
+		document.querySelector("div#all_origin").addEventListener("click", function (e) {
+			displayTripsToYale()
 		})
 
 	} else {

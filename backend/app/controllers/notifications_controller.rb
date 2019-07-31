@@ -5,7 +5,8 @@ class NotificationsController < ApplicationController
     def notify
         client = Twilio::REST::Client.new Rails.application.credentials.twilio_account_sid, Rails.application.credentials.twilio_auth_token
 
-        message = client.messages.create from: '+14752243879', to: '+15412063420', body: 'Wassup'
+        message = client.messages.create from: '+14752243879', to: '+19045373991', body: 'Wassup'
+        # , media_url: 'http://linode.rabasa.com/yoda.gif'
         # , status_callback: request.base_url + '/twilio/status'
 
         render plain: message.status

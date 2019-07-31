@@ -6,7 +6,7 @@ function displayHome() {
             <br>
             <form class="search">
                 <select>
-                    <option value="" disabled selected>Where do you want to go?</option>
+                    <option value="" disabled selected>Where do you want to go? (from Yale)</option>
                     <option value="BDL">Bradley International Airport (BDL)</option>
                     <option value="LGA">LaGuardia Airport (LGA)</option>
                     <option value="JFK">John F. Kennedy International Airport (JFK)</option>
@@ -28,7 +28,7 @@ function displayHome() {
         e.preventDefault()
 
         searchQuery = e.target.children[0].value 
-        displayTrips(searchQuery)
+        displayTripsFromYale(searchQuery)
     })
     listenLogin()
 }
@@ -189,7 +189,7 @@ function displayPassengers(users) {
 }
 
 //Handles displaying all trips, making new ones, and join logic
-function displayTrips(search="") {
+function displayTripsFromYale(search="") {
     let userId = localStorage.getItem('user_id')
     let today = new Date();
     let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
@@ -202,7 +202,7 @@ function displayTrips(search="") {
 
         //Form for creating new trip
         const newForm = document.createElement("form")
-        newForm.className = "new-trip"
+        newForm.className = "new-trip-from-yale"
         newForm.innerHTML = `
             <label>Destination</label>
                 <select>
@@ -307,50 +307,216 @@ function displayTrips(search="") {
 
         //Populate trips table
         for (let trip of trips) {  
-            let tr = document.createElement("tr")
+            if (trip.origin === "Yale" || trip.origin == "") {
+                let tr = document.createElement("tr")
 
-            //Handles join logic
-            let join = false
-            for (const user of trip.users) {
-                if (user.id == userId) {
-                    join = true
+                //Handles join logic
+                let join = false
+                for (const user of trip.users) {
+                    if (user.id == userId) {
+                        join = true
+                    }
                 }
-            }
 
-            if (join) {
-                tr.innerHTML = `<td id="tdx">${trip.destination}</td>
-                <td id="tdx">${trip.address}</td>
-                <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                <td id="tdx">Already Joined!</td>`
-            } else if (trip.users.length === trip.capacity) {
-                tr.innerHTML = `<td id="tdx">${trip.destination}</td>
-                <td id="tdx">${trip.address}</td>
-                <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                <td id="tdx">Full</td>`
-            } else {
-                tr.innerHTML = `<td id="tdx">${trip.destination}</td>
-                <td id="tdx">${trip.address}</td>
-                <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                <td id="tdx"><button class="join" data-id=${trip.id} data-toggle="modal" data-target="#joinModal">Join!</button></td>`
-            }
+                if (join) {
+                    tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+                    <td id="tdx">${trip.address}</td>
+                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                    <td id="tdx">Already Joined!</td>`
+                } else if (trip.users.length === trip.capacity) {
+                    tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+                    <td id="tdx">${trip.address}</td>
+                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                    <td id="tdx">Full</td>`
+                } else {
+                    tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+                    <td id="tdx">${trip.address}</td>
+                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                    <td id="tdx"><button class="join" data-id=${trip.id} data-toggle="modal" data-target="#joinModal">Join!</button></td>`
+                }
 
-            tbody.appendChild(tr)
+                tbody.appendChild(tr)
+            }
         }
     })
-    listenNewTrip()
+    listenNewTripFromYale()
 }
 
-function listenNewTrip() {
+function displayTripsToYale(search="") {
+    let userId = localStorage.getItem('user_id')
+    let today = new Date();
+    let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
+    let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes());
+    let dateTime =  date+'T'+time;
+    fetch("http://localhost:3000/trips")
+    .then(response => response.json())
+    .then(trips => {
+        mainContainer.innerHTML = ``
+
+        //Form for creating new trip
+        const newForm = document.createElement("form")
+        newForm.className = "new-trip-to-yale"
+        newForm.innerHTML = `
+            <label>Origin</label>
+                <select>
+                    <option value="" disabled selected>Where do you need a ride from?</option>
+                    <option value="BDL" data-address="Schoephoester Rd, Windsor Locks, CT 06096">Bradley International Airport (BDL)</option>
+                    <option value="JFK" data-address="Queens, NY 11430">John F. Kennedy International Airport (JFK)</option>
+                    <option value="LGA" data-address="Queens, NY 11371">LaGuardia Airport (LGA)</option>
+                    <option value="HVN" data-address="155 Burr St, New Haven, CT 06512">Tweed New Haven Airport (HVN)</option>
+                    <option value="Trader Joe's" data-address="560 Boston Post Rd, Orange, CT 06477">Trader Joe's (Orange, CT)</option>
+                    <option value="Costco" data-address="1718 Boston Post Rd, Orange, CT 06460">Costco (Milford, CT)</option>
+                    <option value="Stop & Shop" data-address="150 Whalley Ave, New Haven, CT 06515">Stop & Shop (New Haven, CT)</option>
+                    <option value="Yale Bowl" data-address="81 Central Ave, New Haven, CT 06515">Yale Bowl</option>
+                    <option value="Lighthouse Point Park" data-address="2 Lighthouse Rd, New Haven, CT 06512">Lighthouse Point Park</option>
+                    <option value="Connecticut Post Mall" data-address="1201 Boston Post Rd, Milford, CT 06460">Connecticut Post Mall (Milford, CT)</option>
+                    <option value="Other">Other</option>
+                </select>
+            <label>Address</label>
+            <input type="text" name="address" required>
+            <label>Capacity</label>
+            <input type="number" name="capacity" min="2" max="6"required>
+            <label>Departure Time Range</label>
+            <input type="text" name="datetimes" placeholder="" required>
+            <!--
+            <label>Start</label>
+            <input type="datetime-local" name="start_time" min="${dateTime}" required>
+            <label>End</label>
+            <input type="datetime-local" name="end_time" min="${dateTime}" required>
+            -->
+            <input type="submit">`
+
+        newForm.querySelector('select').addEventListener("change", function(e){
+            const select = e.target
+            const selectedInput = select.options[select.selectedIndex]
+            const selectedAddress = selectedInput.getAttribute('data-address')
+
+            const addressInput = e.target.nextElementSibling.nextElementSibling
+            addressInput.value = selectedAddress
+        })
+        
+
+        $(function() {
+            $('input[name="datetimes"]').daterangepicker({
+            timePicker: true,
+            maxSpan: {
+                "days": 7
+            },
+            opens: "center",
+            minDate: moment().startOf('date'),
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
+            });
+        });
+        
+        //Table for existing trips
+        const listingsTable = document.createElement("table")
+        listingsTable.className = "table"
+        listingsTable.innerHTML = `
+        <thead>
+            <tr>
+            <th scope="col">Origin</th>
+            <th scope="col">Address</th>
+            <th scope="col">Time</th>
+            <th scope="col">Capacity</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="joinModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="joinModalLabel">Trip Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Press 'Ok' to join this trip and notify other members by email.
+              </div>
+              <div class="modal-footer">
+                <button id="confirm-join" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+              </div>
+            </div>
+          </div>
+        </div>`
+
+        mainContainer.appendChild(newForm)
+        mainContainer.appendChild(listingsTable)
+
+        listenForJoin()
+
+        let tbody = document.querySelector('tbody')
+
+        if (search != "") {
+            trips = trips.filter(trip => {
+                return trip.origin === search
+            })
+        }
+
+        //Populate trips table
+        for (let trip of trips) {
+            if (trip.destination === "Yale" || trip.destination == "") {
+                let tr = document.createElement("tr")
+
+                //Handles join logic
+                let join = false
+                for (const user of trip.users) {
+                    if (user.id == userId) {
+                        join = true
+                    }
+                }
+
+                if (join) {
+                    tr.innerHTML = `<td id="tdx">${trip.origin}</td>
+                    <td id="tdx">${trip.address}</td>
+                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                    <td id="tdx">Already Joined!</td>`
+                } else if (trip.users.length === trip.capacity) {
+                    tr.innerHTML = `<td id="tdx">${trip.origin}</td>
+                    <td id="tdx">${trip.address}</td>
+                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                    <td id="tdx">Full</td>`
+                } else {
+                    tr.innerHTML = `<td id="tdx">${trip.origin}</td>
+                    <td id="tdx">${trip.address}</td>
+                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                    <td id="tdx"><button class="join" data-id=${trip.id} data-toggle="modal" data-target="#joinModal">Join!</button></td>`
+                }
+
+                tbody.appendChild(tr)
+            }
+        }
+    })
+    listenNewTripToYale()
+}
+
+function listenNewTripFromYale() {
     //Create new Trip
     let userId = localStorage.getItem('user_id')
     document.addEventListener('submit', function(e){
-        if (e.target.className === "new-trip") {
+        if (e.target.className === "new-trip-from-yale") {
             e.preventDefault()
 
             let tbody = document.querySelector('tbody')
+
+            // if (e.target.children[0].value === "Destination") {
+            //     let origin = "Yale"
+            //     let destination = e.target.children[1].value
+            // } else {
+            //     let origin = e.target.children[1].value
+            //     let destination = "Yale"
+            // }
 
             fetch("http://localhost:3000/trips", {
                 method: "POST",
@@ -360,6 +526,7 @@ function listenNewTrip() {
                 },
                 body: JSON.stringify({
                     destination: e.target.children[1].value,
+                    origin: "Yale",
                     address: e.target.children[3].value,
                     capacity: e.target.children[5].value,
                     start_time: moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
@@ -372,6 +539,55 @@ function listenNewTrip() {
                 let tr = document.createElement("tr")
 
                 tr.innerHTML = `<td>${trip.destination}</td>
+                <td>${trip.address}</td>
+                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                <td>${trip.users.length}/${trip.capacity}</td>
+                <td>Already Joined!</td>`
+
+                tbody.appendChild(tr)
+            })
+        }
+    })
+}
+
+function listenNewTripToYale() {
+    //Create new Trip
+    let userId = localStorage.getItem('user_id')
+    document.addEventListener('submit', function(e){
+        if (e.target.className === "new-trip-to-yale") {
+            e.preventDefault()
+
+            let tbody = document.querySelector('tbody')
+
+            // if (e.target.children[0].value === "Destination") {
+            //     let origin = "Yale"
+            //     let destination = e.target.children[1].value
+            // } else {
+            //     let origin = e.target.children[1].value
+            //     let destination = "Yale"
+            // }
+
+            fetch("http://localhost:3000/trips", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    destination: "Yale",
+                    origin: e.target.children[1].value,
+                    address: e.target.children[3].value,
+                    capacity: e.target.children[5].value,
+                    start_time: moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
+                    end_time: moment.parseZone(e.target.children[7].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
+                    user_id: userId
+                })
+            }).then(response => response.json())
+            .then(trip => {
+
+                let tr = document.createElement("tr")
+
+                tr.innerHTML = `<td>${trip.origin}</td>
                 <td>${trip.address}</td>
                 <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
                 <td>${trip.users.length}/${trip.capacity}</td>
@@ -573,10 +789,16 @@ function listenLogin() {
                     displayHome()
                 })
 
-                //Display Trips
-                document.querySelector("div#all").addEventListener("click", function (e) {
-                    displayTrips()
+                //Display Trips From Yale
+                document.querySelector("div#all_destination").addEventListener("click", function (e) {
+                    displayTripsFromYale()
                 })
+
+                //Display Trips To Yale
+                document.querySelector("div#all_origin").addEventListener("click", function (e) {
+                    displayTripsToYale()
+                })
+
                 displayProfile(data)
             }
         })
@@ -631,9 +853,14 @@ function listenLogin() {
                         displayHome()
                     })
     
-                    //Display Trips
-                    document.querySelector("div#all").addEventListener("click", function (e) {
-                        displayTrips()
+                    //Display Trips From Yale
+                    document.querySelector("div#all_destination").addEventListener("click", function (e) {
+                        displayTripsFromYale()
+                    })
+
+                    //Display Trips To Yale
+                    document.querySelector("div#all_origin").addEventListener("click", function (e) {
+                        displayTripsToYale()
                     })
 
                     $(function() {
@@ -830,9 +1057,14 @@ function ani() {
                                                     displayHome()
                                                 })
                                 
-                                                //Display Trips
-                                                document.querySelector("div#all").addEventListener("click", function (e) {
-                                                    displayTrips()
+                                                //Display Trips From Yale
+                                                document.querySelector("div#all_destination").addEventListener("click", function (e) {
+                                                    displayTripsFromYale()
+                                                })
+
+                                                //Display Trips To Yale
+                                                document.querySelector("div#all_origin").addEventListener("click", function (e) {
+                                                    displayTripsToYale()
                                                 })
 
                                                 $(function() {
