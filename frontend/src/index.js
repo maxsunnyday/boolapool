@@ -5,7 +5,8 @@ const mainContainer = document.querySelector("main")
 const toolbar = document.querySelector("div.btn-toolbar")
 
 document.addEventListener('DOMContentLoaded', function(){
-
+	document.addEventListener("submit", listenNewTripFromYale)
+	document.addEventListener("submit", listenNewTripFromYale)
 	displayHome()
 	//Login method
 	if (localStorage.getItem('user_id')) {

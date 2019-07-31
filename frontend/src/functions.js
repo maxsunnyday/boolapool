@@ -332,7 +332,6 @@ function displayTripsFromYale(search="") {
             }
         }
     })
-    listenNewTripFromYale()
 }
 
 function displayTripsToYale(search="") {
@@ -478,107 +477,106 @@ function displayTripsToYale(search="") {
             }
         }
     })
-    listenNewTripToYale()
 }
 
-function listenNewTripFromYale() {
+function listenNewTripFromYale(e) {
     //Create new Trip
-    document.addEventListener('submit', function(e){
-        if (e.target.className === "new-trip-from-yale") {
-            e.preventDefault()
+    if (e.target.className === "new-trip-from-yale") {
+        e.preventDefault()
 
-            let userId = localStorage.getItem('user_id')
+        let userId = localStorage.getItem('user_id')
 
-            let tbody = document.querySelector('tbody')
+        let tbody = document.querySelector('tbody')
 
-            // if (e.target.children[0].value === "Destination") {
-            //     let origin = "Yale"
-            //     let destination = e.target.children[1].value
-            // } else {
-            //     let origin = e.target.children[1].value
-            //     let destination = "Yale"
-            // }
+        // if (e.target.children[0].value === "Destination") {
+        //     let origin = "Yale"
+        //     let destination = e.target.children[1].value
+        // } else {
+        //     let origin = e.target.children[1].value
+        //     let destination = "Yale"
+        // }
 
-            fetch("http://localhost:3000/trips", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    destination: e.target.children[1].value,
-                    origin: "Yale",
-                    address: e.target.children[3].value,
-                    capacity: e.target.children[5].value,
-                    start_time: moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
-                    end_time: moment.parseZone(e.target.children[7].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
-                    user_id: userId
-                })
-            }).then(response => response.json())
-            .then(trip => {
-
-                let tr = document.createElement("tr")
-
-                tr.innerHTML = `<td>${trip.destination}</td>
-                <td>${trip.address}</td>
-                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                <td>${trip.users.length}/${trip.capacity}</td>
-                <td>Already Joined!</td>`
-
-                tbody.appendChild(tr)
+        fetch("http://localhost:3000/trips", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                destination: e.target.children[1].value,
+                origin: "Yale",
+                address: e.target.children[3].value,
+                capacity: e.target.children[5].value,
+                start_time: moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
+                end_time: moment.parseZone(e.target.children[7].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
+                user_id: userId
             })
-        }
-    })
+        }).then(response => response.json())
+        .then(trip => {
+
+            let tr = document.createElement("tr")
+
+            tr.innerHTML = `<td>${trip.destination}</td>
+            <td>${trip.address}</td>
+            <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+            <td>${trip.users.length}/${trip.capacity}</td>
+            <td>Already Joined!</td>`
+
+            tbody.appendChild(tr)
+        })
+    }
 }
 
-function listenNewTripToYale() {
+function listenNewTripToYale(e) {
     //Create new Trip
-    document.addEventListener('submit', function(e){
-        if (e.target.className === "new-trip-to-yale") {
-            e.preventDefault()
+    if (e.target.className === "new-trip-to-yale") {
+        e.preventDefault()
 
-            let userId = localStorage.getItem('user_id')
+        let userId = localStorage.getItem('user_id')
 
-            let tbody = document.querySelector('tbody')
+        let tbody = document.querySelector('tbody')
 
-            // if (e.target.children[0].value === "Destination") {
-            //     let origin = "Yale"
-            //     let destination = e.target.children[1].value
-            // } else {
-            //     let origin = e.target.children[1].value
-            //     let destination = "Yale"
-            // }
+        // if (e.target.children[0].value === "Destination") {
+        //     let origin = "Yale"
+        //     let destination = e.target.children[1].value
+        // } else {
+        //     let origin = e.target.children[1].value
+        //     let destination = "Yale"
+        // }
 
-            fetch("http://localhost:3000/trips", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    destination: "Yale",
-                    origin: e.target.children[1].value,
-                    address: e.target.children[3].value,
-                    capacity: e.target.children[5].value,
-                    start_time: moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
-                    end_time: moment.parseZone(e.target.children[7].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
-                    user_id: userId
-                })
-            }).then(response => response.json())
-            .then(trip => {
+        // console.log(moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format())
 
-                let tr = document.createElement("tr")
-
-                tr.innerHTML = `<td>${trip.origin}</td>
-                <td>${trip.address}</td>
-                <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                <td>${trip.users.length}/${trip.capacity}</td>
-                <td>Already Joined!</td>`
-
-                tbody.appendChild(tr)
+        fetch("http://localhost:3000/trips", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                destination: "Yale",
+                origin: e.target.children[1].value,
+                address: e.target.children[3].value,
+                capacity: e.target.children[5].value,
+                start_time: moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
+                end_time: moment.parseZone(e.target.children[7].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
+                user_id: userId
             })
-        }
-    })
+        }).then(response => response.json())
+        .then(trip => {
+
+            console.log(trip)
+
+            let tr = document.createElement("tr")
+
+            tr.innerHTML = `<td>${trip.origin}</td>
+            <td>${trip.address}</td>
+            <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+            <td>${trip.users.length}/${trip.capacity}</td>
+            <td>Already Joined!</td>`
+
+            tbody.appendChild(tr)
+        })
+    }
 }
 
 function listenForJoin() {
@@ -789,8 +787,6 @@ function listenLogin() {
     //Handles clicking on sign up link
     signup.querySelector("a.sign-up").addEventListener('click', function(e) {
         e.preventDefault()
-        signup.parentElement.parentElement.innerHTML = 
-
 
         //Handles creating new user in database
         loginModal.querySelector("form.su").addEventListener('submit', function(e) {
