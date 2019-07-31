@@ -191,10 +191,6 @@ function displayPassengers(users) {
 //Handles displaying all trips, making new ones, and join logic
 function displayTripsFromYale(search="") {
     let userId = localStorage.getItem('user_id')
-    let today = new Date();
-    let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
-    let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes());
-    let dateTime =  date+'T'+time;
     fetch("http://localhost:3000/trips")
     .then(response => response.json())
     .then(trips => {
@@ -225,12 +221,6 @@ function displayTripsFromYale(search="") {
             <input type="number" name="capacity" min="2" max="6"required>
             <label>Departure Time Range</label>
             <input type="text" name="datetimes" placeholder="" required>
-            <!--
-            <label>Start</label>
-            <input type="datetime-local" name="start_time" min="${dateTime}" required>
-            <label>End</label>
-            <input type="datetime-local" name="end_time" min="${dateTime}" required>
-            -->
             <input type="submit">`
 
         newForm.querySelector('select').addEventListener("change", function(e){
@@ -347,10 +337,6 @@ function displayTripsFromYale(search="") {
 
 function displayTripsToYale(search="") {
     let userId = localStorage.getItem('user_id')
-    let today = new Date();
-    let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
-    let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes());
-    let dateTime =  date+'T'+time;
     fetch("http://localhost:3000/trips")
     .then(response => response.json())
     .then(trips => {
@@ -381,12 +367,6 @@ function displayTripsToYale(search="") {
             <input type="number" name="capacity" min="2" max="6"required>
             <label>Departure Time Range</label>
             <input type="text" name="datetimes" placeholder="" required>
-            <!--
-            <label>Start</label>
-            <input type="datetime-local" name="start_time" min="${dateTime}" required>
-            <label>End</label>
-            <input type="datetime-local" name="end_time" min="${dateTime}" required>
-            -->
             <input type="submit">`
 
         newForm.querySelector('select').addEventListener("change", function(e){
