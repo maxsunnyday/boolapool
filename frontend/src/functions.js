@@ -241,8 +241,8 @@ function displayTripsFromYale(search="") {
                 "days": 14
             },
             opens: "center",
-            startDate: moment().startOf('min').add(2, 'hour'),
-            endDate: moment().startOf('min').add(4, 'hour'),
+            startDate: moment().startOf('hour').add(3, 'hour'),
+            endDate: moment().startOf('hour').add(5, 'hour'),
             minDate: moment().startOf('min'),
             locale: {
                 format: 'MM/DD/YYYY hh:mm A'
@@ -256,7 +256,7 @@ function displayTripsFromYale(search="") {
         listingsTable.innerHTML = `
         <thead>
             <tr>
-            <th scope="col">Origin</th>
+            <th scope="col">Destination</th>
             <th scope="col">Address</th>
             <th scope="col">Time</th>
             <th scope="col">Capacity</th>
@@ -388,8 +388,8 @@ function displayTripsToYale(search="") {
                 "days": 14
             },
             opens: "center",
-            startDate: moment().startOf('min').add(2, 'hour'),
-            endDate: moment().startOf('min').add(4, 'hour'),
+            startDate: moment().startOf('hour').add(3, 'hour'),
+            endDate: moment().startOf('hour').add(5, 'hour'),
             minDate: moment().startOf('min'),
             locale: {
                 format: 'MM/DD/YYYY hh:mm A'
@@ -916,19 +916,19 @@ function resetLogin() {
           </div>
         </div>
       </div>`
+    document.querySelector("form.lg").reset
     listenLogin()
 }
 
-function listenClose() {
-    document.querySelector("button#close").addEventListener('click', function(e) {
-        console.log("reset")
+function listenClose(e) {
+    if (e.target.id === "close") {
         $(function() {
             $('#loginModal').modal('toggle'); 
         })
         setTimeout(function() {
             resetLogin()
         }, 1000)
-    })
+    }
 }
 
 
@@ -943,17 +943,15 @@ function createProfileBtn() {
     listenProfileBtn()
 }
 
-function listenProfileBtn() {
-    document.querySelector("nav").addEventListener("click", function (e) {
-        if (e.target.id === "profile") {
-            let userId = localStorage.getItem('user_id')
-            fetch(`${BASE_URL}/users/${userId}`)
-            .then(res => res.json())
-            .then(user => {
-                displayProfile(user)
-            })
-        }
-    })
+function listenProfileBtn(e) {
+    if (e.target.id === "profile") {
+        let userId = localStorage.getItem('user_id')
+        fetch(`${BASE_URL}/users/${userId}`)
+        .then(res => res.json())
+        .then(user => {
+            displayProfile(user)
+        })
+    }
 }
 
 function createLoginBtn() {

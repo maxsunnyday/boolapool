@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function(){
 		}
 	})
 
+	document.addEventListener("click", listenProfileBtn)
+	document.addEventListener("click", listenClose)
+
 	displayHome()
 	//Login method
 	if (localStorage.getItem('user_id')) {
