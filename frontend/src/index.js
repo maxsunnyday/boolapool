@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	document.addEventListener("click", listenProfileBtn)
 	document.addEventListener("click", listenClose)
+	document.addEventListener("click", listenSignup)
+	document.addEventListener("submit", listenLogin)
 
 	displayHome()
 	//Login method
