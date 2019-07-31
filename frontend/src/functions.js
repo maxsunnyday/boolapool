@@ -190,6 +190,7 @@ function displayPassengers(users) {
     return userList
 }
 
+
 //Handles displaying all trips, making new ones, and join logic
 function displayTripsFromYale(search="") {
     let userId = localStorage.getItem('user_id')
@@ -670,10 +671,6 @@ function listenLogin() {
     //Handles Login Functionality                
     loginForm.addEventListener("submit", function(e) {
         e.preventDefault()
-    
-        $(function() {
-            $('#loginModal').modal('toggle'); 
-        })
 
         const email = e.target.children[1].value
         const password = e.target.children[4].value
@@ -696,6 +693,9 @@ function listenLogin() {
                 console.log(data)
                 loginForm.querySelector('div.error').innerHTML = '<h6 class="error">Invalid Email and/or Password</h6>'
             } else {
+                $(function() {
+                    $('#loginModal').modal('toggle'); 
+                })
                 loginForm.reset()
                 localStorage.setItem("user_id", data.id)
                 document.querySelector("div#loginBtn").remove()
