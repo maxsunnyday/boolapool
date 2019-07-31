@@ -1,3 +1,4 @@
+//Handles displaying Home and Profile
 function displayHome() {
     mainContainer.innerHTML = `<div class="home-text">
             <h1>Welcome to BoolaPool!</h1>
@@ -30,7 +31,12 @@ function displayHome() {
         searchQuery = e.target.children[0].value 
         displayTripsFromYale(searchQuery)
     })
+
     listenLogin()
+
+    document.querySelector("div#all").addEventListener("click", function (e) {
+        displayTrips()
+    })
 }
 
 function displayProfile(user) {
@@ -231,69 +237,6 @@ function displayTripsFromYale(search="") {
             const addressInput = e.target.nextElementSibling.nextElementSibling
             addressInput.value = selectedAddress
         })
-        
-
-        $(function() {
-            $('input[name="datetimes"]').daterangepicker({
-            timePicker: true,
-            maxSpan: {
-                "days": 7
-            },
-            opens: "center",
-            minDate: moment().startOf('date'),
-            locale: {
-                format: 'MM/DD/YYYY hh:mm A'
-            }
-            });
-        });
-        
-        //Table for existing trips
-        const listingsTable = document.createElement("table")
-        listingsTable.className = "table"
-        listingsTable.innerHTML = `
-        <thead>
-            <tr>
-            <th scope="col">Destination</th>
-            <th scope="col">Address</th>
-            <th scope="col">Time</th>
-            <th scope="col">Capacity</th>
-            <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        <div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="joinModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="joinModalLabel">Trip Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                Press 'Ok' to join this trip and notify other members by email.
-              </div>
-              <div class="modal-footer">
-                <button id="confirm-join" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
-              </div>
-            </div>
-          </div>
-        </div>`
-
-        mainContainer.appendChild(newForm)
-        mainContainer.appendChild(listingsTable)
-
-        listenForJoin()
-
-        let tbody = document.querySelector('tbody')
-
-        if (search != "") {
-            trips = trips.filter(trip => {
-                return trip.destination === search
-            })
-        }
 
         //Populate trips table
         for (let trip of trips) {  
@@ -582,35 +525,46 @@ function listenNewTripToYale(e) {
 function listenForJoin() {
     document.querySelector("tbody").addEventListener("click", function(e) {
         if (e.target.className === "join") {
-            const button = e.target
-            const td = e.target.parentElement
-            const tripId = e.target.dataset.id
-            const tripCapacity = e.target.parentElement.previousElementSibling
+            console.log(localStorage.getItem('user_id'))
+            if (localStorage.getItem('user_id')) {
+                $(function() {
+                    $('#joinModal').modal('toggle'); 
+                })
 
-            document.querySelector("div.modal-footer").addEventListener("click", function(e) {
-                if (e.target.id === "confirm-join") {
-                    let userId = localStorage.getItem('user_id')
-                    fetch(BASE_URL + "/usertrips", {
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            user_id: userId,
-                            trip_id: tripId
+                const button = e.target
+                const td = e.target.parentElement
+                const tripId = e.target.dataset.id
+                const tripCapacity = e.target.parentElement.previousElementSibling
+
+                document.querySelector("div.modal-footer").addEventListener("click", function(e) {
+                    if (e.target.id === "confirm-join") {
+                        let userId = localStorage.getItem('user_id')
+                        fetch(BASE_URL + "/usertrips", {
+                            method: "POST",
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                user_id: userId,
+                                trip_id: tripId
+                            })
+                        }).then(response => response.json())
+                        .then(usertrip => {
+                            console.log(usertrip)
+                            let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
+                            number += 1
+                            tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
+                            td.removeChild(button)
+                            td.innerText = "Already Joined!"
                         })
-                    }).then(response => response.json())
-                    .then(usertrip => {
-                        console.log(usertrip)
-                        let number = parseInt(tripCapacity.innerText.split("/")[0], 10)
-                        number += 1
-                        tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
-                        td.removeChild(button)
-                        td.innerText = "Already Joined!"
-                    })
-                }
-            })
+                    }
+                })
+            } else {
+                $(function() {
+                    $('#loginModal').modal('toggle'); 
+                })
+            }
         }
     })
 }
@@ -650,81 +604,7 @@ function listenUnjoin() {
     })
 }
 
-
-//Handles adding buttons depending on login/logout status
-function createProfileBtn() {
-    const profileBtn = document.createElement("div")
-    profileBtn.id = "profile"
-    profileBtn.className = "btn btn-outline"
-    profileBtn.innerText = "Profile"
-    toolbar.appendChild(profileBtn)
-
-    listenProfileBtn()
-}
-
-function listenProfileBtn() {
-    document.querySelector("nav").addEventListener("click", function (e) {
-        if (e.target.id === "profile") {
-            let userId = localStorage.getItem('user_id')
-            fetch(`${BASE_URL}/users/${userId}`)
-            .then(res => res.json())
-            .then(user => {
-                displayProfile(user)
-            })
-        }
-    })
-}
-
-function createLoginBtn() {
-    const loginButton = document.createElement("div")
-    loginButton.id = "loginBtn"
-    loginButton.className = "btn btn-outline"
-    loginButton.innerText = "Login"
-    loginButton.dataset.toggle = "modal"
-    loginButton.dataset.target = "#loginModal"
-    toolbar.appendChild(loginButton)
-}
-
-function createLogoutBtn() {
-    const logoutButton = document.createElement("div")
-    logoutButton.id = "logout"
-    logoutButton.className = "btn btn-outline"
-    logoutButton.innerText = "Logout"
-    toolbar.appendChild(logoutButton)
-    
-    // Logout functionality
-    logoutButton.addEventListener('click', function(e){
-        localStorage.removeItem('user_id')
-        document.querySelector("div#logout").remove()
-        document.querySelector("div#profile").remove()
-        createLoginBtn()
-        displayHome()
-    })
-}
-
-
-//Date and Time formatting
-function appendLeadingZeroes(n){
-    if(n <= 9){
-      return "0" + n;
-    }
-    return n
-}
-
-function formatDate(date) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    const split = date.split("T")
-    const [dateArr, time] = split
-
-    const splitdate = dateArr.split("-")
-    const [year, month, day] = splitdate
-
-    const result = months[+month - 1] + " " + day + ", " + year + ", " + time.slice(0,5)
-    return result
-}
-
-
-
+//Handles login sequence
 function listenLogin() {
     const loginModal = document.querySelector("div#loginModal")
     const loginForm = loginModal.querySelector("form.lg")
@@ -769,16 +649,10 @@ function listenLogin() {
                     displayHome()
                 })
 
-                //Display Trips From Yale
-                document.querySelector("div#all_destination").addEventListener("click", function (e) {
-                    displayTripsFromYale()
+                //Display Trips
+                document.querySelector("div#all").addEventListener("click", function (e) {
+                    displayTrips()
                 })
-
-                //Display Trips To Yale
-                document.querySelector("div#all_origin").addEventListener("click", function (e) {
-                    displayTripsToYale()
-                })
-
                 displayProfile(data)
             }
         })
@@ -787,110 +661,11 @@ function listenLogin() {
     //Handles clicking on sign up link
     signup.querySelector("a.sign-up").addEventListener('click', function(e) {
         e.preventDefault()
-
-        //Handles creating new user in database
-        loginModal.querySelector("form.su").addEventListener('submit', function(e) {
-            e.preventDefault()
-
-            const first_name = e.target.children[1].value
-            const last_name = e.target.children[4].value
-            const email = e.target.children[7].value
-            const phone = e.target.children[10].value
-            const password = e.target.children[13].value
-            const password_confirmation = e.target.children[16].value
-
-            fetch("http://localhost:3000/users", {
-                method: "POST",
-                headers: {
-                    'Content-Type': "application/json",
-                    'Accept': "application/json"
-                },
-                body: JSON.stringify({
-                    first_name,
-                    last_name,
-                    email,
-                    phone,
-                    password,
-                    password_confirmation
-                })
-            }).then(result => result.json())
-            .then(user => {
-                if (user["errors"]) {
-                    loginModal.querySelector('div.error').innerHTML = ``
-                    user["errors"].forEach(error => {
-                        loginModal.querySelector('div.error').innerHTML += `<h6 class="error">${error}</h6>`
-                    });
-                } else {
-                    localStorage.setItem("user_id", user.id)
-                    document.querySelector("div#loginBtn").remove()
-                    createProfileBtn()
-                    createLogoutBtn()
-                    
-                    //Display Home
-                    document.querySelector("div#home").addEventListener("click", function (e) {
-                        displayHome()
-                    })
-    
-                    //Display Trips From Yale
-                    document.querySelector("div#all_destination").addEventListener("click", function (e) {
-                        displayTripsFromYale()
-                    })
-
-                    //Display Trips To Yale
-                    document.querySelector("div#all_origin").addEventListener("click", function (e) {
-                        displayTripsToYale()
-                    })
-
-                    $(function() {
-                        $('#loginModal').modal('toggle'); 
-                    })
-
-                    displayProfile(user)
-                }
-            })
-        })
-
-        //Handles clicking on go back link
-        loginModal.querySelector("a.go-back").addEventListener('click', function(e) {
-            e.preventDefault()
-            resetLogin()
-        })
-
+        listenSignup()
     })
 }
 
-function resetLogin() {
-    const loginModal = document.querySelector('div#loginModal')
-    loginModal.innerHTML = `      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="loginModalLabel">Login</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form class="lg">
-                Email
-                <br>
-                <input type="email" placeholder="handsome.dan@yale.edu" required>
-                <br>
-                Password
-                <br>
-                <input type="password" placeholder="woofwoof123" required>
-                <div class="error">
-                </div>
-                <input type="submit" value="Log In">
-            </form>
-            <div class="signup-link">
-                <a href="" class="sign-up">Don't have an account? Sign up here!</a>
-            </div>
-          </div>
-        </div>
-      </div>`
-}
-
-function ani() {
+function listenSignup() {
     fetch("http://localhost:3000/users").then(result => result.json()).then(users => {
         const emails = users.map(user => user.email)
         console.log(emails)
@@ -975,7 +750,7 @@ function ani() {
                         form.addEventListener("submit", function(e) {
                             e.preventDefault()
                             phone = form.children[2].value
-                            console.log(phone)
+    
                             if ((phone != "") && (isNaN(phone) || phone.length != 10)) {
                                 form.querySelector("div.filler2").innerText = "Invalid phone number (ex: 2915042210)"
                             } else {
@@ -1063,9 +838,119 @@ function ani() {
     })
 }
 
+function resetLogin() {
+    const loginModal = document.querySelector('div#loginModal')
+    loginModal.innerHTML = `      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="lg">
+                Email
+                <br>
+                <input type="email" placeholder="handsome.dan@yale.edu" required>
+                <br>
+                Password
+                <br>
+                <input type="password" placeholder="woofwoof123" required>
+                <div class="error">
+                </div>
+                <input type="submit" value="Log In">
+            </form>
+            <div class="signup-link">
+                <a href="" class="sign-up">Don't have an account? Sign up here!</a>
+            </div>
+          </div>
+        </div>
+      </div>`
+    listenLogin()
+}
+
 function listenClose() {
     document.querySelector("button#close").addEventListener('click', function(e) {
         console.log("reset")
-        resetLogin()
+        $(function() {
+            $('#loginModal').modal('toggle'); 
+        })
+        setTimeout(function() {
+            resetLogin()
+        }, 1000)
     })
+}
+
+
+//Handles adding buttons depending on login/logout status
+function createProfileBtn() {
+    const profileBtn = document.createElement("div")
+    profileBtn.id = "profile"
+    profileBtn.className = "btn btn-outline"
+    profileBtn.innerText = "Profile"
+    toolbar.appendChild(profileBtn)
+
+    listenProfileBtn()
+}
+
+function listenProfileBtn() {
+    document.querySelector("nav").addEventListener("click", function (e) {
+        if (e.target.id === "profile") {
+            let userId = localStorage.getItem('user_id')
+            fetch(`${BASE_URL}/users/${userId}`)
+            .then(res => res.json())
+            .then(user => {
+                displayProfile(user)
+            })
+        }
+    })
+}
+
+function createLoginBtn() {
+    const loginButton = document.createElement("div")
+    loginButton.id = "loginBtn"
+    loginButton.className = "btn btn-outline"
+    loginButton.innerText = "Login"
+    loginButton.dataset.toggle = "modal"
+    loginButton.dataset.target = "#loginModal"
+    toolbar.appendChild(loginButton)
+}
+
+function createLogoutBtn() {
+    const logoutButton = document.createElement("div")
+    logoutButton.id = "logout"
+    logoutButton.className = "btn btn-outline"
+    logoutButton.innerText = "Logout"
+    toolbar.appendChild(logoutButton)
+    
+    // Logout functionality
+    logoutButton.addEventListener('click', function(e){
+        localStorage.removeItem('user_id')
+        document.querySelector("div#logout").remove()
+        document.querySelector("div#profile").remove()
+        createLoginBtn()
+        displayHome()
+    })
+}
+
+
+//Date and Time formatting
+function appendLeadingZeroes(n){
+    if(n <= 9){
+      return "0" + n;
+    }
+    return n
+}
+
+function formatDate(date) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    const split = date.split("T")
+    const [dateArr, time] = split
+
+    const splitdate = dateArr.split("-")
+    const [year, month, day] = splitdate
+
+    const result = months[+month - 1] + " " + day + ", " + year + ", " + time.slice(0,5)
+    return result
 }
