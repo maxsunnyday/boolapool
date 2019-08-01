@@ -100,8 +100,8 @@ function displayProfile(user) {
                                             ${trip.address}
                                         </div>
                                         <div class="flip-card-front-details">
-                                            <p>From: ${formatDate(trip.start_time)}</p>
-                                            <p>To: ${formatDate(trip.end_time)}</p>
+                                            <p>From: ${formatDate(trip.start_time)} EST</p>
+                                            <p>To: ${formatDate(trip.end_time)} EST</p>
                                         </div>
                                     </div>
                                     <div class="flip-card-back">
@@ -129,8 +129,8 @@ function displayProfile(user) {
                                             ${trip.address}
                                         </div>
                                         <div class="flip-card-front-details">
-                                            <p>From: ${formatDate(trip.start_time)}</p>
-                                            <p>To: ${formatDate(trip.end_time)}</p>
+                                            <p>From: ${formatDate(trip.start_time)} EST</p>
+                                            <p>To: ${formatDate(trip.end_time)} EST</p>
                                         </div>
                                     </div>
                                     <div class="flip-card-back">
@@ -159,8 +159,8 @@ function displayProfile(user) {
                                             ${trip.address}
                                         </div>
                                         <div class="flip-card-front-details">
-                                            <p>From: ${formatDate(trip.start_time)}</p>
-                                            <p>To: ${formatDate(trip.end_time)}</p>
+                                            <p>From: ${formatDate(trip.start_time)} EST</p>
+                                            <p>To: ${formatDate(trip.end_time)} EST</p>
                                         </div>
                                     </div>
                                     <div class="flip-card-back">
@@ -235,7 +235,7 @@ function displayTripsFromYale(search="") {
             <tr>
             <th scope="col">Destination</th>
             <th scope="col">Address</th>
-            <th scope="col">Time</th>
+            <th scope="col">Time (EST 24:00)</th>
             <th scope="col">Capacity</th>
             <th scope="col"></th>
             </tr>
@@ -398,7 +398,7 @@ function displayTripsToYale(search="") {
             <tr>
             <th scope="col">Origin</th>
             <th scope="col">Address</th>
-            <th scope="col">Time</th>
+            <th scope="col">Time (EST 24:00)</th>
             <th scope="col">Capacity</th>
             <th scope="col"></th>
             </tr>
