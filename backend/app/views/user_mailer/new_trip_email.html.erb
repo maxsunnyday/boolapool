@@ -1,10 +1,19 @@
 <h1>You just created a new trip request, <%= @user.first_name %>!</h1>
 <h3>Trip Details:</h3>
                                     
-<p>Destination: <%= @trip.destination %> (<%= @trip.address %>)</p>
+<% if @trip.destination == "Yale" %>
+    <p>From: <%= @trip.origin %> (<%= @trip.address %>)</p>
+    <p>To: <%= @trip.destination %></p>
+<% else %>
+    <p>From: <%= @trip.origin %></p>
+    <p>To: <%= @trip.destination %> (<%= @trip.address %>)</p>
+<% end %>
+
 <p>Capacity: <%= @trip.capacity %></p>
-<p>Departure Time Range: <%= @trip.start_time.strftime("%a, %b %d, %Y at %I:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %I:%M%p") %> <br> </p>
+<p>Departure Time Range (EST): <%= @trip.start_time.strftime("%a, %b %d, %Y at %l:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %l:%M%p") %> <br> </p>
 
 <p>To go to BoolaPool, just follow this link: <%= @url %>.</p>
 
 <p>Thanks for using BoolaPool and have a great day!</p>
+
+<p>From, <br> The BoolaPool Team 🐶</p>

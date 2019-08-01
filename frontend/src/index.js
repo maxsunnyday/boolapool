@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	document.addEventListener("submit", listenNewTripFromYale)
 	document.addEventListener("submit", listenNewTripToYale)
 	document.addEventListener("click", listenForJoin)
+	document.addEventListener("click", listenJoinModal)
 	document.addEventListener("click", listenUnjoin)
 
 	//Profile Listener
