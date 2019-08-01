@@ -189,20 +189,6 @@ function displayPassengers(users) {
     return userList
 }
 
-function listenNewTripBtn(e) {
-    if (e.target.className === "toggleNewTrip") {
-        if (localStorage.getItem('user_id')) {
-            $(function() {
-                $('#newTripModal').modal('toggle'); 
-            })
-        } else {
-            $(function() {
-                $('#loginModal').modal('toggle'); 
-            })
-        }
-    }
-}
-
 //Handles displaying all trips, making new ones, and join logic
 function displayTripsFromYale(search="") {
     let userId = localStorage.getItem('user_id')
@@ -528,6 +514,20 @@ function displayTripsToYale(search="") {
 
         mainContainer.appendChild(newTripModal)
     })
+}
+
+function listenNewTripBtn(e) {
+    if (e.target.className === "toggleNewTrip") {
+        if (localStorage.getItem('user_id')) {
+            $(function() {
+                $('#newTripModal').modal('toggle'); 
+            })
+        } else {
+            $(function() {
+                $('#loginModal').modal('toggle'); 
+            })
+        }
+    }
 }
 
 function listenAddress(e) {

@@ -5,10 +5,7 @@ const mainContainer = document.querySelector("main")
 const toolbar = document.querySelector("div.btn-toolbar")
 
 document.addEventListener('DOMContentLoaded', function(){
-	document.addEventListener("submit", listenNewTripFromYale)
-	document.addEventListener("submit", listenNewTripToYale)
-	document.addEventListener("click", listenForJoin)
-	document.addEventListener("click", listenUnjoin)
+	//Navbar Listeners
 	document.addEventListener("click", function(e) {
 		if (e.target.id === "all_destination" && e.target.tagName === "DIV") {
 			displayTripsFromYale()
@@ -19,14 +16,27 @@ document.addEventListener('DOMContentLoaded', function(){
 		}
 	})
 
-	document.addEventListener("click", listenProfileBtn)
-	document.addEventListener("click", listenClose)
-	document.addEventListener("click", listenSignup)
-	document.addEventListener("submit", listenLogin)
+	//Home Search Listener
 	document.addEventListener("submit", listenSearch)
-	document.addEventListener("click", listenLogoutBtn)
+
+	//Login Listeners
+	document.addEventListener("submit", listenLogin)
+	document.addEventListener("click", listenSignup)
+	document.addEventListener("click", listenClose)
+
+	//NewTrip listeners
 	document.addEventListener("change", listenAddress)
 	document.addEventListener("click", listenNewTripBtn)
+	document.addEventListener("submit", listenNewTripFromYale)
+	document.addEventListener("submit", listenNewTripToYale)
+	document.addEventListener("click", listenForJoin)
+	document.addEventListener("click", listenUnjoin)
+
+	//Profile Listener
+	document.addEventListener("click", listenProfileBtn)
+
+	//Logout Listner
+	document.addEventListener("click", listenLogoutBtn)
 
 	displayHome()
 	//Login method
@@ -34,21 +44,6 @@ document.addEventListener('DOMContentLoaded', function(){
 		let userId = localStorage.getItem('user_id')
 		createProfileBtn()
 		createLogoutBtn()
-		
-		// //Display Home
-		// document.querySelector("div#home").addEventListener("click", function (e) {
-		// 	displayHome()
-		// })
-
-		// //Display Trips From Yale
-		// document.querySelector("div#all_destination").addEventListener("click", function (e) {
-		// 	displayTripsFromYale()
-		// })
-
-		// //Display Trips From Yale
-		// document.querySelector("div#all_origin").addEventListener("click", function (e) {
-		// 	displayTripsToYale()
-		// })
 
 	} else {
 		createLoginBtn()
