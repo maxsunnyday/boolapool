@@ -265,8 +265,8 @@ function displayTripsFromYale(search="") {
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="joinModalLabel">Trip Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                <button type="button" id="x-close" class="close" data-dismiss="modal" aria-label="Close">
+                  <span id="x-close" aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
@@ -274,11 +274,12 @@ function displayTripsFromYale(search="") {
               </div>
               <div class="modal-footer">
                 <button id="confirm-join" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                <button type="button" id="nevermind" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
               </div>
             </div>
           </div>
         </div>`
+
         tableContainer.appendChild(listingsTable)
 
         mainContainer.appendChild(btnContainer)
@@ -434,8 +435,8 @@ function displayTripsToYale(search="") {
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="joinModalLabel">Trip Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                <button type="button" id="x-close" class="close" data-dismiss="modal" aria-label="Close">
+                  <span id='x-close" aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
@@ -443,7 +444,7 @@ function displayTripsToYale(search="") {
               </div>
               <div class="modal-footer">
                 <button id="confirm-join" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                <button type="button" id="nevermind" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
               </div>
             </div>
           </div>
@@ -672,8 +673,7 @@ function listenForJoin(e) {
             const tripId = e.target.dataset.id
             const tripCapacity = e.target.parentElement.previousElementSibling
 
-            document.querySelector("div.modal-footer").addEventListener("click", function(e) {
-                if (e.target.id === "confirm-join") {
+            document.querySelector("#confirm-join").addEventListener("click", function(e) {
                     console.log("test")
                     let userId = localStorage.getItem('user_id')
                     fetch(BASE_URL + "/usertrips", {
@@ -694,8 +694,23 @@ function listenForJoin(e) {
                         tripCapacity.innerText = `${number}/${tripCapacity.innerText.split("/")[1]}`
                         td.removeChild(button)
                         td.innerText = "Already Joined!"
+
+                        resetJoinModal()
                     })
-                }
+            })
+
+            document.querySelector('#x-close').addEventListener('click', function(e){
+                resetJoinModal()
+                    $(function() {
+                        $('#joinModal').modal('toggle'); 
+                    })
+            })
+
+            document.querySelector('#nevermind').addEventListener('click', function(e){
+                resetJoinModal()
+                    $(function() {
+                        $('#joinModal').modal('toggle'); 
+                    })
             })
         } else {
             $(function() {
@@ -703,6 +718,30 @@ function listenForJoin(e) {
             })
         }
     }
+}
+
+function resetJoinModal() {
+    const table = document.querySelector('table.table')
+    
+    table.children[2].innerHTML = ""
+    table.children[2].innerHTML = `
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="joinModalLabel">Trip Confirmation</h5>
+                <button type="button" id="x-close" class="close" aria-label="Close">
+                    <span id="x-close" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Press 'Ok' to join this trip and notify other members by email.
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-join" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button type="button" id="nevermind" class="btn btn-secondary">Nevermind</button>
+            </div>
+        </div>
+    </div>`
 }
 
 function listenUnjoin(e) {
