@@ -202,7 +202,7 @@ function displayTripsFromYale(search="") {
 
         const newTripBtn = document.createElement("button")
         newTripBtn.className = "toggleNewTrip"
-        newTripBtn.innerText = "Create New Trip"
+        newTripBtn.innerText = "Create New Trip From Yale"
         btnContainer.appendChild(newTripBtn)
 
         $(function() {
@@ -318,18 +318,17 @@ function displayTripsFromYale(search="") {
         const newTripModal = document.createElement("div")
         newTripModal.className = "new-trip-modal"
         newTripModal.innerHTML = `  <div class="modal fade" id="newTripModal" tabindex="-1" role="dialog" aria-labelledby="newTripModalLabel" aria-hidden="true">
-                                      <div class="modal-dialog" role="document">
+                                      <div class="modal-dialog" role="document" style="width: 600px; top: 5%;">
                                         <div class="modal-content">
-                                          <div class="modal-header">
+                                          <div class="modal-header lightened">
                                             <h5 class="modal-title" id="newTripModalLabel">Create New Trip</h5>
                                             <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
                                               <span aria-hidden="true">&times;</span>
                                             </button>
                                           </div>
-                                          <div class="modal-body">
+                                          <div class="modal-body whitened">
                                             <form class="new-trip-from-yale">
-                                                <label>Destination</label>
-                                                <select class="select-address">
+                                                <select class="select-address" required>
                                                     <option value="" disabled selected>Where do you want to go?</option>
                                                     <option value="BDL" data-address="Schoephoester Rd, Windsor Locks, CT 06096">Bradley International Airport (BDL)</option>
                                                     <option value="JFK" data-address="Queens, NY 11430">John F. Kennedy International Airport (JFK)</option>
@@ -343,12 +342,13 @@ function displayTripsFromYale(search="") {
                                                     <option value="Connecticut Post Mall" data-address="1201 Boston Post Rd, Milford, CT 06460">Connecticut Post Mall (Milford, CT)</option>
                                                     <option value="Other">Other</option>
                                                 </select>
-                                                <label>Address</label>
+                                                <label>Address: </label>
                                                 <input type="text" name="address" required>
-                                                <label>Capacity</label>
+                                                <label>Capacity: </label>
                                                 <input type="number" name="capacity" min="2" max="6"required>
-                                                <label>Departure Time Range</label>
-                                                <input type="text" name="datetimes" placeholder="" required>
+                                                <label>Departure Time Range: </label>
+                                                <input class="datetime" type="text" name="datetimes" placeholder="" required>
+                                                <br>
                                                 <input type="submit">
                                             </form>
                                           </div>
@@ -371,9 +371,8 @@ function displayTripsToYale(search="") {
         btnContainer.className = "btn-container"
 
         const newTripBtn = document.createElement("button")
-        newTripBtn.innerText = "Create New Trip"
-        newTripBtn.dataset.toggle = "modal"
-        newTripBtn.dataset.target = "#newTripModal"
+        newTripBtn.className = "toggleNewTrip"
+        newTripBtn.innerText = "Create New Trip To Yale"
         btnContainer.appendChild(newTripBtn)
         
         $(function() {
@@ -488,19 +487,18 @@ function displayTripsToYale(search="") {
         const newTripModal = document.createElement("div")
         newTripModal.className = "new-trip-modal"
         newTripModal.innerHTML = `  <div class="modal fade" id="newTripModal" tabindex="-1" role="dialog" aria-labelledby="newTripModalLabel" aria-hidden="true">
-                                      <div class="modal-dialog" role="document">
+                                      <div class="modal-dialog" role="document" style="width: 600px; top: 5%;">
                                         <div class="modal-content">
-                                          <div class="modal-header">
+                                          <div class="modal-header lightened">
                                             <h5 class="modal-title" id="newTripModalLabel">Create New Trip</h5>
                                             <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
                                               <span aria-hidden="true">&times;</span>
                                             </button>
                                           </div>
-                                          <div class="modal-body">
+                                          <div class="modal-body whitened">
                                             <form class="new-trip-to-yale">
-                                                <label>Destination</label>
-                                                <select class="select-address">
-                                                    <option value="" disabled selected>Where do you want to go?</option>
+                                                <select class="select-address" required>
+                                                    <option value="" disabled selected>Where are you coming from?</option>
                                                     <option value="BDL" data-address="Schoephoester Rd, Windsor Locks, CT 06096">Bradley International Airport (BDL)</option>
                                                     <option value="JFK" data-address="Queens, NY 11430">John F. Kennedy International Airport (JFK)</option>
                                                     <option value="LGA" data-address="Queens, NY 11371">LaGuardia Airport (LGA)</option>
@@ -513,12 +511,13 @@ function displayTripsToYale(search="") {
                                                     <option value="Connecticut Post Mall" data-address="1201 Boston Post Rd, Milford, CT 06460">Connecticut Post Mall (Milford, CT)</option>
                                                     <option value="Other">Other</option>
                                                 </select>
-                                                <label>Address</label>
+                                                <label>Address: </label>
                                                 <input type="text" name="address" required>
-                                                <label>Capacity</label>
+                                                <label>Capacity: </label>
                                                 <input type="number" name="capacity" min="2" max="6"required>
-                                                <label>Departure Time Range</label>
-                                                <input type="text" name="datetimes" placeholder="" required>
+                                                <label>Departure Time Range: </label>
+                                                <input class="datetime" type="text" name="datetimes" placeholder="" required>
+                                                <br>
                                                 <input type="submit">
                                             </form>
                                           </div>
@@ -571,12 +570,12 @@ function listenNewTripFromYale(e) {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                destination: e.target.children[1].value,
+                destination: e.target.children[0].value,
                 origin: "Yale",
-                address: e.target.children[3].value,
-                capacity: e.target.children[5].value,
-                start_time: moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
-                end_time: moment.parseZone(e.target.children[7].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
+                address: e.target.children[2].value,
+                capacity: e.target.children[4].value,
+                start_time: moment.parseZone(e.target.children[6].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
+                end_time: moment.parseZone(e.target.children[6].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
                 user_id: userId
             })
         }).then(response => response.json())
@@ -614,11 +613,11 @@ function listenNewTripToYale(e) {
             },
             body: JSON.stringify({
                 destination: "Yale",
-                origin: e.target.children[1].value,
-                address: e.target.children[3].value,
-                capacity: e.target.children[5].value,
-                start_time: moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
-                end_time: moment.parseZone(e.target.children[7].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
+                origin: e.target.children[0].value,
+                address: e.target.children[2].value,
+                capacity: e.target.children[4].value,
+                start_time: moment.parseZone(e.target.children[6].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format(),
+                end_time: moment.parseZone(e.target.children[6].value.split(" - ")[1], 'MM/DD/YYYY hh:mm a').format(),
                 user_id: userId
             })
         }).then(response => response.json())
