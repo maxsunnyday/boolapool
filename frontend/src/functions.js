@@ -6,8 +6,9 @@ function displayHome() {
             <br>
             <br>
             <form class="search">
+                <button class="switch">From Yale</button>
                 <select>
-                    <option value="" disabled selected>Where do you want to go? (from Yale)</option>
+                    <option value="" disabled selected>Where do you want to go?</option>
                     <option value="BDL">Bradley International Airport (BDL)</option>
                     <option value="LGA">LaGuardia Airport (LGA)</option>
                     <option value="JFK">John F. Kennedy International Airport (JFK)</option>
@@ -24,6 +25,20 @@ function displayHome() {
                 <input type="submit">
             </form>
         </div>`
+}
+
+function listenSwitch(e) {
+    if (e.target.className === "switch") {
+        e.preventDefault()
+
+        if (e.target.innerText === "To Yale") {
+            e.target.innerText = "From Yale"
+            e.target.nextElementSibling.options[0].innerText = "Where do you want to go?"
+        } else {
+            e.target.innerText = "To Yale"
+            e.target.nextElementSibling.options[0].innerText = "Where are you coming from?"
+        }
+    }
 }
 
 function listenSearch(e) {

@@ -14,16 +14,41 @@ div.home-text{
   padding: 100px;
 }
 
-select{
-  align-content: center;
-  height: 40px;
-  width: 40%;
-  top: 200px;
-}
-
 div.modal-content {
   background-color: #1263ba;
   color: white;
+}
+
+form.search input[type=submit] {
+  height: 39px;
+  color: #fff;
+  font-size: 18px;
+  background: #1263ba;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  width: 8%;
+}
+
+form.search button{
+  height: 39px;
+  color: #1263ba;
+  font-size: 18px;
+  background: white;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  width: 9%;
+}
+
+form.search select {
+  align-content: center;
+  height: 40px;
+  width: 30%;
+  top: 200px;
+  border: none;
 }
 
 
