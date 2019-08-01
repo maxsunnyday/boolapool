@@ -888,7 +888,7 @@ function listenSignup(e) {
                                                     $(function() {
                                                         $('#loginModal').modal('toggle'); 
                                                     })
-
+                                                    setTimeout(resetLogin, 1000)
                                                     displayProfile(user)
                                                 }
                                             })

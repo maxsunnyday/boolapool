@@ -4,6 +4,9 @@ body, html {
 	padding: 0;
 }
 
+body {
+  background: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+}
 
 /*Home*/
 div.home-text{
