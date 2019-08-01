@@ -11,7 +11,7 @@ class TwilioController < ApplicationController
            r.Play 'http://linode.rabasa.com/cantina.mp3'
       end
   
-      render_twiml(response)
+      render_twiml response
     end
 
     def status

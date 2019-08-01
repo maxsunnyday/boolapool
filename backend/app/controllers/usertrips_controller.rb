@@ -8,12 +8,12 @@ class UsertripsController < ApplicationController
             client = Twilio::REST::Client.new Rails.application.credentials.twilio_account_sid, Rails.application.credentials.twilio_auth_token
 
             if new_user.phone.length == 10
-                client.messages.create from: '+14752243879', to: "+1#{new_user.phone}", body: "You just joined a trip to #{trip.destination}!"
+                client.messages.create from: '+14752243879', to: "+1#{new_user.phone}", body: "You just joined a trip from #{trip.origin} to #{trip.destination}! Check your email for trip details."
             end
 
             trip.users.each do |user|
                 if user.phone.length == 10
-                    client.messages.create from: '+14752243879', to: "+1#{user.phone}", body: "#{new_user.full_name} just joined your trip to #{trip.destination}!"
+                    client.messages.create from: '+14752243879', to: "+1#{user.phone}", body: "#{new_user.full_name} just joined your trip from #{trip.origin} to #{trip.destination}! Check your email for trip details."
                 end
             end
 
@@ -32,12 +32,12 @@ class UsertripsController < ApplicationController
         client = Twilio::REST::Client.new Rails.application.credentials.twilio_account_sid, Rails.application.credentials.twilio_auth_token
 
         if unjoined_user.phone.length == 10
-            client.messages.create from: '+14752243879', to: "+1#{unjoined_user.phone}", body: "You just unjoined a trip to #{trip.destination}"
+            client.messages.create from: '+14752243879', to: "+1#{unjoined_user.phone}", body: "You just unjoined a trip from #{trip.origin} to #{trip.destination}"
         end
 
         trip.users.each do |user|
             if user.phone.length == 10
-                client.messages.create from: '+14752243879', to: "+1#{user.phone}", body: "#{unjoined_user.full_name} just unjoined your trip to #{trip.destination}"
+                client.messages.create from: '+14752243879', to: "+1#{user.phone}", body: "#{unjoined_user.full_name} just unjoined your trip from #{trip.origin} to #{trip.destination}. Check your email for more trip details."
             end
         end
 

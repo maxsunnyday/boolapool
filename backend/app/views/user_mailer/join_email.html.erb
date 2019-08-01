@@ -10,7 +10,7 @@
 <% end %>
 
 <p>Capacity: <%= @trip.capacity %></p>
-<p>Departure Time Range (EST): <%= @trip.start_time.strftime("%a, %b %d, %Y at %I:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %I:%M%p") %> <br> </p>
+<p>Departure Time Range (EST): <%= @trip.start_time.strftime("%a, %b %d, %Y at %l:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %l:%M%p") %> <br> </p>
 
 <i>Contact your fellow carpoolees to figure out a specific departure time!</i>
 
@@ -28,3 +28,5 @@
 <p>To go to BoolaPool, just follow this link: <%= @url %>.</p>
 
 <p>Thanks for using BoolaPool and have a great day!</p>
+
+<p>From, <br> The BoolaPool Team 🐶</p>
