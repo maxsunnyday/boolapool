@@ -271,40 +271,47 @@ function displayTripsFromYale(search="") {
             })
         }
 
+        let today = new Date();
+        let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
+        let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes()) + ":" + appendLeadingZeroes(today.getSeconds());
+        let dateTime =  date+'T'+time;
+
         //Populate trips table
-        for (let trip of trips) {  
-            if (trip.origin === "Yale" || trip.origin == "") {
-                let tr = document.createElement("tr")
+        for (let trip of trips) {
+            if (trip.end_time > dateTime) {  
+                if (trip.origin === "Yale" || trip.origin == "") {
+                    let tr = document.createElement("tr")
 
-                //Handles join logic
-                let join = false
-                for (const user of trip.users) {
-                    if (user.id == userId) {
-                        join = true
+                    //Handles join logic
+                    let join = false
+                    for (const user of trip.users) {
+                        if (user.id == userId) {
+                            join = true
+                        }
                     }
-                }
 
-                if (join) {
-                    tr.innerHTML = `<td id="tdx">${trip.destination}</td>
-                    <td id="tdx">${trip.address}</td>
-                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                    <td id="tdx">Already Joined!</td>`
-                } else if (trip.users.length === trip.capacity) {
-                    tr.innerHTML = `<td id="tdx">${trip.destination}</td>
-                    <td id="tdx">${trip.address}</td>
-                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                    <td id="tdx">Full</td>`
-                } else {
-                    tr.innerHTML = `<td id="tdx">${trip.destination}</td>
-                    <td id="tdx">${trip.address}</td>
-                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                    <td id="tdx"><button class="join" data-id=${trip.id}>Join!</button></td>`
-                }
+                    if (join) {
+                        tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+                        <td id="tdx">${trip.address}</td>
+                        <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                        <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                        <td id="tdx">Already Joined!</td>`
+                    } else if (trip.users.length === trip.capacity) {
+                        tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+                        <td id="tdx">${trip.address}</td>
+                        <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                        <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                        <td id="tdx">Full</td>`
+                    } else {
+                        tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+                        <td id="tdx">${trip.address}</td>
+                        <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                        <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                        <td id="tdx"><button class="join" data-id=${trip.id}>Join!</button></td>`
+                    }
 
-                tbody.appendChild(tr)
+                    tbody.appendChild(tr)
+                }
             }
         }
 
@@ -434,40 +441,47 @@ function displayTripsToYale(search="") {
             })
         }
 
+        let today = new Date();
+        let date = today.getFullYear()+'-'+appendLeadingZeroes(today.getMonth()+1)+'-'+appendLeadingZeroes(today.getDate());
+        let time = appendLeadingZeroes(today.getHours()) + ":" + appendLeadingZeroes(today.getMinutes()) + ":" + appendLeadingZeroes(today.getSeconds());
+        let dateTime =  date+'T'+time;
+
         //Populate trips table
         for (let trip of trips) {
-            if (trip.destination === "Yale" || trip.destination == "") {
-                let tr = document.createElement("tr")
+            if (trip.end_time > dateTime) {  
+                if (trip.destination === "Yale" || trip.destination == "") {
+                    let tr = document.createElement("tr")
 
-                //Handles join logic
-                let join = false
-                for (const user of trip.users) {
-                    if (user.id == userId) {
-                        join = true
+                    //Handles join logic
+                    let join = false
+                    for (const user of trip.users) {
+                        if (user.id == userId) {
+                            join = true
+                        }
                     }
-                }
 
-                if (join) {
-                    tr.innerHTML = `<td id="tdx">${trip.origin}</td>
-                    <td id="tdx">${trip.address}</td>
-                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                    <td id="tdx">Already Joined!</td>`
-                } else if (trip.users.length === trip.capacity) {
-                    tr.innerHTML = `<td id="tdx">${trip.origin}</td>
-                    <td id="tdx">${trip.address}</td>
-                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                    <td id="tdx">Full</td>`
-                } else {
-                    tr.innerHTML = `<td id="tdx">${trip.origin}</td>
-                    <td id="tdx">${trip.address}</td>
-                    <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-                    <td id="tdx">${trip.users.length}/${trip.capacity}</td>
-                    <td id="tdx"><button class="join" data-id=${trip.id}>Join!</button></td>`
-                }
+                    if (join) {
+                        tr.innerHTML = `<td id="tdx">${trip.origin}</td>
+                        <td id="tdx">${trip.address}</td>
+                        <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                        <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                        <td id="tdx">Already Joined!</td>`
+                    } else if (trip.users.length === trip.capacity) {
+                        tr.innerHTML = `<td id="tdx">${trip.origin}</td>
+                        <td id="tdx">${trip.address}</td>
+                        <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                        <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                        <td id="tdx">Full</td>`
+                    } else {
+                        tr.innerHTML = `<td id="tdx">${trip.origin}</td>
+                        <td id="tdx">${trip.address}</td>
+                        <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+                        <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+                        <td id="tdx"><button class="join" data-id=${trip.id}>Join!</button></td>`
+                    }
 
-                tbody.appendChild(tr)
+                    tbody.appendChild(tr)
+                }
             }
         }
 
@@ -640,6 +654,7 @@ function listenForJoin(e) {
 
             document.querySelector("div.modal-footer").addEventListener("click", function(e) {
                 if (e.target.id === "confirm-join") {
+                    console.log("test")
                     let userId = localStorage.getItem('user_id')
                     fetch(BASE_URL + "/usertrips", {
                         method: "POST",
