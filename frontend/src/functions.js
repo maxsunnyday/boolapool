@@ -777,6 +777,10 @@ function listenUnjoin(e) {
     }
 }
 
+function resetUnjoinModal() {
+    
+}
+
 
 //Handles login sequence
 function listenLogin(e) {
