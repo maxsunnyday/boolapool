@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	document.addEventListener("click", listenClose)
 	document.addEventListener("click", listenSignup)
 	document.addEventListener("submit", listenLogin)
+	document.addEventListener("change", listenAddress)
 
 	displayHome()
 	//Login method

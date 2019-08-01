@@ -197,41 +197,14 @@ function displayTripsFromYale(search="") {
     .then(trips => {
         mainContainer.innerHTML = ``
 
-        //Form for creating new trip
-        const newForm = document.createElement("form")
-        newForm.className = "new-trip-from-yale"
-        newForm.innerHTML = `
-            <label>Destination</label>
-                <select>
-                    <option value="" disabled selected>Where do you want to go?</option>
-                    <option value="BDL" data-address="Schoephoester Rd, Windsor Locks, CT 06096">Bradley International Airport (BDL)</option>
-                    <option value="JFK" data-address="Queens, NY 11430">John F. Kennedy International Airport (JFK)</option>
-                    <option value="LGA" data-address="Queens, NY 11371">LaGuardia Airport (LGA)</option>
-                    <option value="HVN" data-address="155 Burr St, New Haven, CT 06512">Tweed New Haven Airport (HVN)</option>
-                    <option value="Trader Joe's" data-address="560 Boston Post Rd, Orange, CT 06477">Trader Joe's (Orange, CT)</option>
-                    <option value="Costco" data-address="1718 Boston Post Rd, Orange, CT 06460">Costco (Milford, CT)</option>
-                    <option value="Stop & Shop" data-address="150 Whalley Ave, New Haven, CT 06515">Stop & Shop (New Haven, CT)</option>
-                    <option value="Yale Bowl" data-address="81 Central Ave, New Haven, CT 06515">Yale Bowl</option>
-                    <option value="Lighthouse Point Park" data-address="2 Lighthouse Rd, New Haven, CT 06512">Lighthouse Point Park</option>
-                    <option value="Connecticut Post Mall" data-address="1201 Boston Post Rd, Milford, CT 06460">Connecticut Post Mall (Milford, CT)</option>
-                    <option value="Other">Other</option>
-                </select>
-            <label>Address</label>
-            <input type="text" name="address" required>
-            <label>Capacity</label>
-            <input type="number" name="capacity" min="2" max="6"required>
-            <label>Departure Time Range</label>
-            <input type="text" name="datetimes" placeholder="" required>
-            <input type="submit">`
+        const btnContainer = document.createElement("div")
+        btnContainer.className = "btn-container"
 
-        newForm.querySelector('select').addEventListener("change", function(e){
-            const select = e.target
-            const selectedInput = select.options[select.selectedIndex]
-            const selectedAddress = selectedInput.getAttribute('data-address')
-
-            const addressInput = e.target.nextElementSibling.nextElementSibling
-            addressInput.value = selectedAddress
-        })
+        const newTripBtn = document.createElement("button")
+        newTripBtn.innerText = "Create New Trip"
+        newTripBtn.dataset.toggle = "modal"
+        newTripBtn.dataset.target = "#newTripModal"
+        btnContainer.appendChild(newTripBtn)
 
         $(function() {
             $('input[name="datetimes"]').daterangepicker({
@@ -250,6 +223,9 @@ function displayTripsFromYale(search="") {
         });
         
         //Table for existing trips
+        const tableContainer = document.createElement("div")
+        tableContainer.className = "table-container"
+
         const listingsTable = document.createElement("table")
         listingsTable.className = "table"
         listingsTable.innerHTML = `
@@ -283,11 +259,10 @@ function displayTripsFromYale(search="") {
             </div>
           </div>
         </div>`
+        tableContainer.appendChild(listingsTable)
 
-        mainContainer.appendChild(newForm)
-        mainContainer.appendChild(listingsTable)
-
-        // listenForJoin()
+        mainContainer.appendChild(btnContainer)
+        mainContainer.appendChild(tableContainer)
 
         let tbody = document.querySelector('tbody')
 
@@ -333,6 +308,49 @@ function displayTripsFromYale(search="") {
                 tbody.appendChild(tr)
             }
         }
+
+        const newTripModal = document.createElement("div")
+        newTripModal.className = "new-trip-modal"
+        newTripModal.innerHTML = `  <div class="modal fade" id="newTripModal" tabindex="-1" role="dialog" aria-labelledby="newTripModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="newTripModalLabel">Create New Trip</h5>
+                                            <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <form class="new-trip-from-yale">
+                                                <label>Destination</label>
+                                                <select class="select-address">
+                                                    <option value="" disabled selected>Where do you want to go?</option>
+                                                    <option value="BDL" data-address="Schoephoester Rd, Windsor Locks, CT 06096">Bradley International Airport (BDL)</option>
+                                                    <option value="JFK" data-address="Queens, NY 11430">John F. Kennedy International Airport (JFK)</option>
+                                                    <option value="LGA" data-address="Queens, NY 11371">LaGuardia Airport (LGA)</option>
+                                                    <option value="HVN" data-address="155 Burr St, New Haven, CT 06512">Tweed New Haven Airport (HVN)</option>
+                                                    <option value="Trader Joe's" data-address="560 Boston Post Rd, Orange, CT 06477">Trader Joe's (Orange, CT)</option>
+                                                    <option value="Costco" data-address="1718 Boston Post Rd, Orange, CT 06460">Costco (Milford, CT)</option>
+                                                    <option value="Stop & Shop" data-address="150 Whalley Ave, New Haven, CT 06515">Stop & Shop (New Haven, CT)</option>
+                                                    <option value="Yale Bowl" data-address="81 Central Ave, New Haven, CT 06515">Yale Bowl</option>
+                                                    <option value="Lighthouse Point Park" data-address="2 Lighthouse Rd, New Haven, CT 06512">Lighthouse Point Park</option>
+                                                    <option value="Connecticut Post Mall" data-address="1201 Boston Post Rd, Milford, CT 06460">Connecticut Post Mall (Milford, CT)</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                                <label>Address</label>
+                                                <input type="text" name="address" required>
+                                                <label>Capacity</label>
+                                                <input type="number" name="capacity" min="2" max="6"required>
+                                                <label>Departure Time Range</label>
+                                                <input type="text" name="datetimes" placeholder="" required>
+                                                <input type="submit">
+                                            </form>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>`
+
+        mainContainer.appendChild(newTripModal)
     })
 }
 
@@ -343,43 +361,15 @@ function displayTripsToYale(search="") {
     .then(trips => {
         mainContainer.innerHTML = ``
 
-        //Form for creating new trip
-        const newForm = document.createElement("form")
-        newForm.className = "new-trip-to-yale"
-        newForm.innerHTML = `
-            <label>Origin</label>
-                <select>
-                    <option value="" disabled selected>Where do you need a ride from?</option>
-                    <option value="BDL" data-address="Schoephoester Rd, Windsor Locks, CT 06096">Bradley International Airport (BDL)</option>
-                    <option value="JFK" data-address="Queens, NY 11430">John F. Kennedy International Airport (JFK)</option>
-                    <option value="LGA" data-address="Queens, NY 11371">LaGuardia Airport (LGA)</option>
-                    <option value="HVN" data-address="155 Burr St, New Haven, CT 06512">Tweed New Haven Airport (HVN)</option>
-                    <option value="Trader Joe's" data-address="560 Boston Post Rd, Orange, CT 06477">Trader Joe's (Orange, CT)</option>
-                    <option value="Costco" data-address="1718 Boston Post Rd, Orange, CT 06460">Costco (Milford, CT)</option>
-                    <option value="Stop & Shop" data-address="150 Whalley Ave, New Haven, CT 06515">Stop & Shop (New Haven, CT)</option>
-                    <option value="Yale Bowl" data-address="81 Central Ave, New Haven, CT 06515">Yale Bowl</option>
-                    <option value="Lighthouse Point Park" data-address="2 Lighthouse Rd, New Haven, CT 06512">Lighthouse Point Park</option>
-                    <option value="Connecticut Post Mall" data-address="1201 Boston Post Rd, Milford, CT 06460">Connecticut Post Mall (Milford, CT)</option>
-                    <option value="Other">Other</option>
-                </select>
-            <label>Address</label>
-            <input type="text" name="address" required>
-            <label>Capacity</label>
-            <input type="number" name="capacity" min="2" max="6"required>
-            <label>Departure Time Range</label>
-            <input type="text" name="datetimes" placeholder="" required>
-            <input type="submit">`
+        const btnContainer = document.createElement("div")
+        btnContainer.className = "btn-container"
 
-        newForm.querySelector('select').addEventListener("change", function(e){
-            const select = e.target
-            const selectedInput = select.options[select.selectedIndex]
-            const selectedAddress = selectedInput.getAttribute('data-address')
-
-            const addressInput = e.target.nextElementSibling.nextElementSibling
-            addressInput.value = selectedAddress
-        })
+        const newTripBtn = document.createElement("button")
+        newTripBtn.innerText = "Create New Trip"
+        newTripBtn.dataset.toggle = "modal"
+        newTripBtn.dataset.target = "#newTripModal"
+        btnContainer.appendChild(newTripBtn)
         
-
         $(function() {
             $('input[name="datetimes"]').daterangepicker({
             timePicker: true,
@@ -397,6 +387,8 @@ function displayTripsToYale(search="") {
         });
         
         //Table for existing trips
+        const tableContainer = document.createElement("div")
+        tableContainer.className = "table-container"
         const listingsTable = document.createElement("table")
         listingsTable.className = "table"
         listingsTable.innerHTML = `
@@ -430,11 +422,10 @@ function displayTripsToYale(search="") {
             </div>
           </div>
         </div>`
+        tableContainer.appendChild(listingsTable)
 
-        mainContainer.appendChild(newForm)
-        mainContainer.appendChild(listingsTable)
-
-        // listenForJoin()
+        mainContainer.appendChild(btnContainer)
+        mainContainer.appendChild(tableContainer)
 
         let tbody = document.querySelector('tbody')
 
@@ -480,7 +471,62 @@ function displayTripsToYale(search="") {
                 tbody.appendChild(tr)
             }
         }
+
+        const newTripModal = document.createElement("div")
+        newTripModal.className = "new-trip-modal"
+        newTripModal.innerHTML = `  <div class="modal fade" id="newTripModal" tabindex="-1" role="dialog" aria-labelledby="newTripModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="newTripModalLabel">Create New Trip</h5>
+                                            <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <form class="new-trip-to-yale">
+                                                <label>Destination</label>
+                                                <select class="select-address">
+                                                    <option value="" disabled selected>Where do you want to go?</option>
+                                                    <option value="BDL" data-address="Schoephoester Rd, Windsor Locks, CT 06096">Bradley International Airport (BDL)</option>
+                                                    <option value="JFK" data-address="Queens, NY 11430">John F. Kennedy International Airport (JFK)</option>
+                                                    <option value="LGA" data-address="Queens, NY 11371">LaGuardia Airport (LGA)</option>
+                                                    <option value="HVN" data-address="155 Burr St, New Haven, CT 06512">Tweed New Haven Airport (HVN)</option>
+                                                    <option value="Trader Joe's" data-address="560 Boston Post Rd, Orange, CT 06477">Trader Joe's (Orange, CT)</option>
+                                                    <option value="Costco" data-address="1718 Boston Post Rd, Orange, CT 06460">Costco (Milford, CT)</option>
+                                                    <option value="Stop & Shop" data-address="150 Whalley Ave, New Haven, CT 06515">Stop & Shop (New Haven, CT)</option>
+                                                    <option value="Yale Bowl" data-address="81 Central Ave, New Haven, CT 06515">Yale Bowl</option>
+                                                    <option value="Lighthouse Point Park" data-address="2 Lighthouse Rd, New Haven, CT 06512">Lighthouse Point Park</option>
+                                                    <option value="Connecticut Post Mall" data-address="1201 Boston Post Rd, Milford, CT 06460">Connecticut Post Mall (Milford, CT)</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                                <label>Address</label>
+                                                <input type="text" name="address" required>
+                                                <label>Capacity</label>
+                                                <input type="number" name="capacity" min="2" max="6"required>
+                                                <label>Departure Time Range</label>
+                                                <input type="text" name="datetimes" placeholder="" required>
+                                                <input type="submit">
+                                            </form>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>`
+
+        mainContainer.appendChild(newTripModal)
     })
+}
+
+function listenAddress(e) {
+    if (e.target.className === "select-address") {
+  
+        const select = e.target
+        const selectedInput = select.options[select.selectedIndex]
+        const selectedAddress = selectedInput.getAttribute('data-address')
+
+        const addressInput = e.target.nextElementSibling.nextElementSibling
+        addressInput.value = selectedAddress
+    }
 }
 
 function listenNewTripFromYale(e) {
@@ -489,7 +535,6 @@ function listenNewTripFromYale(e) {
         e.preventDefault()
 
         let userId = localStorage.getItem('user_id')
-
         let tbody = document.querySelector('tbody')
 
         // if (e.target.children[0].value === "Destination") {
@@ -517,14 +562,17 @@ function listenNewTripFromYale(e) {
             })
         }).then(response => response.json())
         .then(trip => {
+            $(function() {
+                $('#newTripModal').modal('toggle'); 
+            })
 
             let tr = document.createElement("tr")
 
-            tr.innerHTML = `<td>${trip.destination}</td>
-            <td>${trip.address}</td>
-            <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-            <td>${trip.users.length}/${trip.capacity}</td>
-            <td>Already Joined!</td>`
+            tr.innerHTML = `<td id="tdx">${trip.destination}</td>
+            <td id="tdx">${trip.address}</td>
+            <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+            <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+            <td id="tdx">Already Joined!</td>`
 
             tbody.appendChild(tr)
         })
@@ -533,11 +581,10 @@ function listenNewTripFromYale(e) {
 
 function listenNewTripToYale(e) {
     //Create new Trip
-    if (e.target.className === "new-trip-to-yale") {
+    if (e.target.className ==="new-trip-to-yale") {
         e.preventDefault()
 
         let userId = localStorage.getItem('user_id')
-
         let tbody = document.querySelector('tbody')
 
         // if (e.target.children[0].value === "Destination") {
@@ -567,16 +614,17 @@ function listenNewTripToYale(e) {
             })
         }).then(response => response.json())
         .then(trip => {
-
-            console.log(trip)
+            $(function() {
+                $('#newTripModal').modal('toggle'); 
+            })
 
             let tr = document.createElement("tr")
 
-            tr.innerHTML = `<td>${trip.origin}</td>
-            <td>${trip.address}</td>
-            <td>${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
-            <td>${trip.users.length}/${trip.capacity}</td>
-            <td>Already Joined!</td>`
+            tr.innerHTML = `<td id="tdx">${trip.origin}</td>
+            <td id="tdx">${trip.address}</td>
+            <td id="tdx">${formatDate(trip.start_time)} - ${formatDate(trip.end_time)}</td>
+            <td id="tdx">${trip.users.length}/${trip.capacity}</td>
+            <td id="tdx">Already Joined!</td>`
 
             tbody.appendChild(tr)
         })
@@ -660,6 +708,7 @@ function listenUnjoin(e) {
         })
     }
 }
+
 
 //Handles login sequence
 function listenLogin(e) {

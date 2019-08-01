@@ -379,6 +379,32 @@ div.profile-subhead-text {
 
 
 /*Display Trips*/
+.table-container {
+  margin: auto;
+  margin-top: 10px;
+  background-color: white;
+  border-radius: 25px;
+  width: 94%;
+  height: 80%;
+}
+
+.btn-container {
+  padding-top: 10px;
+}
+
+.btn-container button{
+  margin-left: 84%;
+  height: 30px;
+  color: #fff;
+  font-size: 18px;
+  background: #1263ba;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  width: 12%
+}
+
 #tdx{
   padding: .75rem;
   vertical-align: top;
