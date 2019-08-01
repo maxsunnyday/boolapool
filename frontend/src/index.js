@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	document.addEventListener("submit", listenLogin)
 	document.addEventListener("submit", listenSearch)
 	document.addEventListener("click", listenLogoutBtn)
+	document.addEventListener("change", listenAddress)
 
 	displayHome()
 	//Login method
