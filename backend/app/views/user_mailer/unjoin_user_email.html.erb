@@ -1,15 +1,26 @@
-<h1>You unjoined the trip to <%= @trip.destination %></h1>
+<h1>You unjoined the trip from <%= @trip.origin %> to <%= @trip.destination %></h1>
 <h3>Trip Details:</h3>
-                                    
-<p>Destination: <%= @trip.destination %> (<%= @trip.address %>)</p>
+
+<% if @trip.destination == "Yale" %>
+    <p>From: <%= @trip.origin %> (<%= @trip.address %>)</p>
+    <p>To: <%= @trip.destination %></p>
+<% else %>
+    <p>From: <%= @trip.origin %></p>
+    <p>To: <%= @trip.destination %> (<%= @trip.address %>)</p>
+<% end %>
+
 <p>Capacity: <%= @trip.capacity %></p>
-<p>Departure Time Range: <%= @trip.start_time.strftime("%a, %b %d, %Y at %I:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %I:%M%p") %> <br> </p>
+<p>Departure Time Range (EST): <%= @trip.start_time.strftime("%a, %b %d, %Y at %l:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %l:%M%p") %> <br> </p>
 
 <% if @trip.users %>
-  <h3>Trip Members:</h3>
+    <h3>Trip Members:</h3>
     <ul>
         <% @trip.users.each do |user| %>
-            <li><%= "#{user.first_name} #{user.last_name} -- #{user.email} (Phone #: #{user.phone})" %></li>
+            <% if user.phone.length == 10 %>
+                <li><%= "#{user.full_name} -- #{user.email} (Phone #: #{user.phone})" %></li>
+            <% else %>
+                <li><%= "#{user.full_name} -- #{user.email}" %></li>
+            <% end %>
         <% end %>
     </ul>
 <% end %>
@@ -17,3 +28,5 @@
 <p>To go to BoolaPool, just follow this link: <%= @url %>.</p>
 
 <p>Thanks for using BoolaPool and have a great day!</p>
+
+<p>From, <br> The BoolaPool Team 🐶</p>

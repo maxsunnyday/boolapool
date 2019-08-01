@@ -1,13 +1,23 @@
-
 You just created a new trip request, <%= @user.first_name %>!
+
 ===============================================
  
 Trip Details:
-                                        
-Destination: <%= @trip.destination %> (<%= @trip.address %>)
+
+<% if @trip.destination == "Yale" %>
+    From: <%= @trip.origin %> (<%= @trip.address %>)
+    To: <%= @trip.destination %>
+<% else %>
+    From: <%= @trip.origin %>
+    To: <%= @trip.destination %> (<%= @trip.address %>)
+<% end %>
+
 Capacity: <%= @trip.capacity %>
-Departure Time Range: <%= @trip.start_time.strftime("%a, %b %d, %Y at %I:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %I:%M%p") %>
+Departure Time Range (EST): <%= @trip.start_time.strftime("%a, %b %d, %Y at %l:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %l:%M%p") %>
  
 To go to BoolaPool, just follow this link: <%= @url %>.
  
 Thanks for using BoolaPool and have a great day!
+
+From,
+The BoolaPool Team 🐶

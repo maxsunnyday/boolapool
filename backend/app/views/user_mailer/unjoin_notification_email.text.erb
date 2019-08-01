@@ -1,17 +1,36 @@
-<%= @unjoined_user.first_name %> just unjoined your carpool group
+<%= @unjoined_user.full_name %> just unjoined your carpool group
 ===============================================
  
 Trip Details:
                                         
-Destination: <%= @trip.destination %> (<%= @trip.address %>)
+<% if @trip.destination == "Yale" %>
+    From: <%= @trip.origin %> (<%= @trip.address %>)
+    To: <%= @trip.destination %>
+<% else %>
+    From: <%= @trip.origin %>
+    To: <%= @trip.destination %> (<%= @trip.address %>)
+<% end %>
+
 Capacity: <%= @trip.capacity %>
-Departure Time Range: <%= @trip.start_time.strftime("%a, %b %d, %Y at %I:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %I:%M%p") %>
+Departure Time Range (EST): <%= @trip.start_time.strftime("%a, %b %d, %Y at %l:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %l:%M%p") %>
+
+Contact your fellow carpoolees to figure out a specific departure time!
 
 Trip Members:
+
 <% @trip.users.each do |user| %>
-    <%= "#{user.first_name} #{user.last_name} -- #{user.email} (Phone #: #{user.phone})" %>
+    <% if user.phone.length == 10 %>
+        <%= "#{user.full_name} -- #{user.email} (Phone #: #{user.phone})" %>
+
+    <% else %>
+        <%= "#{user.full_name} -- #{user.email}" %>
+        
+    <% end %>
 <% end %>
- 
+
 To go to BoolaPool, just follow this link: <%= @url %>.
- 
+
 Thanks for using BoolaPool and have a great day!
+
+From,
+The BoolaPool Team 🐶
