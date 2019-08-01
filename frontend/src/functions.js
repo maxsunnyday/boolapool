@@ -757,6 +757,7 @@ function listenLogin(e) {
 
 function listenSignup(e) {
     if (e.target.className === "sign-up") {
+        e.preventDefault()
         fetch("http://localhost:3000/users").then(result => result.json()).then(users => {
             const emails = users.map(user => user.email)
             console.log(emails)
