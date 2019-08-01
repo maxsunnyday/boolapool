@@ -3,7 +3,7 @@
                                     
 <p>Destination: <%= @trip.destination %> (<%= @trip.address %>)</p>
 <p>Capacity: <%= @trip.capacity %></p>
-<p>Departure Time Range: <%= @trip.start_time %> - <%= @trip.end_time %> <br> </p>
+<p>Departure Time Range: <%= @trip.start_time.strftime("%a, %b %d, %Y at %I:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %I:%M%p") %> <br> </p>
 
 <h3>Trip Members:</h3>
 <ul>

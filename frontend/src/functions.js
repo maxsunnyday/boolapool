@@ -24,13 +24,15 @@ function displayHome() {
                 <input type="submit">
             </form>
         </div>`
+}
 
-    document.querySelector('form.search').addEventListener('submit', function(e){
+function listenSearch(e) {
+    if (e.target.className === "search" && e.target.tagName === "FORM") {
         e.preventDefault()
 
         searchQuery = e.target.children[0].value 
         displayTripsFromYale(searchQuery)
-    })
+    }
 }
 
 function displayProfile(user) {
@@ -955,15 +957,17 @@ function createLogoutBtn() {
     logoutButton.className = "btn btn-outline"
     logoutButton.innerText = "Logout"
     toolbar.appendChild(logoutButton)
-    
+}
+
+function listenLogoutBtn(e) {
     // Logout functionality
-    logoutButton.addEventListener('click', function(e){
+    if (e.target.id === "logout") {
         localStorage.removeItem('user_id')
         document.querySelector("div#logout").remove()
         document.querySelector("div#profile").remove()
         createLoginBtn()
         displayHome()
-    })
+    }
 }
 
 

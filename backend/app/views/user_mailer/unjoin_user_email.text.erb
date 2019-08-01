@@ -5,7 +5,7 @@ Trip Details:
                                         
 Destination: <%= @trip.destination %> (<%= @trip.address %>)
 Capacity: <%= @trip.capacity %>
-Departure Time Range: <%= @trip.start_time %> - <%= @trip.end_time %>
+Departure Time Range: <%= @trip.start_time.strftime("%a, %b %d, %Y at %I:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %I:%M%p") %>
 
 <% if @trip.users %>
     Trip Members:
