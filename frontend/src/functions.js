@@ -178,7 +178,6 @@ function displayProfile(user) {
                                 </div>`
             }
         }
-        // listenUnjoin()
     })
 }
 
@@ -551,14 +550,6 @@ function listenNewTripFromYale(e) {
         let userId = localStorage.getItem('user_id')
         let tbody = document.querySelector('tbody')
 
-        // if (e.target.children[0].value === "Destination") {
-        //     let origin = "Yale"
-        //     let destination = e.target.children[1].value
-        // } else {
-        //     let origin = e.target.children[1].value
-        //     let destination = "Yale"
-        // }
-
         fetch("http://localhost:3000/trips", {
             method: "POST",
             headers: {
@@ -600,16 +591,6 @@ function listenNewTripToYale(e) {
 
         let userId = localStorage.getItem('user_id')
         let tbody = document.querySelector('tbody')
-
-        // if (e.target.children[0].value === "Destination") {
-        //     let origin = "Yale"
-        //     let destination = e.target.children[1].value
-        // } else {
-        //     let origin = e.target.children[1].value
-        //     let destination = "Yale"
-        // }
-
-        // console.log(moment.parseZone(e.target.children[7].value.split(" - ")[0], 'MM/DD/YYYY hh:mm a').format())
 
         fetch("http://localhost:3000/trips", {
             method: "POST",
@@ -773,8 +754,8 @@ function listenSignup(e) {
         e.preventDefault()
         fetch("http://localhost:3000/users").then(result => result.json()).then(users => {
             const emails = users.map(user => user.email)
-            // console.log(emails)
             const content = document.querySelector("div.modal-content")
+
             document.querySelector("div.modal-dialog").classList.add("anim")
             document.querySelector("div.modal-body").classList.add("whiten")
             content.classList.add("lighten")
@@ -903,21 +884,6 @@ function listenSignup(e) {
                                                     document.querySelector("div#loginBtn").remove()
                                                     createProfileBtn()
                                                     createLogoutBtn()
-                                                    
-                                                    // //Display Home
-                                                    // document.querySelector("div#home").addEventListener("click", function (e) {
-                                                    //     displayHome()
-                                                    // })
-                                    
-                                                    // //Display Trips From Yale
-                                                    // document.querySelector("div#all_destination").addEventListener("click", function (e) {
-                                                    //     displayTripsFromYale()
-                                                    // })
-
-                                                    // //Display Trips To Yale
-                                                    // document.querySelector("div#all_origin").addEventListener("click", function (e) {
-                                                    //     displayTripsToYale()
-                                                    // })
 
                                                     $(function() {
                                                         $('#loginModal').modal('toggle'); 
