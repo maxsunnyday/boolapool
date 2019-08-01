@@ -772,8 +772,8 @@ function listenSignup(e) {
             setTimeout(function() {
                 content.innerHTML =  `<div class="modal-header">
                                         <h5 class="modal-title" id="SignupModalLabel">Signup</h5>
-                                        <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
+                                        <button type="button" class="close" id="close" aria-label="Close">
+                                        <span class="closeReset" aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body whitened">
@@ -928,7 +928,6 @@ function listenSignup(e) {
 
 function resetLogin() {
     const loginModal = document.querySelector('div#loginModal')
-    document.querySelector("form.lg").reset()
     loginModal.innerHTML = `      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -959,7 +958,7 @@ function resetLogin() {
 }
 
 function listenClose(e) {
-    if (e.target.id === "close") {
+    if (e.target.className === "closeReset") {
         $(function() {
             $('#loginModal').modal('toggle'); 
         })
