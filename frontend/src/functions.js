@@ -44,9 +44,15 @@ function listenSwitch(e) {
 function listenSearch(e) {
     if (e.target.className === "search" && e.target.tagName === "FORM") {
         e.preventDefault()
+        searchQuery = e.target.children[1].value
+        console.log(searchQuery)
 
-        searchQuery = e.target.children[0].value 
-        displayTripsFromYale(searchQuery)
+        if (e.target.children[0].innerText === "From Yale") { 
+            displayTripsFromYale(searchQuery)
+        } else {
+            displayTripsToYale(searchQuery)
+        }
+        
     }
 }
 
