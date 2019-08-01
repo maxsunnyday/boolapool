@@ -635,7 +635,6 @@ function listenNewTripToYale(e) {
 
 function listenForJoin(e) {
     if (e.target.className === "join" && e.target.tagName === "BUTTON") {
-        console.log(localStorage.getItem('user_id'))
         if (localStorage.getItem('user_id')) {
             $(function() {
                 $('#joinModal').modal('toggle'); 
@@ -762,7 +761,7 @@ function listenSignup(e) {
         e.preventDefault()
         fetch("http://localhost:3000/users").then(result => result.json()).then(users => {
             const emails = users.map(user => user.email)
-            console.log(emails)
+            // console.log(emails)
             const content = document.querySelector("div.modal-content")
             document.querySelector("div.modal-dialog").classList.add("anim")
             document.querySelector("div.modal-body").classList.add("whiten")
