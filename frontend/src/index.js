@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	})
 
 	//Home Search Listener
+	document.addEventListener("click", listenSwitch)
 	document.addEventListener("submit", listenSearch)
 
 	//Login Listeners
