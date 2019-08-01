@@ -402,7 +402,7 @@ div.profile-subhead-text {
 }
 
 .btn-container button{
-  margin-left: 84%;
+  margin-left: 77%;
   height: 30px;
   color: #fff;
   font-size: 18px;
@@ -411,7 +411,7 @@ div.profile-subhead-text {
   border-radius: 5px;
   border: none;
   outline: none;
-  width: 12%
+  width: 19%
 }
 
 #tdx{
@@ -420,7 +420,8 @@ div.profile-subhead-text {
   border-top: 1px solid white;
 }
 
-form.new-trip-from-yale input[type=text] {
+form.new-trip-from-yale input[type=text],
+form.new-trip-to-yale input[type=text] {
   margin-bottom: 10px;
   border: none;
   border-bottom: 1px solid #e6f2ff;
@@ -433,7 +434,8 @@ form.new-trip-from-yale input[type=text] {
   vertical-align: bottom;
 }
 
-form.new-trip-from-yale select {
+form.new-trip-from-yale select,
+form.new-trip-to-yale select {
   margin-left: 5%;
   margin-bottom: 10px;
   border: none;
@@ -445,7 +447,8 @@ form.new-trip-from-yale select {
   width: 90%;
 }
 
-form.new-trip-from-yale input[type=number] {
+form.new-trip-from-yale input[type=number], 
+form.new-trip-to-yale input[type=number] {
   margin-bottom: 10px;
   border: none;
   border-bottom: 1px solid #e6f2ff;
@@ -458,12 +461,14 @@ form.new-trip-from-yale input[type=number] {
   vertical-align: bottom;
 }
 
-form.new-trip-from-yale label{
+form.new-trip-from-yale label,
+form.new-trip-to-yale label {
   vertical-align: middle;
   color: black;
 }
 
-form.new-trip-from-yale input[type=submit] {
+form.new-trip-from-yale input[type=submit],
+form.new-trip-to-yale input[type=submit] {
   height: 30px;
   color: #fff;
   font-size: 18px;
