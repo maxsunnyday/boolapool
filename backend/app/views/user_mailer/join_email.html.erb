@@ -1,9 +1,18 @@
-<h1><%= @new_user.first_name %> just joined your carpool group!</h1>
+<h1><%= @new_user.full_name %> just joined the carpool group!</h1>
 <h3>Trip Details:</h3>
-                                    
-<p>Destination: <%= @trip.destination %> (<%= @trip.address %>)</p>
+
+<% if @trip.destination == "Yale" %>
+    <p>From: <%= @trip.origin %> (<%= @trip.address %>)</p>
+    <p>To: <%= @trip.destination %></p>
+<% else %>
+    <p>From: <%= @trip.origin %></p>
+    <p>To: <%= @trip.destination %> (<%= @trip.address %>)</p>
+<% end %>
+
 <p>Capacity: <%= @trip.capacity %></p>
-<p>Departure Time Range: <%= @trip.start_time.strftime("%a, %b %d, %Y at %I:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %I:%M%p") %> <br> </p>
+<p>Departure Time Range (all times EST): <%= @trip.start_time.strftime("%a, %b %d, %Y at %I:%M%p") %> - <%= @trip.end_time.strftime("%a, %b %d, %Y at %I:%M%p") %> <br> </p>
+
+<i>Contact your fellow carpoolees to figure out a specific departure time!</i>
 
 <h3>Trip Members:</h3>
 <ul>
