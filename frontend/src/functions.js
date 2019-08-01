@@ -190,6 +190,19 @@ function displayPassengers(users) {
     return userList
 }
 
+function listenNewTripBtn(e) {
+    if (e.target.className === "toggleNewTrip") {
+        if (localStorage.getItem('user_id')) {
+            $(function() {
+                $('#newTripModal').modal('toggle'); 
+            })
+        } else {
+            $(function() {
+                $('#loginModal').modal('toggle'); 
+            })
+        }
+    }
+}
 
 //Handles displaying all trips, making new ones, and join logic
 function displayTripsFromYale(search="") {
@@ -203,9 +216,8 @@ function displayTripsFromYale(search="") {
         btnContainer.className = "btn-container"
 
         const newTripBtn = document.createElement("button")
+        newTripBtn.className = "toggleNewTrip"
         newTripBtn.innerText = "Create New Trip"
-        newTripBtn.dataset.toggle = "modal"
-        newTripBtn.dataset.target = "#newTripModal"
         btnContainer.appendChild(newTripBtn)
 
         $(function() {
