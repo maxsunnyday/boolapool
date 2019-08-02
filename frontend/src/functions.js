@@ -106,7 +106,7 @@ function displayProfile(user) {
     let dateTime =  date+'T'+time;
 
     userId = localStorage.getItem('user_id')
-    fetch(`http://localhost:3000/users/${userId}`)
+    fetch(BASE_URL + `/users/${userId}`)
     .then(response => response.json())
     .then(user => {
         // const trips = user.trips
@@ -228,7 +228,7 @@ function displayPassengers(users) {
 //Handles displaying all trips, making new ones, and join logic
 function displayTripsFromYale(search="") {
     let userId = localStorage.getItem('user_id')
-    fetch("http://localhost:3000/trips")
+    fetch(BASE_URL + "/trips")
     .then(response => response.json())
     .then(trips => {
         mainContainer.innerHTML = ``
@@ -399,7 +399,7 @@ function displayTripsFromYale(search="") {
 
 function displayTripsToYale(search="") {
     let userId = localStorage.getItem('user_id')
-    fetch("http://localhost:3000/trips")
+    fetch(BASE_URL + "/trips")
     .then(response => response.json())
     .then(trips => {
         mainContainer.innerHTML = ``
@@ -600,7 +600,7 @@ function listenNewTripFromYale(e) {
         let userId = localStorage.getItem('user_id')
         let tbody = document.querySelector('tbody')
 
-        fetch("http://localhost:3000/trips", {
+        fetch(BASE_URL + "/trips", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -642,7 +642,7 @@ function listenNewTripToYale(e) {
         let userId = localStorage.getItem('user_id')
         let tbody = document.querySelector('tbody')
 
-        fetch("http://localhost:3000/trips", {
+        fetch(BASE_URL + "/trips", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -852,7 +852,7 @@ function listenLogin(e) {
         const email = e.target.children[1].value
         const password = e.target.children[4].value
     
-        fetch("http://localhost:3000/login", {
+        fetch(BASE_URL + "/login", {
             method: "POST",
             headers: {
                 'Content-Type': "application/json",
@@ -888,7 +888,7 @@ function listenLogin(e) {
 function listenSignup(e) {
     if (e.target.className === "sign-up") {
         e.preventDefault()
-        fetch("http://localhost:3000/users").then(result => result.json()).then(users => {
+        fetch(BASE_URL + "/users").then(result => result.json()).then(users => {
             const emails = users.map(user => user.email)
             const content = document.querySelector("div.modal-content")
 
@@ -1014,7 +1014,7 @@ function listenSignup(e) {
                                             if (password !== password_confirmation) {
                                                 form.querySelector('div.filler3').innerText = "Passwords do not match!"
                                             }
-                                            fetch("http://localhost:3000/users", {
+                                            fetch(BASE_URL + "/users", {
                                                 method: "POST",
                                                 headers: {
                                                     'Content-Type': "application/json",
