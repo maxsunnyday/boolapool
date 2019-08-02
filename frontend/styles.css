@@ -86,6 +86,11 @@ div.signup-link a{
   color: white;
 }
 
+div.modal-footer {
+  border: none;
+  padding: 10px 16px;
+}
+
 form.lg input[type=email],
 form.lg input[type=password]{
   margin-bottom: 10px;
@@ -307,12 +312,12 @@ div.profile-greeting {
 
 div.profile-current-trips {
   padding: 20px 20px;
-  background-color: hsl(0, 0%, 97%);
+  background-color: #f2f2f2;
 }
 
 div.profile-past-trips {
   padding: 20px 20px;
-  background-color: hsl(0, 0%, 97%);
+  background-color: #f2f2f2;
 }
 
 div.profile-subhead-text {
@@ -322,11 +327,20 @@ div.profile-subhead-text {
 .flip-card {
   background-color: transparent;
   width: 300px;
-  height: 200px;
-  border: 1px solid hsl(0, 0%, 97%);
+  height: 250px;
+  border: 1px solid #f2f2f2;
   perspective: 1000px;
   display: inline-block;
+}
 
+
+#other-origin {
+  background-color: white;
+  color: #1263ba;
+}
+
+#yale-origin {
+  background-color: #1263ba;
 }
 
 .flip-card-inner {

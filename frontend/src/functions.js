@@ -22,7 +22,7 @@ function displayHome() {
                     <option value="Connecticut Post Mall">Connecticut Post Mall (Milford, CT)</option>
                     <option value="Other">Other</option>
                 </select>
-                <input type="submit">
+                <input type="submit" value="Search">
             </form>
         </div>`
 }
@@ -113,9 +113,9 @@ function displayProfile(user) {
                 if (trip.usertrips.length === 1) {
                     current.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
-                                    <div class="flip-card-front">
+                                    <div class="flip-card-front" id="${cardColor(trip)}">
                                         <div class="flip-card-front-head">
-                                            ${trip.destination}
+                                            ${trip.origin} → ${trip.destination}
                                         </div>
                                         <div class="flip-card-front-subhead">
                                             ${trip.address}
@@ -142,9 +142,9 @@ function displayProfile(user) {
                 } else {
                     current.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
-                                    <div class="flip-card-front">
+                                    <div class="flip-card-front" id="${cardColor(trip)}">
                                         <div class="flip-card-front-head">
-                                            ${trip.destination}
+                                            ${trip.origin} → ${trip.destination}
                                         </div>
                                         <div class="flip-card-front-subhead">
                                             ${trip.address}
@@ -172,9 +172,9 @@ function displayProfile(user) {
             } else {
                 past.innerHTML += `<div class="flip-card">
                                   <div class="flip-card-inner">
-                                    <div class="flip-card-front">
+                                    <div class="flip-card-front" id="${cardColor(trip)}">
                                         <div class="flip-card-front-head">
-                                            ${trip.destination}
+                                            ${trip.origin} → ${trip.destination}
                                         </div>
                                         <div class="flip-card-front-subhead">
                                             ${trip.address}
@@ -200,6 +200,14 @@ function displayProfile(user) {
             }
         }
     })
+}
+
+function cardColor(trip) {
+    if (trip.origin === "Yale") {
+        return "yale-origin"
+    } else {
+        return "other-origin"
+    }
 }
 
 function displayPassengers(users) {
@@ -270,7 +278,7 @@ function displayTripsFromYale(search="") {
                 </button>
               </div>
               <div class="modal-body">
-                Press 'Ok' to join this trip and notify other members by email.
+                Press 'Ok' to join and notify other members of this trip.
               </div>
               <div class="modal-footer">
                 <button id="confirm-join" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
@@ -436,11 +444,11 @@ function displayTripsToYale(search="") {
               <div class="modal-header">
                 <h5 class="modal-title" id="joinModalLabel">Trip Confirmation</h5>
                 <button type="button" id="x-close" class="close" data-dismiss="modal" aria-label="Close">
-                  <span id='x-close" aria-hidden="true">&times;</span>
+                  <span id="x-close" aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                Press 'Ok' to join this trip and notify other members by email.
+                Press 'Ok' to join and notify other members of this trip.
               </div>
               <div class="modal-footer">
                 <button id="confirm-join" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
