@@ -117,7 +117,7 @@ function displayProfile(user) {
                                         <div class="flip-card-front-head">
                                             ${trip.origin} → ${trip.destination}
                                         </div>
-                                        <div class="flip-card-front-subhead">
+                                        <div class="flip-card-front-subhead" id="${cardColor(trip)}">
                                             ${trip.address}
                                         </div>
                                         <div class="flip-card-front-details">
@@ -146,7 +146,7 @@ function displayProfile(user) {
                                         <div class="flip-card-front-head">
                                             ${trip.origin} → ${trip.destination}
                                         </div>
-                                        <div class="flip-card-front-subhead">
+                                        <div class="flip-card-front-subhead" id="${cardColor(trip)}">
                                             ${trip.address}
                                         </div>
                                         <div class="flip-card-front-details">
@@ -176,7 +176,7 @@ function displayProfile(user) {
                                         <div class="flip-card-front-head">
                                             ${trip.origin} → ${trip.destination}
                                         </div>
-                                        <div class="flip-card-front-subhead">
+                                        <div class="flip-card-front-subhead" id="${cardColor(trip)}">
                                             ${trip.address}
                                         </div>
                                         <div class="flip-card-front-details">
