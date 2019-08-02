@@ -10,26 +10,26 @@ For example, an uber to Bradley International Airport could cost upwards of $60 
 
 BoolaPool also hopes to serve as Yale's dedicated platform for coordinating carpools. This will take away the awkwardness of asking unknown classmates to carpool, and will save students the time and energy spent looking for carpoolees on facebook groups.
 
-####Features
+#### Features
 So what can you do with BoolaPool?
-#####Search
+##### Search
 BoolaPool will allow you to specify where you want to go and pull up all matching trips from our database that have been made by other users, making sure to exclude trips that have already passed their departure window.
 
-######Join Trips
+###### Join Trips
 If you find a trip you would like to be a part of, you can join it with the click of a button and BoolaPool will send all members of that trip notifications with your contact information so they can reach you.
 
-#####Create Trips
+##### Create Trips
 If the trip you want to go on doesn't exist yet, you can make it yourself! Specifying the details of your trip can be done with a quick and easy form and will be displayed to all other users on the site. You will also get notifications when other people join your trip!
 
 #### Built With
 ##### Ruby on Rails
 BoolaPool's backend is fully integrated with Ruby on Rails.
 
-#####Twilio: https://www.twilio.com/
+##### Twilio: https://www.twilio.com/
 This API was used to allow BoolaPool to notify users of trip updates by text.
 
-#####Action Mailer
+##### Action Mailer
 Action Mailer was used to allow BoolaPool to notify users of trip details by email.
 
-#####Date Range Picker: http://www.daterangepicker.com/
+##### Date Range Picker: http://www.daterangepicker.com/
 Date Range Picker was used to simplify the trip creation process.
