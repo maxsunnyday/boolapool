@@ -1,6 +1,10 @@
 //Handles displaying Home and Profile
 function displayHome() {
     mainContainer.innerHTML = `<div class="home-text">
+            <div class="logo">
+                <img src="boolapoollogo.png" alt="BoolaPool Logo">
+            </div>
+            <div class="home">
             <h1>Welcome to BoolaPool!</h1>
             <h3>Connect with students who, like you, have places to be!</h3>
             <br>
@@ -24,7 +28,10 @@ function displayHome() {
                 </select>
                 <input type="submit" value="Search">
             </form>
-        </div>`
+            </div>
+            
+        </div>
+        `
 }
 
 function listenSwitch(e) {

@@ -12,11 +12,30 @@ body {
 div.home-text{
   text-align: center;
   padding: 100px;
+  z-index: 10;
+  height: 100%;
 }
 
 div.modal-content {
   background-color: #1263ba;
   color: white;
+}
+
+.logo{
+  z-index: 0;
+  opacity: 0.5;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+}
+
+.home{
+  position: relative;
+  z-index: 10;
+}
+
+.contact{
+  margin-top: 28%;
 }
 
 form.search input[type=submit] {
