@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	//Login Listeners
 	document.addEventListener("submit", listenLogin)
 	document.addEventListener("click", listenSignup)
+	document.addEventListener("change", listenNotificationYes)
 	document.addEventListener("click", listenClose)
 
 	//NewTrip listeners

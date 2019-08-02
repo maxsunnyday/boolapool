@@ -924,13 +924,18 @@ function listenSignup(e) {
                                         </form>
                                     </div>`
                 content.classList.add("lightened")
+                let modalBody = document.querySelector("div.modal-body")
                 form = document.querySelector('form.su')
 
                 form.classList.add("appear")
+                form.classList.add("first-signup")
                 document.querySelector('div.modal-header').classList.add("appear-head")
 
-                form.addEventListener("submit", function(e) {
+                document.querySelector("form.first-signup").addEventListener("submit", function(e) {
                     e.preventDefault()
+                    console.log(e.target)
+                    console.log("first")
+                    console.log(form)
                     first_name = form.children[0].children[1].value
                     last_name = form.children[1].children[1].value
                     email = form.children[4].value
@@ -940,7 +945,8 @@ function listenSignup(e) {
                     } else {
                         form.classList.replace("appear", "disappear")
                         setTimeout(function() {
-                            form.innerHTML = `<div class="subtext">BoolaPool can provide fast text updates whenever members create, join, or unjoin trips. Would you like to receive text notifications?</div>
+                            modalBody.innerHTML = `<form class="su appear second-signup">
+                                <div class="subtext">BoolaPool can provide fast text updates whenever members create, join, or unjoin trips. Would you like to receive text notifications?</div>
                                             <div class="check">
                                                 <input type="checkbox" name="yes" value="yes">
                                                 <div class="cbtext"> Yes, please send me text notifications</div>
@@ -951,15 +957,22 @@ function listenSignup(e) {
                                                 <div class="next-link">
                                                     <input type="submit" value="Next">
                                                 </div>
-                                            </div>`
-                            form.classList.replace("disappear", "appear")
+                                            </div>
+                            </form`
 
-                            form.querySelector('input[name="yes"]').addEventListener("change", function(e) {
-                                form.querySelector('input[name="tel"]').disabled = !form.querySelector('input[name="tel"]').disabled
-                            })
+                            // form.classList.replace("disappear", "appear")
+                            // form.classList.replace("first-signup", "second-signup")
 
-                            form.addEventListener("submit", function(e) {
+                            // form.querySelector('input[name="yes"]').addEventListener("change", function(e) {
+                            //     form.querySelector('input[name="tel"]').disabled = !form.querySelector('input[name="tel"]').disabled
+                            // })
+
+                            document.querySelector("form.second-signup").addEventListener("submit", function(e) {
                                 e.preventDefault()
+                                form = e.target
+                                console.log("second")
+                                console.log(form)
+                                console.log(form.children[2].value)
                                 phone = form.children[2].value
         
                                 if ((phone != "") && (isNaN(phone) || phone.length != 10)) {
@@ -967,20 +980,27 @@ function listenSignup(e) {
                                 } else {
                                     form.classList.replace("appear", "disappear")
                                     setTimeout(function() {
-                                        form.innerHTML = `<div class="filler"></div>
-                                                        Password
-                                                        <br>
-                                                        <input type="password" placeholder="woofwoof123" required>
-                                                        <br>
-                                                        Password Confirmation
-                                                        <br>
-                                                        <input type="password" placeholder="woofwoof123" required>
-                                                        <div class="filler3"></div>
-                                                        <input type="submit" value="Create Account">`
-                                        form.classList.replace("disappear", "appear")
+                                        modalBody.innerHTML = `<form class="su appear third-signup">
+                                        <div class="filler"></div>
+                                            Password
+                                            <br>
+                                            <input type="password" placeholder="woofwoof123" required>
+                                            <br>
+                                            Password Confirmation
+                                            <br>
+                                            <input type="password" placeholder="woofwoof123" required>
+                                            <div class="filler3"></div>
+                                            <input type="submit" value="Create Account">
+                                        </form>`
 
-                                        form.addEventListener("submit", function(e) {
+                                        // form.classList.replace("disappear", "appear")
+                                        // form.classList.replace("second-signup", "third-signup")
+
+                                        document.querySelector("form.third-signup").addEventListener("submit", function(e) {
                                             e.preventDefault()
+                                            form = e.target
+                                            console.log("third")
+                                            console.log(form)
                                             password = form.children[2].value
                                             password_confirmation = form.children[5].value
 
@@ -1030,6 +1050,13 @@ function listenSignup(e) {
                 })
             }, 1000)
         })
+    }
+}
+
+function listenNotificationYes(e) {
+    if (e.target.tagName === "INPUT" && e.target.name === "yes" && e.target.parentElement.className === "check") {
+        let form = document.querySelector("form.su")
+        form.querySelector('input[name="tel"]').disabled = !form.querySelector('input[name="tel"]').disabled
     }
 }
 
