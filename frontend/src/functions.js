@@ -75,7 +75,7 @@ function displayProfile(user) {
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="joinModalLabel">Unjoin Confirmation</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" id="x-close-unjoin" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -84,7 +84,7 @@ function displayProfile(user) {
                                             </div>
                                             <div class="modal-footer">
                                                 <button id="confirm-unjoin" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                                                <button id="nevermind-unjoin" type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
                                             </div>
                                         </div>
                                     </div>
@@ -682,7 +682,7 @@ function listenForJoin(e) {
             const tripCapacity = e.target.parentElement.previousElementSibling
 
             document.querySelector("#confirm-join").addEventListener("click", function(e) {
-                    console.log("test")
+                    // console.log("test")
                     let userId = localStorage.getItem('user_id')
                     fetch(BASE_URL + "/usertrips", {
                         method: "POST",
@@ -730,7 +730,7 @@ function listenForJoin(e) {
 
 function resetJoinModal() {
     const table = document.querySelector('table.table')
-    
+
     table.children[2].innerHTML = ""
     table.children[2].innerHTML = `
     <div class="modal-dialog" role="document">
@@ -757,36 +757,79 @@ function listenUnjoin(e) {
         const usertripId = e.target.dataset.id
         const tripId = e.target.dataset.trip
         const flipcard = e.target.parentElement.parentElement.parentElement
-        document.querySelector("div.modal-footer").addEventListener("click", function(e) {
-            if (e.target.id === "confirm-unjoin") {
-                fetch(BASE_URL + `/usertrips/${usertripId}`, {
+        document.querySelector("#confirm-unjoin").addEventListener("click", function(e) {
+            fetch(BASE_URL + `/usertrips/${usertripId}`, {
+                method: "DELETE"
+            }).then(data => {
+                fetch(BASE_URL + `/trips/${tripId}`, {
                     method: "DELETE"
                 }).then(data => {
-                    fetch(BASE_URL + `/trips/${tripId}`, {
-                        method: "DELETE"
-                    }).then(data => {
-                        flipcard.remove()
-                    })
+                    flipcard.remove()
+                    resetUnjoinModal()
                 })
-            }
+            })
+        })
+
+        document.querySelector('#x-close-unjoin').addEventListener('click', function(e){
+            resetUnjoinModal()
+                $(function() {
+                    $('#unjoinModal').modal('toggle'); 
+                })
+        })
+
+        document.querySelector('#nevermind-unjoin').addEventListener('click', function(e){
+            resetUnjoinModal()
+                $(function() {
+                    $('#unjoinModal').modal('toggle'); 
+                })
         })
     } else if (e.target.className === "unjoin" && e.target.tagName === "BUTTON") {
         const usertripId = e.target.dataset.id
         const flipcard = e.target.parentElement.parentElement.parentElement
-        document.querySelector("div.modal-footer").addEventListener("click", function(e) {
-            if (e.target.id === "confirm-unjoin") {
-                fetch(BASE_URL + `/usertrips/${usertripId}`, {
-                    method: "DELETE"
-                }).then(data => {
-                    flipcard.remove()
+        document.querySelector("#confirm-unjoin").addEventListener("click", function(e) {
+            fetch(BASE_URL + `/usertrips/${usertripId}`, {
+                method: "DELETE"
+            }).then(data => {
+                flipcard.remove()
+                resetUnjoinModal()
+            })
+        })
+
+        document.querySelector('#x-close-unjoin').addEventListener('click', function(e){
+            resetUnjoinModal()
+                $(function() {
+                    $('#unjoinModal').modal('toggle'); 
                 })
-            }
+        })
+
+        document.querySelector('#nevermind-unjoin').addEventListener('click', function(e){
+            resetUnjoinModal()
+                $(function() {
+                    $('#unjoinModal').modal('toggle'); 
+                })
         })
     }
 }
 
 function resetUnjoinModal() {
-    
+    mainContainer.children[1].innerHTML = ``
+    mainContainer.children[1].innerHTML = `<div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="joinModalLabel">Unjoin Confirmation</h5>
+                <button type="button" id="x-close-unjoin" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure? Press 'Ok' to unjoin this trip and notify other members by email.
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-unjoin" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button id="nevermind-unjoin" type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+            </div>
+        </div>
+    </div>`
 }
 
 
