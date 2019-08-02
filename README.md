@@ -1,6 +1,8 @@
 # BoolaPool
 
-## Go to our website: http://boolapool.surge.sh/
+## Go to our website: https://boolapool.surge.sh/
+
+Email boolapool@gmail.com with any business inquires or questions!
 
 ### Description
 Are you a student with places to go? Do you fancy an uber or lyft but not the fares? Well have we got a web app for you!
