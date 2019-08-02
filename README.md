@@ -35,4 +35,4 @@ Action Mailer was used to allow BoolaPool to notify users of trip details by ema
 Date Range Picker was used to simplify the trip creation process.
 
 ### Credits
-This project was created by Front-End Developer Xavier Ruiz (TD '21), and Back-End Devleoper Max Sun (JE '22). The two could not have done without the help of their Flatiron instructors Prince and Gigi.
+This project was created by Front-End Developer Xavier Ruiz (TD '21), and Back-End Developer Max Sun (JE '22). The two could not have done without the help of their Flatiron instructors Prince and Gigi.
